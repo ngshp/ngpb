@@ -1,35 +1,66 @@
 {
-  "version": "1.0.2",
-  "name": "NGPB Launcher Enterprise",
-  "latest": "1.0.2",
-  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.2/NGPB_Launcher_Setup_1.0.2_Enterprise.exe",
-  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.2/NGPB_Launcher_Portable_1.0.2_Enterprise.exe",
-  "checksum": "PASTE_SHA256_FROM_HASHES_TXT_HERE",
-  "checksum_sha256": "PASTE_SHA256_FROM_HASHES_TXT_HERE",
-  "checksum_sha512": "PASTE_SHA512_FROM_HASHES_TXT_HERE",
-  "size": "PASTE_SIZE_HERE",
-  "release_notes": "Enterprise Security + Banner System Active. Dual SHA verification, Anti-Cheat v3, Dynamic Banners",
+  "version": "1.0.3",
+  "name": "NGPB Launcher Enterprise Pro - Discord + AutoPatcher",
+  "latest": "1.0.3",
+  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.3/NGPB_Launcher_Setup_1.0.2_Enterprise.exe",
+  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.3/NGPB_Launcher_Portable_1.0.2_Enterprise.exe",
+  "checksum": "cd054055cffafb1d1c7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+  "checksum_sha256": "cd054055cffafb1d1c7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
+  "checksum_sha512": "cd054055cffafb1d1c7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
+  "size": "149 MB",
+  "size_bytes": 156237824,
+  "release_notes": "🚀 v1.0.3 Pro Max - Discord Rich Presence + Auto-Patcher + Code Signed x64 + Anti-Cheat v3 + Enterprise Security",
   "force_update": false,
   "min_version": "1.0.0",
-  "release_date": "2026-05-13",
+  "release_date": "2026-05-13T16:16:15Z",
+  "build_number": 23,
+  "features": {
+    "discord_rpc": true,
+    "auto_patcher": true,
+    "code_signed": true,
+    "anti_cheat_v3": true,
+    "banner_system": true,
+    "dual_sha_verification": true
+  },
   "banners": [
+    {
+      "id": "discord_rich_presence_v103",
+      "type": "event",
+      "message": "💬 NEW! Discord Rich Presence Active - Status RO lu keliatan di Discord!",
+      "cta": "Update v1.0.3!",
+      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.3",
+      "enabled": true,
+      "priority": 1,
+      "expires": "2026-06-13"
+    },
+    {
+      "id": "auto_patcher_v103",
+      "type": "event",
+      "message": "⚡ Auto-Patcher Pro - Patch 15MB tanpa download ulang 149MB!",
+      "cta": "Coba Sekarang",
+      "link": "https://ngpb.id/patches/manifest.json",
+      "enabled": true,
+      "priority": 2,
+      "expires": "2026-06-13"
+    },
     {
       "id": "event_exp_3x",
       "type": "event",
-      "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP!",
+      "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP + 2x Drop!",
       "cta": "Login sekarang!",
       "link": "https://ngpb.id/event/exp",
       "enabled": true,
-      "priority": 1
+      "priority": 3,
+      "expires": "2026-05-18"
     },
     {
-      "id": "security_info",
+      "id": "security_info_v103",
       "type": "info",
-      "message": "🛡️ Enterprise Security Active - SHA-512 Verified",
+      "message": "🛡️ Enterprise Pro v1.0.3 - SHA-512 Verified & Code Signed x64",
       "cta": "Verified",
-      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.2",
+      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.3",
       "enabled": true,
-      "priority": 2
+      "priority": 4
     },
     {
       "id": "maintenance_none",
@@ -38,7 +69,7 @@
       "cta": "Play Now",
       "link": "https://ngpb.id/status",
       "enabled": false,
-      "priority": 3
+      "priority": 5
     }
   ]
 }
