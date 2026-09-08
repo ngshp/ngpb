@@ -1,41 +1,74 @@
-// package.json patch - ADD THESE DEPS
 {
-  "dependencies": {
-    "electron-updater": "^6.1.7",
-    "discord-rpc": "^4.0.1",
-    "electron-log": "^5.0.1"
-  },
-  "devDependencies": {
-    "electron-builder": "^24.9.1"
-  },
+  "name": "ngpb-launcher-enterprise-pro",
+  "version": "1.0.3",
+  "description": "NGPB Launcher Enterprise Pro - Discord RPC + AutoPatcher + Signed x64 + Security v3",
+  "main": "main.js",
+  "homepage": "./",
+  "author": "NGPB Team <support@ngpb.id>",
+  "license": "MIT",
+  "private": true,
   "build": {
-    "appId": "id.ngpb.launcher",
-    "productName": "NGPB Launcher",
-    "directories": { "output": "dist" },
+    "appId": "id.ngpb.launcher.enterprise",
+    "productName": "NGPB Launcher Enterprise",
+    "copyright": "Copyright © 2026 NGPB Launcher",
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "style.css",
+      "renderer.js",
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
     "win": {
-      "target": "nsis",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
       "icon": "assets/icon.ico",
       "certificateSubjectName": "NGPB Team",
       "verifyUpdateCodeSignature": false,
       "signingHashAlgorithms": ["sha256"],
-      "publisherName": "Nusantara Game Point Blank"
+      "publisherName": "NGPB Team"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "artifactName": "NGPB_Launcher_Setup_${version}_Enterprise.exe",
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
     },
-    "publish": [
-      { "provider": "generic", "url": "https://ngpb.id/updates/" },
-      { "provider": "github", "owner": "ngshp", "repo": "ngpb" }
-    ]
+    "portable": {
+      "artifactName": "NGPB_Launcher_Portable_${version}_Enterprise.exe"
+    }
   },
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --win",
+    "dev": "electron . --dev",
+    "build": "electron-builder --win --x64",
+    "build:win": "electron-builder --win --x64 --publish never",
     "postinstall": "electron-builder install-app-deps"
+  },
+  "dependencies": {
+    "electron-log": "^5.0.1",
+    "electron-updater": "^6.3.9",
+    "discord-rpc": "^4.0.1"
+  },
+  "devDependencies": {
+    "electron": "^28.3",
+    "electron-builder": "^24.9.1"
   }
 }
-
-// QUICK INSTALL:
-// npm install electron-updater discord-rpc electron-log --save
-// npm install electron-builder --save-dev
