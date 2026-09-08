@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
+  <title>NGPB Launcher PRO</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- TITLEBAR - DRAGGABLE REGION - FIX LEFT/RIGHT MOVE -->
+  <div class="titlebar">
+    <div class="titlebar-drag">
+      <img src="assets/icon.png" class="titlebar-icon" alt="NGPB">
+      <span class="titlebar-title">NGPB Launcher v1.0.3 PRO • Enterprise Security Active</span>
+      <div class="security-dot active" id="sec-indicator" title="Enterprise Security Active"></div>
+    </div>
+    <div class="titlebar-controls no-drag">
+      <button id="min-btn" class="ctrl-btn"><svg width="12" height="12" viewBox="0 0 12 12"><rect y="5" width="10" height="1" fill="white"/></svg></button>
+      <button id="max-btn" class="ctrl-btn"><svg width="12" height="12" viewBox="0 0 12 12"><rect x="1" y="1" width="8" height="8" stroke="white" fill="none"/></svg></button>
+      <button id="close-btn" class="ctrl-btn close"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 1 L11 11 M11 1 L1 11" stroke="white"/></svg></button>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div class="app">
+    <nav class="sidebar no-drag">
+      <button class="nav-btn active">PLAY</button>
+      <button class="nav-btn">PATCHES</button>
+      <button class="nav-btn">SERVERS</button>
+      <button class="nav-btn">SETTINGS</button>
+    </nav>
+
+    <main class="content">
+      <div class="banner-container" id="banner-rotator">
+        <!-- Banners injected from version.json -->
+      </div>
+
+      <div class="play-section no-drag">
+        <div class="security-status">
+          <span class="dot green"></span> Enterprise Security Active
+          <span class="dot green"></span> SHA256 Verified
+          <span class="dot green"></span> Signature: NGPB Team
+        </div>
+        <button id="play-btn" class="play-btn">PLAY NGPB</button>
+        <p class="version-text">v1.0.3 • Single Instance • Draggable OK</p>
+      </div>
+    </main>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
