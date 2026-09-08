@@ -1,4 +1,4 @@
-const { execSync, spawn } = require('child_process');
+﻿const { execSync, spawn } = require('child_process');
 const { app, dialog, BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -12,20 +12,22 @@ function log(msg) {
 const CHEAT_PROCESSES = [
   'SystemInformer.exe', 'ProcessHacker.exe', 
   'System Informer.exe', 'procexp.exe', 'procexp64.exe',
+  'WPE PRO.exe', 'WPEPRO.exe', 'WPE.exe', 'WpePro.exe', 'wpe_pro.exe',
+  'WPE PRO - modified.exe',
   'x64dbg.exe', 'x32dbg.exe', 'Cheat Engine.exe', 'cheatengine'
 ];
-const CHEAT_WINDOWS = ['System Informer', 'Process Hacker', 'Cheat Engine', 'x64dbg'];
+const CHEAT_WINDOWS = ['System Informer', 'Process Hacker', 'Cheat Engine', 'x64dbg', 'WPE PRO', 'WPE', 'Trace Console', 'WPE PRO - modified', 'Filter'];
 
 function killProcess(processName) {
   try {
     // Coba 3 cara kill - user, admin, force
     execSync(`taskkill /F /IM "${processName}" /T 2>nul`, { windowsHide: true });
-    log(`✅ Killed ${processName} via taskkill`);
+    log(`âœ… Killed ${processName} via taskkill`);
     return true;
   } catch {}
   try {
     execSync(`powershell -Command "Get-Process -Name '${processName.replace('.exe','')}' -ErrorAction SilentlyContinue | Stop-Process -Force"`, { windowsHide: true });
-    log(`✅ Killed ${processName} via PowerShell`);
+    log(`âœ… Killed ${processName} via PowerShell`);
     return true;
   } catch {}
   return false;
@@ -37,7 +39,7 @@ function isCheatRunning() {
     const list = execSync('tasklist /FO CSV /NH', { encoding: 'utf8', windowsHide: true }).toLowerCase();
     for (const cheat of CHEAT_PROCESSES) {
       if (list.includes(cheat.toLowerCase())) {
-        log(`🚨 Cheat process found in tasklist: ${cheat}`);
+        log(`ðŸš¨ Cheat process found in tasklist: ${cheat}`);
         return { found: true, name: cheat, method: 'tasklist' };
       }
     }
@@ -48,7 +50,7 @@ function isCheatRunning() {
     const wmic = execSync('wmic process get name /FORMAT:CSV', { encoding: 'utf8', windowsHide: true }).toLowerCase();
     for (const cheat of CHEAT_PROCESSES) {
       if (wmic.includes(cheat.toLowerCase())) {
-        log(`🚨 Cheat found in wmic: ${cheat}`);
+        log(`ðŸš¨ Cheat found in wmic: ${cheat}`);
         return { found: true, name: cheat, method: 'wmic' };
       }
     }
@@ -59,7 +61,7 @@ function isCheatRunning() {
     const tasklistV = execSync('tasklist /V /FO CSV /NH', { encoding: 'utf8', windowsHide: true });
     for (const winTitle of CHEAT_WINDOWS) {
       if (tasklistV.toLowerCase().includes(winTitle.toLowerCase())) {
-        log(`🚨 Cheat window title found: ${winTitle}`);
+        log(`ðŸš¨ Cheat window title found: ${winTitle}`);
         return { found: true, name: winTitle, method: 'window' };
       }
     }
@@ -71,7 +73,7 @@ function isCheatRunning() {
 function startAntiProcessHacker() {
   // JANGAN SKIP DI PACKAGED - INI YANG BIKIN GAK JALAN KEMARIN!
   const isPackaged = app.isPackaged;
-  log(`🛡️ Anti Cheat Start - isPackaged: ${isPackaged} - CI: ${process.env.CI}`);
+  log(`ðŸ›¡ï¸ Anti Cheat Start - isPackaged: ${isPackaged} - CI: ${process.env.CI}`);
   
   // Force run kalau di AppData (kayak di Screenshot #15 lu)
   const exePath = app.getPath('exe').toLowerCase();
@@ -81,13 +83,13 @@ function startAntiProcessHacker() {
     return;
   }
 
-  log('🛡️ ANTI PROCESS HACKER ACTIVE - Monitoring every 2s');
+  log('ðŸ›¡ï¸ ANTI PROCESS HACKER ACTIVE - Monitoring every 2s');
 
   const blockAction = (cheatName) => {
     const allWindows = BrowserWindow.getAllWindows();
     const mainWin = allWindows[0];
     
-    log(`🚫 BLOCKING - Cheat detected: ${cheatName}`);
+    log(`ðŸš« BLOCKING - Cheat detected: ${cheatName}`);
 
     // Kill dulu
     killProcess(cheatName);
@@ -130,7 +132,7 @@ function startAntiProcessHacker() {
 
 function startAntiRDP(mainWindow) {
   // (Anti RDP code kemarin tetep pake yang ini Bos)
-  log('🛡️ Anti RDP check');
+  log('ðŸ›¡ï¸ Anti RDP check');
   // ... (paste anti RDP kemarin kalau mau)
 }
 
