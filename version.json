@@ -2,27 +2,43 @@
   "version": "1.0.2",
   "name": "NGPB Launcher Enterprise",
   "latest": "1.0.2",
-  "download_url": "https://github.com/ngshp/ngpb/releases/latest/download/NGPB_Launcher_Setup_1.0.2_Enterprise.exe",
-  "checksum": "",
-  "checksum_sha256": "",
-  "checksum_sha512": "",
-  "size": "",
-  "release_notes": "Enterprise Security + Banner System Active",
+  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.2/NGPB_Launcher_Setup_1.0.2_Enterprise.exe",
+  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.2/NGPB_Launcher_Portable_1.0.2_Enterprise.exe",
+  "checksum": "PASTE_SHA256_FROM_HASHES_TXT_HERE",
+  "checksum_sha256": "PASTE_SHA256_FROM_HASHES_TXT_HERE",
+  "checksum_sha512": "PASTE_SHA512_FROM_HASHES_TXT_HERE",
+  "size": "PASTE_SIZE_HERE",
+  "release_notes": "Enterprise Security + Banner System Active. Dual SHA verification, Anti-Cheat v3, Dynamic Banners",
+  "force_update": false,
+  "min_version": "1.0.0",
+  "release_date": "2026-05-13",
   "banners": [
     {
-      "id": "event1",
+      "id": "event_exp_3x",
       "type": "event",
       "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP!",
       "cta": "Login sekarang!",
-      "enabled": true
+      "link": "https://ngpb.id/event/exp",
+      "enabled": true,
+      "priority": 1
     },
     {
-      "id": "info1",
+      "id": "security_info",
       "type": "info",
-      "message": "🛡️ Enterprise Security Active",
-      "cta": "SHA-512 Verified",
-      "enabled": true
+      "message": "🛡️ Enterprise Security Active - SHA-512 Verified",
+      "cta": "Verified",
+      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.2",
+      "enabled": true,
+      "priority": 2
+    },
+    {
+      "id": "maintenance_none",
+      "type": "maintenance",
+      "message": "✅ All Systems Operational - No Maintenance",
+      "cta": "Play Now",
+      "link": "https://ngpb.id/status",
+      "enabled": false,
+      "priority": 3
     }
-  ],
-  "force_update": false
+  ]
 }
