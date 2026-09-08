@@ -1,0 +1,102 @@
+{
+  "version": "3.0-enterprise",
+  "engine": "XTRAP v3 + NGPB Shield Enterprise",
+  "enabled": true,
+  "scan_interval_ms": 3000,
+  "mode": "aggressive",
+
+  "blacklist_processes": [
+    "WPE PRO.exe",
+    "WPE Pro.exe",
+    "wpepro.exe",
+    "cheatengine-x86_64.exe",
+    "cheatengine-i386.exe",
+    "cheatengine.exe",
+    "Process Hacker.exe",
+    "ProcessHacker.exe",
+    "x64dbg.exe",
+    "x32dbg.exe",
+    "x64dbg",
+    "IDA.exe",
+    "ida64.exe",
+    "ida.exe",
+    "Wireshark.exe",
+    "wireshark.exe",
+    "Fiddler.exe",
+    "fiddler.exe",
+    "HTTPAnalyzer.exe",
+    "HTTP Analyzer",
+    "Charles.exe",
+    "Burp Suite",
+    "SpeedHack",
+    "ArtMoney.exe",
+    "GameGuard",
+    "xSpeed",
+    "Cheat Engine",
+    "Memory Editor",
+    "Process Explorer",
+    "DLL Injector",
+    "Extreme Injector.exe",
+    "Xenos Injector.exe"
+  ],
+
+  "blacklist_window_titles": [
+    "Cheat Engine",
+    "WPE Pro",
+    "Process Hacker",
+    "x64dbg",
+    "IDA Pro",
+    "Wireshark",
+    "Fiddler",
+    "ArtMoney",
+    "Speed Hack",
+    "Memory Editor",
+    "DLL Injector"
+  ],
+
+  "blacklist_dlls": [
+    "speedhack.dll",
+    "cheatengine.dll",
+    "wpe.dll",
+    "ws2_32.dll:hooked",
+    "d3d9.dll:modified"
+  ],
+
+  "detection": {
+    "memory_scan": true,
+    "process_scan": true,
+    "window_scan": true,
+    "dll_injection_scan": true,
+    "debugger_detection": true,
+    "vm_detection": false,
+    "screenshot_block": false
+  },
+
+  "actions": {
+    "on_detect": "kill_and_log",
+    "log_to_api": true,
+    "api_endpoint": "https://ngpb.id/api/anticheat/log",
+    "auto_ban_threshold": 3,
+    "ban_duration_hours": 24,
+    "notify_user": true,
+    "notification_message": "⚠️ Program terlarang terdeteksi! Game ditutup untuk keamanan."
+  },
+
+  "whitelist": [
+    "explorer.exe",
+    "chrome.exe",
+    "discord.exe",
+    "spotify.exe",
+    "steam.exe"
+  ],
+
+  "enterprise": {
+    "device_binding": true,
+    "aes256_encryption": true,
+    "code_signing": true,
+    "hash_verification": "sha512",
+    "bypass_protection": true,
+    "injection_protection": true,
+    "kernel_driver_check": false
+  }
+}
