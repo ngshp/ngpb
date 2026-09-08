@@ -1,68 +1,53 @@
 {
-  "name": "ngpb-launcher-enterprise-pro",
-  "version": "1.0.3",
-  "description": "NGPB Launcher Enterprise Pro - Anti Process Hacker + Draggable",
+  "name": "ngpb-launcher-enterprise",
+  "version": "1.0.45",
+  "description": "NGPB Launcher Enterprise v45 ULTIMATE - AutoUpdate + AntiRDP/VM + AntiDebug + HWID Lock + WPE PRO Killer",
   "main": "main.js",
-  "author": "NGPB Team",
-  "license": "MIT",
-  "private": true,
+  "author": "NGPB Team <admin@ngshp.com>",
+  "homepage": "https://github.com/ngshp/ngpb",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:dir": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps"
+  },
   "build": {
-    "appId": "id.ngpb.launcher.enterprise",
+    "appId": "com.ngshp.ngpb.launcher",
     "productName": "NGPB Launcher Enterprise",
-    "asar": true,
     "directories": {
       "output": "dist"
     },
-    "files": [
-      "main.js",
-      "preload.js",
-      "index.html",
-      "style.css",
-      "renderer.js",
-      "src/**/*",
-      "assets/**/*",
-      "package.json"
-    ],
     "win": {
+      "icon": "assets/icon.ico",
       "target": [
         {
           "target": "nsis",
           "arch": [
             "x64"
           ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
         }
-      ],
-      "icon": "assets/icon.ico",
-      "sign": null
+      ]
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "artifactName": "NGPB_Launcher_Setup_${version}_Enterprise.exe"
+      "shortcutName": "NGPB Launcher Enterprise"
     },
-    "portable": {
-      "artifactName": "NGPB_Launcher_Portable_${version}_Enterprise.exe"
-    }
-  },
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-builder --win --x64",
-    "build:win": "electron-builder --win --x64 --publish never"
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ngshp",
+        "repo": "ngpb",
+        "private": false
+      }
+    ]
   },
   "dependencies": {
-    "discord-rpc": "^4.0.1",
-    "electron-log": "^5.0.1",
     "electron-updater": "^6.1.7"
   },
   "devDependencies": {
-    "electron": "^28.3",
+    "electron": "^28.0.0",
     "electron-builder": "^24.9.1"
   }
 }
