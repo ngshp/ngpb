@@ -17,36 +17,36 @@ jobs:
       - name: Clean & Install
         shell: pwsh
         run: |
-          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force; Write-Host "Deleted p" }
-          if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force; Write-Host "Deleted old dist" }
+          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force }
+          if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force }
           if (Test-Path "node_modules") { Remove-Item "node_modules" -Recurse -Force }
           if (Test-Path "package-lock.json") { Remove-Item "package-lock.json" -Force }
-          npm install
+          npm install --no-audit --no-fund
 
       - name: Build Electron
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
         shell: pwsh
         run: |
-          Write-Host "Building..."
           npx electron-builder --win --x64 --publish never
 
       - name: List dist
         shell: pwsh
         run: |
-          Write-Host "Dist files:"
-          Get-ChildItem dist | Format-Table Name, Length, LastWriteTime
+          Get-ChildItem dist | Format-Table Name, Length, LastWriteTime -AutoSize
 
-      - name: Sign
+      - name: Sign FIX x64 ONLY
         shell: pwsh
         run: |
-          $tool = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Select -First 1).FullName
-          Get-ChildItem dist/*.exe | ForEach-Object {
+          $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1 -ExpandProperty FullName
+          Write-Host "SignTool: $tool"
+          foreach ($exe in (Get-ChildItem dist/*.exe)) {
             $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5)
             $pwd = ConvertTo-SecureString "ngpb123" -Force -AsPlainText
             Export-PfxCertificate -Cert $cert -FilePath self.pfx -Password $pwd | Out-Null
-            & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v1.0.3" $_.FullName
-            Write-Host "Signed $($_.Name) - $([math]::Round($_.Length/1MB,1)) MB"
+            & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v1.0.3 Pro" $exe.FullName
+            Write-Host "✅ Signed $($exe.Name)"
+            Remove-Item self.pfx -Force -ErrorAction SilentlyContinue
           }
 
       - name: Upload
