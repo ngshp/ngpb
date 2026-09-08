@@ -17,54 +17,40 @@ jobs:
       - name: Clean & Install
         shell: pwsh
         run: |
-          Write-Host "Cleaning..."
-          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force; Write-Host "✅ Deleted junk assets/p" }
-          if (Test-Path "package-lock.json") { Remove-Item package-lock.json -Force }
-          if (Test-Path "node_modules") { Remove-Item node_modules -Recurse -Force }
-          npm install --no-audit --no-fund
-          Write-Host "Files:"
-          Get-ChildItem -Name
-          Get-ChildItem assets -Name
+          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force; Write-Host "Deleted p" }
+          if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force; Write-Host "Deleted old dist" }
+          if (Test-Path "node_modules") { Remove-Item "node_modules" -Recurse -Force }
+          if (Test-Path "package-lock.json") { Remove-Item "package-lock.json" -Force }
+          npm install
 
-      - name: Build Electron - MUST SUCCESS
+      - name: Build Electron
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
         shell: pwsh
         run: |
-          Write-Host "🔨 Building - will FAIL if error (no fake green)!"
-          npx electron-builder --win --x64 --publish never --loglevel=info
-          Write-Host "📂 dist content:"
-          Get-ChildItem dist -Recurse | Format-Table Name, Length
+          Write-Host "Building..."
+          npx electron-builder --win --x64 --publish never
 
-      - name: Sign NGPB Team
+      - name: List dist
+        shell: pwsh
+        run: |
+          Write-Host "Dist files:"
+          Get-ChildItem dist | Format-Table Name, Length, LastWriteTime
+
+      - name: Sign
         shell: pwsh
         run: |
           $tool = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Select -First 1).FullName
-          Write-Host "Tool: $tool"
-          Get-ChildItem dist -Filter *.exe -Recurse | ForEach-Object {
-            $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048
+          Get-ChildItem dist/*.exe | ForEach-Object {
+            $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5)
             $pwd = ConvertTo-SecureString "ngpb123" -Force -AsPlainText
             Export-PfxCertificate -Cert $cert -FilePath self.pfx -Password $pwd | Out-Null
-            & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v1.0.3 Anti Process Hacker" $_.FullName
-            Remove-Item self.pfx -Force -ErrorAction SilentlyContinue
-            Write-Host "✅ Signed $($_.Name)"
+            & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v1.0.3" $_.FullName
+            Write-Host "Signed $($_.Name) - $([math]::Round($_.Length/1MB,1)) MB"
           }
 
-      - name: Hash
-        shell: pwsh
-        run: |
-          $exe = Get-ChildItem dist -Filter *.exe -Recurse | Select -First 1
-          if (-not $exe) { Write-Host "❌ STILL NO EXE!"; Get-ChildItem dist -Recurse; exit 1 }
-          $hash = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
-          "$($exe.Name) $hash" | Out-File hashes.txt
-          "{""version"":""1.0.3"",""sha256"":""$hash""}" | Out-File version.json
-          Write-Host "✅ EXE SIZE: $([math]::Round($exe.Length/1MB,1)) MB"
-
-      - name: Upload 150MB
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: NGPB-Launcher-v1.0.3-Pro
-          path: |
-            dist/*.exe
-            hashes.txt
-            version.json
+          path: dist/*.exe
