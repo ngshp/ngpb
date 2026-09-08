@@ -1,0 +1,30 @@
+{
+  "name": "ngpb-launcher-enterprise",
+  "version": "1.0.2",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64 --publish never"
+  },
+  "build": {
+    "appId": "id.ngpb.launcher.enterprise",
+    "productName": "NGPB Launcher",
+    "win": {
+      "target": [
+        {"target": "nsis", "arch": ["x64"]},
+        {"target": "portable", "arch": ["x64"]}
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "artifactName": "NGPB_Launcher_Setup_${version}_Enterprise.exe"
+    },
+    "portable": {
+      "artifactName": "NGPB_Launcher_Portable_${version}_Enterprise.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}
