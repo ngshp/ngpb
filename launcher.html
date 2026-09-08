@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>NGPB Launcher Enterprise</title>
+<style>
+body { margin:0; background:#05080f; color:white; font-family:Arial; overflow:hidden; }
+.hero { width:100%; height:60vh; background:url('assets/hero.webp') center/cover; position:relative; }
+.overlay { position:absolute; inset:0; background:linear-gradient(to top, #05080f 0%, transparent 60%); }
+.logo { position:absolute; top:20px; left:20px; width:80px; }
+.banners { position:absolute; bottom:20px; left:20px; right:20px; display:flex; gap:10px; overflow-x:auto; }
+.banner { background:rgba(255,30,30,0.9); padding:12px 16px; border-radius:12px; min-width:280px; backdrop-filter:blur(10px); }
+.banner.event { background:rgba(255,30,30,0.9); }
+.banner.info { background:rgba(0,150,255,0.9); }
+.banner.success { background:rgba(0,200,80,0.9); }
+.play-btn { width:90%; margin:20px auto; display:block; padding:18px; background:linear-gradient(135deg, #ff1e1e, #cc0000); border:none; border-radius:16px; color:white; font-size:20px; font-weight:bold; cursor:pointer; }
+.status { text-align:center; padding:10px; color:#888; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <img src="assets/icon.png" class="logo">
+  <div class="overlay"></div>
+  <div class="banners" id="banners"></div>
+</div>
+<button class="play-btn" id="playBtn">▶ PLAY NGPB</button>
+<div class="status" id="status">Enterprise Security Active • v1.0.2</div>
+
+<script>
+async function loadBanners() {
+  try {
+    const res = await fetch('https://ngpb.id/version.json');
+    const data = await res.json();
+    const container = document.getElementById('banners');
+    container.innerHTML = '';
+    data.banners.forEach(b => {
+      const div = document.createElement('div');
+      div.className = `banner ${b.type}`;
+      div.innerHTML = `<b>${b.message}</b><br><small>${b.cta || ''}</small>`;
+      container.appendChild(div);
+    });
+  } catch(e) {
+    document.getElementById('banners').innerHTML = '<div class="banner info">🎉 Welcome to NGPB Enterprise!</div>';
+  }
+}
+loadBanners();
+document.getElementById('playBtn').onclick = () => {
+  if (window.electron) window.electron.play();
+  else alert('Launch Game!');
+};
+</script>
+</body>
+</html>
