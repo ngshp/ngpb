@@ -15,96 +15,64 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node 20
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install Deps (Auto Fix No Lock File)
+      - name: Fresh Install - Generate VALID Lock File
         shell: pwsh
         run: |
-          if (Test-Path "package-lock.json") {
-            Write-Host "✅ package-lock.json found - npm ci"
-            npm ci
-          } else {
-            Write-Host "⚠️ No lock file - npm install (auto generate)"
-            npm install
-          }
+          if (Test-Path "package-lock.json") { Remove-Item package-lock.json -Force }
+          if (Test-Path "node_modules") { Remove-Item node_modules -Recurse -Force }
+          Write-Host "📦 npm install - generating REAL lock file with 200+ deps..."
+          npm install
+          Write-Host "✅ Generated:"
+          (Get-Content package-lock.json | Select-Object -First 20)
+
+      - name: Auto Commit VALID lock file back to repo
+        shell: pwsh
+        run: |
+          git config user.name "NGPB Bot"
+          git config user.email "bot@ngpb.id"
+          git add package-lock.json
+          git diff --staged --quiet
+          if ($LASTEXITCODE -ne 0) {
+            git commit -m "chore: auto-generate VALID package-lock.json Build $env:GITHUB_RUN_NUMBER [skip ci]"
+            git push
+            Write-Host "✅ VALID lock file committed!"
+          } else { Write-Host "Lock already valid" }
 
       - name: Build Electron
         shell: pwsh
-        run: |
-          npm run build --if-present
-          if ($LASTEXITCODE -ne 0) { npx electron-builder --win --x64 --publish never }
+        run: npx electron-builder --win --x64 --publish never
 
-      - name: Code Sign EXE (OV or Self-Signed fallback)
+      - name: Code Sign
         env:
           CERT_PFX_BASE64: ${{ secrets.CERT_PFX_BASE64 }}
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
         shell: pwsh
         run: |
-          $exeFiles = Get-ChildItem -Path "dist" -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue
-          if (-not $exeFiles) { $exeFiles = Get-ChildItem -Path "." -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 5 }
-          $signtool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
-          if (-not $signtool) { $signtool = "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" }
-          Write-Host "SignTool: $signtool"
+          $exe = Get-ChildItem dist -Filter *.exe -Recurse | Select-Object -First 1
+          $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Select-Object -First 1 -ExpandProperty FullName
           if ($env:CERT_PFX_BASE64) {
-            Write-Host "🔐 OV Certificate found - Signing..."
-            $env:CERT_PFX_BASE64 | Out-File -FilePath cert.b64 -Encoding ascii
-            certutil -decode cert.b64 cert.pfx
-            foreach ($exe in $exeFiles) {
-              if ($exe) { & $signtool sign /f cert.pfx /p $env:CERT_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256 /d "NGPB Launcher Enterprise v1.0.2" /du "https://ngpb.id" $exe.FullName; Write-Host "Signed: $($exe.Name)" }
-            }
+            $env:CERT_PFX_BASE64 | Out-File cert.b64 -Encoding ascii; certutil -decode cert.b64 cert.pfx
+            & $tool sign /f cert.pfx /p $env:CERT_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256 /d "NGPB Launcher Enterprise" $exe.FullName
           } else {
-            Write-Host "⚠️ Self-Signed fallback..."
-            $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team, O=Nusa Game Public Batch" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048
-            $pwd = ConvertTo-SecureString -String "ngpb123" -Force -AsPlainText
-            Export-PfxCertificate -Cert $cert -FilePath selfsign.pfx -Password $pwd | Out-Null
-            foreach ($exe in $exeFiles) {
-              if ($exe) { & $signtool sign /f selfsign.pfx /p ngpb123 /t http://timestamp.digicert.com /d "NGPB Launcher Enterprise v1.0.2" $exe.FullName; Write-Host "Self-signed: $($exe.Name)" }
-            }
+            $c = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5)
+            $p = ConvertTo-SecureString "ngpb123" -Force -AsPlainText; Export-PfxCertificate -Cert $c -FilePath s.pfx -Password $p | Out-Null
+            & $tool sign /f s.pfx /p ngpb123 /t http://timestamp.digicert.com /d "NGPB Launcher Enterprise" $exe.FullName
           }
-          Get-ChildItem -Path "dist" -Filter "*.exe" -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "Final: $($_.Name) - $([math]::Round($_.Length/1MB,2)) MB" }
 
-      - name: Generate hashes.txt + version.json
+      - name: Generate hashes.txt
         shell: pwsh
         run: |
-          $exeFiles = Get-ChildItem -Path "dist" -Filter "*.exe" -Recurse -ErrorAction SilentlyContinue
-          "NGPB Launcher Enterprise v1.0.2 - Build $env:GITHUB_RUN_NUMBER" | Out-File hashes.txt
-          "Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" | Out-File hashes.txt -Append
-          "" | Out-File hashes.txt -Append
-          foreach ($exe in $exeFiles) {
-            $sha256 = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
-            $sha512 = (Get-FileHash $exe.FullName -Algorithm SHA512).Hash
-            "$($exe.Name):" | Out-File hashes.txt -Append
-            " SHA256: $sha256" | Out-File hashes.txt -Append
-            " SHA512: $sha512" | Out-File hashes.txt -Append
-            "" | Out-File hashes.txt -Append
-          }
-          Get-Content hashes.txt
-          # Auto-generate version.json for ngpb.id
-          $versionData = @{ version="1.0.2"; build=$env:GITHUB_RUN_NUMBER; date=(Get-Date -Format "o"); download_url="https://github.com/ngshp/ngpb/releases/download/v1.0.2/NGPB_Launcher_Setup_1.0.2_Enterprise.exe"; checksums=@() }
-          foreach ($exe in $exeFiles) { $versionData.checksums += @{ file=$exe.Name; sha256=(Get-FileHash $exe.FullName -Algorithm SHA256).Hash } }
-          $versionData | ConvertTo-Json -Depth 4 | Out-File version.json -Encoding utf8
+          Get-ChildItem dist -Filter *.exe -Recurse | ForEach-Object { $h=(Get-FileHash $_.FullName -Algorithm SHA256).Hash; "$($_.Name): $h" | Out-File hashes.txt -Append; Write-Host "$($_.Name) $h" }
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: NGPB-Launcher-v1.0.2-Enterprise-Signed
+          name: NGPB-Launcher-FIXED-VALID-LOCK
           path: |
             dist/*.exe
             hashes.txt
-            version.json
-          retention-days: 30
-
-      - name: Auto Release on Tag
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/*.exe
-            hashes.txt
-            version.json
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            package-lock.json
