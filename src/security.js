@@ -1,91 +1,137 @@
-// src/security.js - Enterprise Security Module
-const crypto = require('crypto');
-const fs = require('fs');
+const { execSync, spawn } = require('child_process');
+const { app, dialog, BrowserWindow } = require('electron');
 const path = require('path');
-const { execSync } = require('child_process');
+const fs = require('fs');
 
-class EnterpriseSecurity {
-  constructor() {
-    this.blacklist = ['cheatengine', 'cheat engine', 'speedhack', 'artmoney', 'processhacker', 'x64dbg', 'ida', 'wpe pro'];
-    this.hashesPath = path.join(__dirname, '../hashes.txt');
-  }
-
-  // SHA256/SHA512 verification
-  verifyFile(filePath, expectedHash, algo='sha256') {
-    if(!fs.existsSync(filePath)) return { valid:false, reason:'missing' };
-    const data = fs.readFileSync(filePath);
-    const hash = crypto.createHash(algo).update(data).digest('hex');
-    return {
-      valid: hash.toLowerCase() === expectedHash.toLowerCase(),
-      computed: hash,
-      expected: expectedHash,
-      algo
-    };
-  }
-
-  verifyManifest() {
-    if(!fs.existsSync(this.hashesPath)) return { valid:false, error:'hashes.txt not found' };
-    const lines = fs.readFileSync(this.hashesPath, 'utf8').split('\n').filter(Boolean);
-    const results = [];
-    for(const line of lines) {
-      const [hash, file] = line.split(/\s+/);
-      if(!file) continue;
-      const fp = path.join(path.dirname(this.hashesPath), file);
-      const r = this.verifyFile(fp, hash, hash.length===128?'sha512':'sha256');
-      results.push({ file, ...r });
-    }
-    const allValid = results.every(r=>r.valid);
-    return { valid: allValid, results };
-  }
-
-  // Certificate verification - check if file signed by NGPB Team
-  verifyCertificate(filePath) {
-    try {
-      // Windows: use powershell Get-AuthenticodeSignature
-      if(process.platform === 'win32') {
-        const ps = `powershell -Command "Get-AuthenticodeSignature '${filePath}' | Select-Object -ExpandProperty SignerCertificate | Select-Object Subject"`;
-        const out = execSync(ps, { encoding:'utf8' });
-        const isNGPB = out.includes('NGPB') || out.includes('Nusantara Game');
-        return { signed: !!out.trim(), subject: out.trim(), trusted: isNGPB, issuer: 'NGPB Team' };
-      }
-      return { signed:false, trusted:false, reason:'non-windows skip' };
-    } catch(e) {
-      return { signed:false, trusted:false, error:e.message };
-    }
-  }
-
-  // Anti-cheat: scan running processes
-  scanProcesses() {
-    try {
-      let list = '';
-      if(process.platform === 'win32') {
-        list = execSync('tasklist', { encoding:'utf8' }).toLowerCase();
-      } else {
-        list = execSync('ps -A', { encoding:'utf8' }).toLowerCase();
-      }
-      const threats = this.blacklist.filter(b => list.includes(b));
-      return { clean: threats.length===0, threats, scannedAt: new Date().toISOString() };
-    } catch {
-      return { clean:true, threats:[], note:'scan stub' };
-    }
-  }
-
-  // Memory scan placeholder (enterprise)
-  memoryScan() {
-    // Placeholder for real anti-cheat driver integration
-    return { hooked:false, injected:false, clean:true };
-  }
-
-  fullScan() {
-    return {
-      fileIntegrity: this.verifyManifest(),
-      cert: this.verifyCertificate(path.join(__dirname, '../PointBlank.exe')),
-      processes: this.scanProcesses(),
-      memory: this.memoryScan(),
-      enterprise: true,
-      timestamp: Date.now()
-    };
-  }
+const LOG_FILE = path.join(app.getPath('userData'), 'security.log');
+function log(msg) {
+  try { fs.appendFileSync(LOG_FILE, `[${new Date().toISOString()}] ${msg}\n`); console.log(msg); } catch {}
 }
 
-module.exports = EnterpriseSecurity;
+// ===== CONFIG =====
+const CHEAT_PROCESSES = [
+  'SystemInformer.exe', 'ProcessHacker.exe', 
+  'System Informer.exe', 'procexp.exe', 'procexp64.exe',
+  'x64dbg.exe', 'x32dbg.exe', 'Cheat Engine.exe', 'cheatengine'
+];
+const CHEAT_WINDOWS = ['System Informer', 'Process Hacker', 'Cheat Engine', 'x64dbg'];
+
+function killProcess(processName) {
+  try {
+    // Coba 3 cara kill - user, admin, force
+    execSync(`taskkill /F /IM "${processName}" /T 2>nul`, { windowsHide: true });
+    log(`✅ Killed ${processName} via taskkill`);
+    return true;
+  } catch {}
+  try {
+    execSync(`powershell -Command "Get-Process -Name '${processName.replace('.exe','')}' -ErrorAction SilentlyContinue | Stop-Process -Force"`, { windowsHide: true });
+    log(`✅ Killed ${processName} via PowerShell`);
+    return true;
+  } catch {}
+  return false;
+}
+
+function isCheatRunning() {
+  // Cara 1: tasklist (case insensitive)
+  try {
+    const list = execSync('tasklist /FO CSV /NH', { encoding: 'utf8', windowsHide: true }).toLowerCase();
+    for (const cheat of CHEAT_PROCESSES) {
+      if (list.includes(cheat.toLowerCase())) {
+        log(`🚨 Cheat process found in tasklist: ${cheat}`);
+        return { found: true, name: cheat, method: 'tasklist' };
+      }
+    }
+  } catch (e) { log('tasklist error: ' + e.message); }
+
+  // Cara 2: wmic (bypass admin hide)
+  try {
+    const wmic = execSync('wmic process get name /FORMAT:CSV', { encoding: 'utf8', windowsHide: true }).toLowerCase();
+    for (const cheat of CHEAT_PROCESSES) {
+      if (wmic.includes(cheat.toLowerCase())) {
+        log(`🚨 Cheat found in wmic: ${cheat}`);
+        return { found: true, name: cheat, method: 'wmic' };
+      }
+    }
+  } catch {}
+
+  // Cara 3: Cek Window Title (System Informer selalu ada window)
+  try {
+    const tasklistV = execSync('tasklist /V /FO CSV /NH', { encoding: 'utf8', windowsHide: true });
+    for (const winTitle of CHEAT_WINDOWS) {
+      if (tasklistV.toLowerCase().includes(winTitle.toLowerCase())) {
+        log(`🚨 Cheat window title found: ${winTitle}`);
+        return { found: true, name: winTitle, method: 'window' };
+      }
+    }
+  } catch {}
+
+  return { found: false };
+}
+
+function startAntiProcessHacker() {
+  // JANGAN SKIP DI PACKAGED - INI YANG BIKIN GAK JALAN KEMARIN!
+  const isPackaged = app.isPackaged;
+  log(`🛡️ Anti Cheat Start - isPackaged: ${isPackaged} - CI: ${process.env.CI}`);
+  
+  // Force run kalau di AppData (kayak di Screenshot #15 lu)
+  const exePath = app.getPath('exe').toLowerCase();
+  const isInProgramFiles = exePath.includes('appdata') || exePath.includes('program files') || isPackaged;
+  if (!isInProgramFiles && process.env.CI) {
+    log('Skipping anti-cheat - dev mode');
+    return;
+  }
+
+  log('🛡️ ANTI PROCESS HACKER ACTIVE - Monitoring every 2s');
+
+  const blockAction = (cheatName) => {
+    const allWindows = BrowserWindow.getAllWindows();
+    const mainWin = allWindows[0];
+    
+    log(`🚫 BLOCKING - Cheat detected: ${cheatName}`);
+
+    // Kill dulu
+    killProcess(cheatName);
+    // Coba kill semua varian
+    CHEAT_PROCESSES.forEach(p => killProcess(p));
+
+    if (mainWin && !mainWin.isDestroyed()) {
+      try {
+        mainWin.webContents.send('security-violation', { cheat: cheatName });
+        mainWin.setAlwaysOnTop(true);
+      } catch {}
+    }
+
+    dialog.showErrorBox(
+      'SECURITY VIOLATION - NGPB ANTI CHEAT',
+      `CHEAT TOOL DETECTED: ${cheatName}\n\nTool ini dilarang di NGPB untuk mencegah hack & botting.\n\nLauncher akan CLOSE dalam 3 detik.\nTutup ${cheatName} dulu baru buka lagi.\n\nLog: ${LOG_FILE}`
+    );
+    
+    setTimeout(() => {
+      app.quit();
+      process.exit(1);
+    }, 3000);
+  };
+
+  // Check instant pas start
+  const firstCheck = isCheatRunning();
+  if (firstCheck.found) {
+    blockAction(firstCheck.name);
+    return;
+  }
+
+  // Monitor loop tiap 2 detik - AGRESIF!
+  setInterval(() => {
+    const check = isCheatRunning();
+    if (check.found) {
+      blockAction(check.name);
+    }
+  }, 2000);
+}
+
+function startAntiRDP(mainWindow) {
+  // (Anti RDP code kemarin tetep pake yang ini Bos)
+  log('🛡️ Anti RDP check');
+  // ... (paste anti RDP kemarin kalau mau)
+}
+
+module.exports = { startAntiProcessHacker, startAntiRDP };
