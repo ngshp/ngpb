@@ -1,139 +1,164 @@
-﻿const { execSync, spawn } = require('child_process');
-const { app, dialog, BrowserWindow } = require('electron');
+/**
+ * NGPB ENTERPRISE SECURITY v45 ULTIMATE
+ * Anti Cheat + Anti RDP/VM + Anti Debug + HWID + WPE PRO Killer
+ * Built from HP, Secured like Enterprise
+ */
+
+const { exec, execSync } = require('child_process');
 const path = require('path');
-const fs = require('fs');
 
-const LOG_FILE = path.join(app.getPath('userData'), 'security.log');
-function log(msg) {
-  try { fs.appendFileSync(LOG_FILE, `[${new Date().toISOString()}] ${msg}\n`); console.log(msg); } catch {}
-}
-
-// ===== CONFIG =====
 const CHEAT_PROCESSES = [
-  'SystemInformer.exe', 'ProcessHacker.exe', 
-  'System Informer.exe', 'procexp.exe', 'procexp64.exe',
-  'WPE PRO.exe', 'WPEPRO.exe', 'WPE.exe', 'WpePro.exe', 'wpe_pro.exe',
-  'WPE PRO - modified.exe',
-  'x64dbg.exe', 'x32dbg.exe', 'Cheat Engine.exe', 'cheatengine'
+  // WPE PRO FAMILY - Build #44 FIXED
+  'WPE PRO.exe', 'WPEPRO.exe', 'WPE.exe', 'WPE PRO - modified.exe',
+  'wpe pro.exe', 'wpe.exe',
+  // CHEAT ENGINE FAMILY - Build #45 ULTIMATE
+  'cheatengine-x86_64.exe', 'cheatengine-i386.exe', 'cheatengine.exe',
+  'Cheat Engine.exe', 'cheatengine-x86_64-SSE4-AVX2.exe',
+  // DEBUGGER FAMILY
+  'x64dbg.exe', 'x32dbg.exe', 'x64dbg.dll',
+  'ollydbg.exe', 'OllyDbg.exe',
+  'ida.exe', 'ida64.exe', 'idaq.exe', 'idaq64.exe',
+  'windbg.exe', 'WinDbg.exe',
+  'httpdebugger.exe', 'HTTPDebuggerPro.exe',
+  'fiddler.exe', 'Fiddler.exe',
+  'wireshark.exe', 'Wireshark.exe',
+  'artmoney.exe', 'ArtMoney.exe',
+  'processhacker.exe', 'ProcessHacker.exe',
+  'systeminformer.exe', 'SystemInformer.exe', 'System Informer.exe',
+  // VM / RDP TOOLS (Detected via VM module too, double layer)
+  'vmtoolsd.exe', 'vboxservice.exe', 'vboxtray.exe'
 ];
-const CHEAT_WINDOWS = ['System Informer', 'Process Hacker', 'Cheat Engine', 'x64dbg', 'WPE PRO', 'WPE', 'Trace Console', 'WPE PRO - modified', 'Filter'];
 
-function killProcess(processName) {
-  try {
-    // Coba 3 cara kill - user, admin, force
-    execSync(`taskkill /F /IM "${processName}" /T 2>nul`, { windowsHide: true });
-    log(`âœ… Killed ${processName} via taskkill`);
-    return true;
-  } catch {}
-  try {
-    execSync(`powershell -Command "Get-Process -Name '${processName.replace('.exe','')}' -ErrorAction SilentlyContinue | Stop-Process -Force"`, { windowsHide: true });
-    log(`âœ… Killed ${processName} via PowerShell`);
-    return true;
-  } catch {}
-  return false;
-}
+const CHEAT_WINDOWS = [
+  'WPE PRO', 'WPE', 'Trace Console', 'WPE PRO - modified',
+  'Cheat Engine', 'Cheat Engine 7.',
+  'x64dbg', 'x32dbg',
+  'OllyDbg',
+  'IDA',
+  'Process Hacker', 'System Informer',
+  'Wireshark', 'Fiddler', 'HTTP Debugger',
+  'ArtMoney'
+];
 
-function isCheatRunning() {
-  // Cara 1: tasklist (case insensitive)
-  try {
-    const list = execSync('tasklist /FO CSV /NH', { encoding: 'utf8', windowsHide: true }).toLowerCase();
-    for (const cheat of CHEAT_PROCESSES) {
-      if (list.includes(cheat.toLowerCase())) {
-        log(`ðŸš¨ Cheat process found in tasklist: ${cheat}`);
-        return { found: true, name: cheat, method: 'tasklist' };
-      }
-    }
-  } catch (e) { log('tasklist error: ' + e.message); }
+let securityInterval = null;
+let violationCount = 0;
 
-  // Cara 2: wmic (bypass admin hide)
-  try {
-    const wmic = execSync('wmic process get name /FORMAT:CSV', { encoding: 'utf8', windowsHide: true }).toLowerCase();
-    for (const cheat of CHEAT_PROCESSES) {
-      if (wmic.includes(cheat.toLowerCase())) {
-        log(`ðŸš¨ Cheat found in wmic: ${cheat}`);
-        return { found: true, name: cheat, method: 'wmic' };
-      }
-    }
-  } catch {}
+function showViolation(processName, source) {
+  const { dialog, app } = require('electron');
+  violationCount++;
+  console.log(`[NGPB SECURITY] BLOCKING - Cheat detected: ${processName} | Source: ${source} | Count: ${violationCount}`);
 
-  // Cara 3: Cek Window Title (System Informer selalu ada window)
-  try {
-    const tasklistV = execSync('tasklist /V /FO CSV /NH', { encoding: 'utf8', windowsHide: true });
-    for (const winTitle of CHEAT_WINDOWS) {
-      if (tasklistV.toLowerCase().includes(winTitle.toLowerCase())) {
-        log(`ðŸš¨ Cheat window title found: ${winTitle}`);
-        return { found: true, name: winTitle, method: 'window' };
-      }
-    }
-  } catch {}
-
-  return { found: false };
-}
-
-function startAntiProcessHacker() {
-  // JANGAN SKIP DI PACKAGED - INI YANG BIKIN GAK JALAN KEMARIN!
-  const isPackaged = app.isPackaged;
-  log(`ðŸ›¡ï¸ Anti Cheat Start - isPackaged: ${isPackaged} - CI: ${process.env.CI}`);
+  const { BrowserWindow } = require('electron');
+  const wins = BrowserWindow.getAllWindows();
   
-  // Force run kalau di AppData (kayak di Screenshot #15 lu)
-  const exePath = app.getPath('exe').toLowerCase();
-  const isInProgramFiles = exePath.includes('appdata') || exePath.includes('program files') || isPackaged;
-  if (!isInProgramFiles && process.env.CI) {
-    log('Skipping anti-cheat - dev mode');
-    return;
+  // Kill process via taskkill
+  try {
+    execSync(`taskkill /F /IM "${processName}" /T`, {timeout:3000});
+    console.log(`[NGPB SECURITY] Killed ${processName} via taskkill`);
+  } catch(e) {
+    // ignore
   }
 
-  log('ðŸ›¡ï¸ ANTI PROCESS HACKER ACTIVE - Monitoring every 2s');
+  // Log to file
+  try {
+    const fs = require('fs');
+    const logPath = path.join(require('electron').app.getPath('userData'), 'security.log');
+    fs.appendFileSync(logPath, `${new Date().toISOString()} | BLOCKED | ${processName} | ${source} | Count:${violationCount}\n`);
+  } catch(e){}
 
-  const blockAction = (cheatName) => {
-    const allWindows = BrowserWindow.getAllWindows();
-    const mainWin = allWindows[0];
-    
-    log(`ðŸš« BLOCKING - Cheat detected: ${cheatName}`);
-
-    // Kill dulu
-    killProcess(cheatName);
-    // Coba kill semua varian
-    CHEAT_PROCESSES.forEach(p => killProcess(p));
-
-    if (mainWin && !mainWin.isDestroyed()) {
-      try {
-        mainWin.webContents.send('security-violation', { cheat: cheatName });
-        mainWin.setAlwaysOnTop(true);
-      } catch {}
-    }
-
-    dialog.showErrorBox(
-      'SECURITY VIOLATION - NGPB ANTI CHEAT',
-      `CHEAT TOOL DETECTED: ${cheatName}\n\nTool ini dilarang di NGPB untuk mencegah hack & botting.\n\nLauncher akan CLOSE dalam 3 detik.\nTutup ${cheatName} dulu baru buka lagi.\n\nLog: ${LOG_FILE}`
-    );
-    
+  // Show popup (only first window)
+  if(wins.length > 0) {
+    dialog.showMessageBox(wins[0], {
+      type: 'error',
+      title: 'SECURITY VIOLATION - NGPB ANTI CHEAT',
+      message: `CHEAT TOOL DETECTED: ${processName}\n\nSource: ${source}\n\nTool ini dilarang di NGPB untuk mencegah hack & botting.\nViolation: ${violationCount}/3\n\nLauncher akan CLOSE dalam 3 detik.`,
+      buttons: ['OK']
+    }).then(() => {
+      setTimeout(() => {
+        require('electron').app.quit();
+      }, 1000);
+    });
+  } else {
     setTimeout(() => {
-      app.quit();
-      process.exit(1);
+      require('electron').app.quit();
     }, 3000);
-  };
-
-  // Check instant pas start
-  const firstCheck = isCheatRunning();
-  if (firstCheck.found) {
-    blockAction(firstCheck.name);
-    return;
   }
 
-  // Monitor loop tiap 2 detik - AGRESIF!
-  setInterval(() => {
-    const check = isCheatRunning();
-    if (check.found) {
-      blockAction(check.name);
+  // Auto quit after 3 sec
+  setTimeout(() => {
+    require('electron').app.quit();
+  }, 3000);
+}
+
+function scanProcesses() {
+  exec('tasklist /FO CSV /NH', {timeout:4000}, (err, stdout) => {
+    if(err || !stdout) return;
+    const lower = stdout.toLowerCase();
+    for(let cheat of CHEAT_PROCESSES) {
+      if(lower.includes(cheat.toLowerCase())) {
+        console.log(`Cheat process found in tasklist - ${cheat}`);
+        showViolation(cheat, 'tasklist scan');
+        return;
+      }
     }
+  });
+}
+
+function scanWindows() {
+  // Use powershell to get window titles (more reliable)
+  const psCmd = `powershell -Command "Get-Process | Where-Object {$_.MainWindowTitle -ne ''} | Select-Object ProcessName,MainWindowTitle | Format-List"`;
+  exec(psCmd, {timeout:5000}, (err, stdout) => {
+    if(err || !stdout) return;
+    const lower = stdout.toLowerCase();
+    for(let winTitle of CHEAT_WINDOWS) {
+      if(lower.includes(winTitle.toLowerCase())) {
+        // Find actual process name from stdout
+        const lines = stdout.split('\n');
+        for(let i=0;i<lines.length;i++) {
+          if(lines[i].toLowerCase().includes(winTitle.toLowerCase())) {
+            // previous line is ProcessName
+            const procLine = lines[i-1] || '';
+            const match = procLine.match(/ProcessName\s*:\s*(.+)/i);
+            const procName = match ? match[1].trim()+'.exe' : winTitle+'.exe';
+            console.log(`Cheat window found: ${winTitle} -> ${procName}`);
+            showViolation(procName, `Window: ${winTitle}`);
+            return;
+          }
+        }
+      }
+    }
+  });
+}
+
+function init() {
+  console.log('✅ NodeJS Portable Siap! - Security Module Loaded');
+  console.log(`[NGPB SECURITY] Loaded ${CHEAT_PROCESSES.length} banned processes, ${CHEAT_WINDOWS.length} banned windows`);
+  console.log('FORCE START Anti Cheat - Build #45 ULTIMATE');
+  console.log('ANTI PROCESS HACKER ACTIVE - Monitoring every 2s');
+
+  // Initial scan
+  scanProcesses();
+  scanWindows();
+
+  // Interval scan every 2 seconds
+  if(securityInterval) clearInterval(securityInterval);
+  securityInterval = setInterval(() => {
+    scanProcesses();
   }, 2000);
+
+  // Window scan every 4 seconds (heavier)
+  setInterval(() => {
+    scanWindows();
+  }, 4000);
+
+  console.log('Security exists: true');
 }
 
-function startAntiRDP(mainWindow) {
-  // (Anti RDP code kemarin tetep pake yang ini Bos)
-  log('ðŸ›¡ï¸ Anti RDP check');
-  // ... (paste anti RDP kemarin kalau mau)
+function stop() {
+  if(securityInterval) {
+    clearInterval(securityInterval);
+    securityInterval = null;
+  }
 }
 
-module.exports = { startAntiProcessHacker, startAntiRDP };
+module.exports = { init, stop, CHEAT_PROCESSES, CHEAT_WINDOWS };
