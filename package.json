@@ -29,17 +29,23 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "assets/icon.ico",
       "certificateSubjectName": "NGPB Team",
       "verifyUpdateCodeSignature": false,
-      "signingHashAlgorithms": ["sha256"],
+      "signingHashAlgorithms": [
+        "sha256"
+      ],
       "publisherName": "NGPB Team"
     },
     "nsis": {
@@ -63,9 +69,9 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "discord-rpc": "^4.0.1",
     "electron-log": "^5.0.1",
-    "electron-updater": "^6.3.9",
-    "discord-rpc": "^4.0.1"
+    "electron-updater": "^6.1.7"
   },
   "devDependencies": {
     "electron": "^28.3",
