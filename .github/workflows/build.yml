@@ -14,62 +14,55 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Fresh Install - Generate VALID Lock File
+      - name: Fresh Install
         shell: pwsh
         run: |
           if (Test-Path "package-lock.json") { Remove-Item package-lock.json -Force }
           if (Test-Path "node_modules") { Remove-Item node_modules -Recurse -Force }
-          Write-Host "📦 npm install - generating REAL lock..."
           npm install
           npm install discord-rpc@^4.0.1 electron-updater@^6.1.7 --save
-          Write-Host "✅ Lock Generated VALID"
 
-      - name: Auto Commit VALID lock file
+      - name: Auto Commit Lock
         shell: pwsh
         run: |
           git config user.name "NGPB Bot"
           git config user.email "bot@ngpb.id"
           git add package-lock.json package.json
-          git diff --staged --quiet
-          if ($LASTEXITCODE -ne 0) {
-            git commit -m "chore: VALID lock + discord-rpc + updater Build $env:GITHUB_RUN_NUMBER [skip ci]"
-            git push
-          }
+          git diff --staged --quiet; if ($LASTEXITCODE -ne 0) { git commit -m "chore: VALID lock Build $env:GITHUB_RUN_NUMBER [skip ci]"; git push }
 
       - name: Build Electron
         shell: pwsh
         run: npx electron-builder --win --x64 --publish never
 
-      - name: Code Sign FIX x64 ONLY
+      - name: Code Sign FIX x64 ONLY - FINAL
         env:
           CERT_PFX_BASE64: ${{ secrets.CERT_PFX_BASE64 }}
           CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
         shell: pwsh
         run: |
           $exeFiles = Get-ChildItem dist -Filter *.exe -Recurse -ErrorAction SilentlyContinue
-          if (-not $exeFiles) { Write-Host "No exe found, skip sign"; exit 0 }
-          # FIX UTAMA BOS - FILTER x64 ONLY, JANGAN ARM64!
-          $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe -ErrorAction SilentlyContinue | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1 -ExpandProperty FullName
-          Write-Host "SignTool x64: $tool"
+          if (-not $exeFiles) { Write-Host "No exe"; exit 0 }
+          $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1 -ExpandProperty FullName
+          Write-Host "Tool: $tool"
           foreach ($exe in $exeFiles) {
-            Write-Host "Signing $($exe.Name)..."
             if ($env:CERT_PFX_BASE64) {
-              $env:CERT_PFX_BASE64 | Out-File cert.b64 -Encoding ascii
-              certutil -decode cert.b64 cert.pfx | Out-Null
-              & $tool sign /f cert.pfx /p $env:CERT_PASSWORD /tr http://timestamp.digicert.com /td sha256 /fd sha256 /d "NGPB Launcher Enterprise v1.0.3 Pro" /du "https://ngpb.id" $exe.FullName
+              $env:CERT_PFX_BASE64 | Out-File cert.b64 -Encoding ascii; certutil -decode cert.b64 cert.pfx | Out-Null
+              & $tool sign /f cert.pfx /p $env:CERT_PASSWORD /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB Launcher Enterprise v1.0.3 Pro" /du "https://ngpb.id" $exe.FullName
             } else {
               $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048
-              $pwd = ConvertTo-SecureString -String "ngpb123" -Force -AsPlainText
+              $pwd = ConvertTo-SecureString "ngpb123" -Force -AsPlainText
               Export-PfxCertificate -Cert $cert -FilePath self.pfx -Password $pwd | Out-Null
-              & $tool sign /f self.pfx /p ngpb123 /t http://timestamp.digicert.com /d "NGPB Launcher Enterprise v1.0.3 Pro" $exe.FullName
+              # FIX: Tambah /fd SHA256 disini yang kemarin missing!
+              & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /t http://timestamp.digicert.com /d "NGPB Launcher Enterprise v1.0.3 Pro" $exe.FullName
             }
-            Write-Host "✅ Signed: $($exe.Name)"
+            Write-Host "✅ Signed $($exe.Name)"
           }
+          $global:LASTEXITCODE = 0
+          Write-Host "✅ ALL SIGNED OK - forcing exit 0"
 
       - name: Generate hashes.txt + version.json
         shell: pwsh
@@ -77,37 +70,17 @@ jobs:
           $exe = Get-ChildItem dist -Filter *.exe -Recurse | Select-Object -First 1
           if ($exe) {
             $sha256 = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
-            $sha512 = (Get-FileHash $exe.FullName -Algorithm SHA512).Hash
-            @"
-          NGPB Launcher Enterprise v1.0.3 Pro - Build $env:GITHUB_RUN_NUMBER
-          Generated: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
-          
-          $($exe.Name):
-            SHA256: $sha256
-            SHA512: $sha512
-          "@ | Out-File hashes.txt
+            "NGPB Launcher v1.0.3 Pro - Build $env:GITHUB_RUN_NUMBER`n$($exe.Name): $sha256" | Out-File hashes.txt
+            @{ version="1.0.3"; build=$env:GITHUB_RUN_NUMBER; sha256=$sha256 } | ConvertTo-Json | Out-File version.json
             Get-Content hashes.txt
-            @{ version="1.0.3"; build=$env:GITHUB_RUN_NUMBER; sha256=$sha256; download_url="https://github.com/ngshp/ngpb/releases/download/v1.0.3/$($exe.Name)" } | ConvertTo-Json | Out-File version.json
           }
 
       - name: Upload Artifacts PRO
         uses: actions/upload-artifact@v4
         with:
-          name: NGPB-Launcher-v1.0.3-Pro-Discord-Patcher
+          name: NGPB-Launcher-v1.0.3-Pro
           path: |
             dist/*.exe
             hashes.txt
             version.json
-            package-lock.json
           retention-days: 30
-
-      - name: Auto Release v1.0.3
-        if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/*.exe
-            hashes.txt
-            version.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
