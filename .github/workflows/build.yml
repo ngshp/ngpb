@@ -1,109 +1,66 @@
 name: NGPB Launcher Enterprise Build
-
 on:
   push:
     branches: [main]
-    tags: ['v*']
   workflow_dispatch:
-
 permissions:
   contents: write
-
 jobs:
   build:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Fresh Install - ANTI FAIL v1.0.3
+      - name: Clean & Install
         shell: pwsh
         run: |
+          Write-Host "Cleaning..."
+          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force; Write-Host "✅ Deleted junk assets/p" }
           if (Test-Path "package-lock.json") { Remove-Item package-lock.json -Force }
           if (Test-Path "node_modules") { Remove-Item node_modules -Recurse -Force }
-          npm cache clean --force
           npm install --no-audit --no-fund
+          Write-Host "Files:"
+          Get-ChildItem -Name
+          Get-ChildItem assets -Name
 
-      - name: Build Electron - NO AUTO SIGN
+      - name: Build Electron - MUST SUCCESS
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
-          CSC_LINK: ""
-          WIN_CSC_LINK: ""
         shell: pwsh
         run: |
-          Write-Host "🔨 Building WITHOUT auto code sign..."
-          npx electron-builder --win --x64 --publish never --config.win.sign=null
-          if ($LASTEXITCODE -ne 0) { Write-Host "Build failed but trying to continue..."; $global:LASTEXITCODE = 0 }
+          Write-Host "🔨 Building - will FAIL if error (no fake green)!"
+          npx electron-builder --win --x64 --publish never --loglevel=info
+          Write-Host "📂 dist content:"
+          Get-ChildItem dist -Recurse | Format-Table Name, Length
 
-      - name: Code Sign FIX x64 ONLY - FINAL
-        env:
-          CERT_PFX_BASE64: ${{ secrets.CERT_PFX_BASE64 }}
-          CERT_PASSWORD: ${{ secrets.CERT_PASSWORD }}
+      - name: Sign NGPB Team
         shell: pwsh
         run: |
-          $exeFiles = Get-ChildItem dist -Filter *.exe -Recurse -ErrorAction SilentlyContinue
-          if (-not $exeFiles) { Write-Host "❌ No exe found in dist/"; Get-ChildItem dist -Recurse; exit 0 }
-
-          $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1 -ExpandProperty FullName
-          if (-not $tool) { $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Select-Object -First 1 -ExpandProperty FullName }
-          Write-Host "🔧 SignTool: $tool"
-
-          foreach ($exe in $exeFiles) {
-            Write-Host "🔏 Signing $($exe.Name)..."
-            try {
-              if ($env:CERT_PFX_BASE64 -and $env:CERT_PFX_BASE64.Length -gt 100) {
-                Write-Host "Using OV Cert from Secrets"
-                $env:CERT_PFX_BASE64 | Out-File cert.b64 -Encoding ascii
-                certutil -decode cert.b64 cert.pfx | Out-Null
-                & $tool sign /f cert.pfx /p $env:CERT_PASSWORD /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB Launcher Enterprise v1.0.3 Pro" /du "https://ngpb.id" $exe.FullName
-                Remove-Item cert.b64, cert.pfx -Force -ErrorAction SilentlyContinue
-              } else {
-                Write-Host "Using Self-Signed NGPB Team Cert"
-                $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048 -KeyUsage DigitalSignature
-                $pwd = ConvertTo-SecureString "ngpb123" -Force -AsPlainText
-                Export-PfxCertificate -Cert $cert -FilePath self.pfx -Password $pwd | Out-Null
-                & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB Launcher Enterprise v1.0.3 Pro - Anti Process Hacker" /du "https://ngpb.id" $exe.FullName
-                Remove-Item self.pfx -Force -ErrorAction SilentlyContinue
-                Remove-Item Cert:\CurrentUser\My\$($cert.Thumbprint) -Force -ErrorAction SilentlyContinue
-              }
-              Write-Host "✅ Signed $($exe.Name)"
-            } catch {
-              Write-Host "⚠️ Sign failed for $($exe.Name): $_ - continuing"
-            }
-          }
-          Write-Host "✅ ALL SIGNED OK"
-          $global:LASTEXITCODE = 0
-
-      - name: Generate hashes.txt + version.json
-        shell: pwsh
-        run: |
-          $exe = Get-ChildItem dist -Filter *.exe -Recurse | Select-Object -First 1
-          if ($exe) {
-            $sha256 = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
-            $sha512 = (Get-FileHash $exe.FullName -Algorithm SHA512).Hash
-            @"
-          NGPB Launcher Enterprise v1.0.3 Pro - Anti Process Hacker
-          Build: $env:GITHUB_RUN_NUMBER
-          Date: $(Get-Date -Format "yyyy-MM-dd HH:mm")
-          File: $($exe.Name)
-          SHA256: $sha256
-          SHA512: $sha512
-          Features: Draggable + SingleInstance + Anti Process Hacker + Code Signed
-          "@ | Out-File hashes.txt -Encoding utf8
-            @{
-              version="1.0.3"
-              build=$env:GITHUB_RUN_NUMBER
-              sha256=$sha256
-              sha512=$sha512
-              features=@{ anti_process_hacker=$true; draggable=$true; code_signed=$true }
-            } | ConvertTo-Json | Out-File version.json -Encoding utf8
-            Get-Content hashes.txt
+          $tool = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Select -First 1).FullName
+          Write-Host "Tool: $tool"
+          Get-ChildItem dist -Filter *.exe -Recurse | ForEach-Object {
+            $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5) -KeyAlgorithm RSA -KeyLength 2048
+            $pwd = ConvertTo-SecureString "ngpb123" -Force -AsPlainText
+            Export-PfxCertificate -Cert $cert -FilePath self.pfx -Password $pwd | Out-Null
+            & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v1.0.3 Anti Process Hacker" $_.FullName
+            Remove-Item self.pfx -Force -ErrorAction SilentlyContinue
+            Write-Host "✅ Signed $($_.Name)"
           }
 
-      - name: Upload Artifacts PRO
+      - name: Hash
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem dist -Filter *.exe -Recurse | Select -First 1
+          if (-not $exe) { Write-Host "❌ STILL NO EXE!"; Get-ChildItem dist -Recurse; exit 1 }
+          $hash = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
+          "$($exe.Name) $hash" | Out-File hashes.txt
+          "{""version"":""1.0.3"",""sha256"":""$hash""}" | Out-File version.json
+          Write-Host "✅ EXE SIZE: $([math]::Round($exe.Length/1MB,1)) MB"
+
+      - name: Upload 150MB
         uses: actions/upload-artifact@v4
         with:
           name: NGPB-Launcher-v1.0.3-Pro
@@ -111,4 +68,3 @@ jobs:
             dist/*.exe
             hashes.txt
             version.json
-          retention-days: 30
