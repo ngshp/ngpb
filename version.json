@@ -1,0 +1,28 @@
+{
+  "version": "1.0.2",
+  "name": "NGPB Launcher Enterprise",
+  "latest": "1.0.2",
+  "download_url": "https://github.com/ngshp/ngpb/releases/latest/download/NGPB_Launcher_Setup_1.0.2_Enterprise.exe",
+  "checksum": "",
+  "checksum_sha256": "",
+  "checksum_sha512": "",
+  "size": "",
+  "release_notes": "Enterprise Security + Banner System Active",
+  "banners": [
+    {
+      "id": "event1",
+      "type": "event",
+      "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP!",
+      "cta": "Login sekarang!",
+      "enabled": true
+    },
+    {
+      "id": "info1",
+      "type": "info",
+      "message": "🛡️ Enterprise Security Active",
+      "cta": "SHA-512 Verified",
+      "enabled": true
+    }
+  ],
+  "force_update": false
+}
