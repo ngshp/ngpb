@@ -4,8 +4,6 @@ on:
   push:
     branches: [ main, master ]
     tags: [ 'v*' ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -13,14 +11,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        cache: 'npm'
+        # cache: 'npm' <-- HAPUS BARIS INI, ini penyebab error!
 
     - name: Install dependencies
       run: npm install
@@ -37,19 +34,14 @@ jobs:
         if ($exe) {
           $sha256 = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash.ToLower()
           $sha512 = (Get-FileHash $exe.FullName -Algorithm SHA512).Hash.ToLower()
-          $size = [math]::Round($exe.Length / 1GB, 2)
-          Write-Host "File: $($exe.Name)"
-          Write-Host "Size: $size GB"
+          $size = [math]::Round($exe.Length / 1MB, 2)
           Write-Host "SHA-256: $sha256"
-          Write-Host "SHA-512: $sha512"
-          "SHA256=$sha256" | Out-File -FilePath dist/hashes.txt -Encoding utf8
-          "SHA512=$sha512" | Out-File -FilePath dist/hashes.txt -Append -Encoding utf8
-          "SIZE=$size" | Out-File -FilePath dist/hashes.txt -Append -Encoding utf8
+          "SHA256=$sha256" | Out-File dist/hashes.txt
           $ver = Get-Content version.json | ConvertFrom-Json
           $ver.checksum = $sha256
           $ver.checksum_sha256 = $sha256
           $ver.checksum_sha512 = $sha512
-          $ver.size = "$size GB"
+          $ver.size = "$size MB"
           $ver | ConvertTo-Json -Depth 10 | Set-Content version.json
         }
 
@@ -59,30 +51,5 @@ jobs:
         name: NGPB-Launcher-Enterprise-Windows
         path: |
           dist/*.exe
-          dist/*.yml
           version.json
-          dist/hashes.txt
         retention-days: 30
-
-    - name: Create Release (on tag)
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: softprops/action-gh-release@v1
-      with:
-        files: |
-          dist/*.exe
-          version.json
-        body: |
-          ## NGPB Launcher Enterprise ${{ github.ref_name }}
-
-          ### 🛡️ Enterprise Security
-          - ✅ SHA-256 + SHA-512 Dual Verification
-          - ✅ Anti WPE Pro / Process Hacker / Cheat Engine
-          - ✅ Anti Debugger / Bypass / Injection
-          - ✅ Device Binding + AES-256 + Code Signed
-
-          ### 📥 Download
-          - Setup.exe - Installer
-          - Portable.exe - For warnet
-
-          ### 🔒 Verification
-          Check hashes in version.json
