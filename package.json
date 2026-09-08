@@ -1,20 +1,16 @@
 {
   "name": "ngpb-launcher-enterprise-pro",
   "version": "1.0.3",
-  "description": "NGPB Launcher Enterprise Pro - Discord RPC + AutoPatcher + Signed x64 + Security v3",
+  "description": "NGPB Launcher Enterprise Pro - Anti Process Hacker + Draggable",
   "main": "main.js",
-  "homepage": "./",
-  "author": "NGPB Team <support@ngpb.id>",
+  "author": "NGPB Team",
   "license": "MIT",
   "private": true,
   "build": {
     "appId": "id.ngpb.launcher.enterprise",
     "productName": "NGPB Launcher Enterprise",
-    "copyright": "Copyright © 2026 NGPB Launcher",
     "asar": true,
-    "directories": {
-      "output": "dist"
-    },
+    "directories": { "output": "dist" },
     "files": [
       "main.js",
       "preload.js",
@@ -27,35 +23,17 @@
     ],
     "win": {
       "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        }
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
       ],
       "icon": "assets/icon.ico",
-      "certificateSubjectName": "NGPB Team",
-      "verifyUpdateCodeSignature": false,
-      "signingHashAlgorithms": [
-        "sha256"
-      ],
-      "publisherName": "NGPB Team"
+      "sign": null
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "artifactName": "NGPB_Launcher_Setup_${version}_Enterprise.exe",
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico"
+      "artifactName": "NGPB_Launcher_Setup_${version}_Enterprise.exe"
     },
     "portable": {
       "artifactName": "NGPB_Launcher_Portable_${version}_Enterprise.exe"
@@ -63,15 +41,13 @@
   },
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev",
     "build": "electron-builder --win --x64",
-    "build:win": "electron-builder --win --x64 --publish never",
-    "postinstall": "electron-builder install-app-deps"
+    "build:win": "electron-builder --win --x64 --publish never"
   },
   "dependencies": {
-    "discord-rpc": "^4.0.1",
     "electron-log": "^5.0.1",
-    "electron-updater": "^6.1.7"
+    "electron-updater": "^6.3.9",
+    "discord-rpc": "^4.0.1"
   },
   "devDependencies": {
     "electron": "^28.3",
