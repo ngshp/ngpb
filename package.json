@@ -73,11 +73,9 @@
       "createStartMenuShortcut": true,
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
-      "installerHeaderIcon": "assets/icon.ico",
       "shortcutName": "NG PB Launcher",
-      "uninstallerDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate - Secure Launcher - 45MB",
+      "uninstallDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate",
       "displayLanguageSelector": false,
-      "include": "installer.nsh",
       "warningsAsErrors": false
     },
     "publish": [
