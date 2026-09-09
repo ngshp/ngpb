@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 NGPB Team - Nusa Game Public Batch
+Copyright (c) 2026 NGPB Team - Nusa Game Public Batch - v1.0.53.3 WAF Extreme Ultimate - Secure Launcher
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,12 +22,8 @@ SOFTWARE.
 
 ---
 
-Enterprise Security Notice:
-- Anti-Cheat Engine v3.0 proprietary detection logic is excluded from open source grant
-- Device Binding + AES-256 implementation remains property of NGPB Team
-- Use of launcher for cheating/hacking violates ToS and will result in ban
+Enterprise Security Notice - v1.0.53.3 WAF Extreme Ultimate - Secure Launcher - 77.2 MB - Success 1m 43s:
 
-NGPB Launcher Enterprise v1.0.2 - Banner Edition
-Built from HP, Secured like Enterprise
-https://github.com/ngshp/ngpb
-https://ngpb.id
+- Anti-Cheat Engine v53.3 WAF Extreme Ultimate proprietary detection logic is excluded from open source grant
+- WAF Extreme Logic: Whitelist Hostname Only (lr.nhg.one, ue.nhg.one, dd.nhg.one, pa.nhg.one, ce.nhg.one, se.nhg.one, panel-admin.nhg.one) + Method Filter GET Only + HTTP Version Filter + UA Hard Filter + Bot Block remains property of NGPB Team
+- Anti RDP/Emulator/Cloud Detection: Anti RDP mstsc,rdpclip,TermService,TeamViewer,AnyDesk + Anti Emulator QEMU,LDPlayer,Nox,BlueStacks,MEmu,Virtual CPU/BIOS/Disk + Anti Cloud AWS,Azure,GCP,Vultr,DO,Linode + No Battery
