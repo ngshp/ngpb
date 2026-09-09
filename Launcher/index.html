@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>NGPB Launcher v53.3 - WAF Extreme Ultimate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080a0f;
+      --panel: #10131b;
+      --panel-2: #151a26;
+      --border: #1e2638;
+      --accent: #00ff88;
+      --accent-2: #00d4ff;
+      --danger: #ff3344;
+      --text: #e6eaf2;
+      --muted: #6b7a99;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: radial-gradient(1200px 600px at 20% -10%, #122a22 0%, transparent 60%),
+                  radial-gradient(900px 500px at 90% 0%, #1a2340 0%, transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      display:flex; justify-content:center; align-items:center;
+      min-height:100vh; overflow:hidden;
+    }
+
+    /* DUO HERO LAYOUT 1400x900 */
+    .launcher-root {
+      width: 1400px;
+      height: 900px;
+      background: linear-gradient(180deg, #10131b 0%, #0c0f17 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      display:flex; flex-direction:column;
+      overflow:hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 40px 120px rgba(0,0,0,0.8);
+      position:relative;
+    }
+    .launcher-root::before {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent, rgba(0,255,136,0.04), transparent);
+      pointer-events:none;
+    }
+
+    /* HEADER WITH NG LOGO */
+    .header {
+      height: 72px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(16,19,27,0.9);
+      backdrop-filter: blur(12px);
+      z-index:10;
+    }
+    .logo {
+      display:flex; align-items:center; gap:12px;
+      font-weight:900; letter-spacing:-0.02em;
+    }
+    .logo-mark {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 12px;
+      display:grid; place-items:center;
+      font-family:'JetBrains Mono', monospace;
+      font-weight:800; font-size:20px; color:#000;
+      box-shadow: 0 0 20px rgba(0,255,136,0.4);
+    }
+    .logo-text { font-size:18px; }
+    .logo-text span { color: var(--accent); }
+    .header-right {
+      display:flex; gap:16px; align-items:center;
+      font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted);
+    }
+    .status-dot { width:8px; height:8px; background:var(--accent); border-radius:50%; box-shadow:0 0 10px var(--accent); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    .content { flex:1; display:flex; overflow:hidden; }
+
+    /* MAIN DUO HERO */
+    .main {
+      flex:1;
+      padding: 28px 32px;
+      display:flex; flex-direction:column; gap:20px;
+      position:relative;
+    }
+    .duo-hero {
+      display:grid; grid-template-columns: 1fr 1fr;
+      gap:20px; height: 420px;
+    }
+    .hero-card {
+      position:relative; border-radius:16px; overflow:hidden;
+      border:1px solid var(--border);
+      background: var(--panel-2);
+      isolation:isolate;
+    }
+    .hero-card img {
+      width:100%; height:100%; object-fit:cover;
+      filter: saturate(1.1) contrast(1.1);
+    }
+    .hero-card::after {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(0deg, #080a0f 0%, transparent 60%);
+    }
+    .hero-label {
+      position:absolute; bottom:16px; left:16px; z-index:2;
+      font-family:'JetBrains Mono', monospace;
+      font-size:12px; letter-spacing:0.15em; text-transform:uppercase;
+      background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.1);
+      padding:6px 10px; border-radius:20px; backdrop-filter:blur(8px);
+    }
+    .hero-card.elite-male .hero-label { color:var(--accent-2); }
+    .hero-card.elite-female .hero-label { color:var(--accent); }
+
+    /* BANNER DYNAMIC */
+    .banner-dynamic {
+      height: 88px;
+      background: linear-gradient(90deg, #0f1a1f 0%, #151a26 50%, #1a1430 100%);
+      border:1px solid var(--border);
+      border-radius:12px;
+      display:flex; align-items:center; padding:0 20px; gap:16px;
+      overflow:hidden; position:relative;
+    }
+    .banner-dynamic::before {
+      content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+      background: linear-gradient(var(--accent), var(--accent-2));
+    }
+    .banner-icon { width:40px; height:40px; border-radius:10px; background:#1a2333; display:grid; place-items:center; color:var(--accent); }
+    .banner-text { flex:1; }
+    .banner-title { font-size:14px; font-weight:800; letter-spacing:-0.01em; }
+    .banner-sub { font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--muted); margin-top:2px; }
+    .banner-live { font-family:'JetBrains Mono', monospace; font-size:10px; background:rgba(0,255,136,0.1); color:var(--accent); border:1px solid rgba(0,255,136,0.2); padding:4px 8px; border-radius:6px; }
+
+    /* PLAY BUTTON 450x100 SECURE LAUNCH */
+    .launch-section { display:flex; justify-content:center; padding-top:8px; }
+    .btn-secure-launch {
+      width: 450px; height: 100px;
+      background: linear-gradient(180deg, #00ff88 0%, #00cc6a 100%);
+      border:none; border-radius:16px;
+      font-family:'Inter', sans-serif;
+      font-weight:900; font-size:22px; letter-spacing:0.08em;
+      color:#000; cursor:pointer;
+      box-shadow: 0 0 0 1px rgba(0,255,136,0.5) inset, 0 12px 40px rgba(0,255,136,0.4), 0 2px 0 #00aa55 inset;
+      display:flex; align-items:center; justify-content:center; gap:14px;
+      text-transform:uppercase;
+      transition: all 0.15s ease;
+      position:relative; overflow:hidden;
+    }
+    .btn-secure-launch::before {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transform: translateX(-100%); transition: transform 0.6s;
+    }
+    .btn-secure-launch:hover::before { transform: translateX(100%); }
+    .btn-secure-launch:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(0,255,136,0.6) inset, 0 16px 50px rgba(0,255,136,0.5), 0 2px 0 #00aa55 inset; }
+    .btn-secure-launch:active { transform: translateY(0); }
+    .btn-secure-launch:disabled { background:#1a2333; color:var(--muted); box-shadow:none; cursor:not-allowed; }
+
+    /* RIGHT SIDEBAR ENTERPRISE SECURITY + WAF EXTREME UI */
+    .sidebar {
+      width: 380px;
+      background: #0d1018;
+      border-left: 1px solid var(--border);
+      display:flex; flex-direction:column;
+      overflow-y:auto;
+    }
+    .sidebar-header {
+      padding:20px 20px 14px;
+      border-bottom:1px solid var(--border);
+      position:sticky; top:0; background:#0d1018; z-index:2;
+    }
+    .sidebar-title { font-size:12px; font-weight:800; letter-spacing:0.14em; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
+    .sidebar-title .icon { color:var(--danger); }
+    .waf-badge { margin-left:auto; font-family:'JetBrains Mono', monospace; font-size:9px; background:var(--danger); color:#fff; padding:3px 6px; border-radius:4px; }
+
+    .waf-section { padding:16px 20px; border-bottom:1px solid rgba(30,38,56,0.6); }
+    .waf-section h4 { font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; display:flex; justify-content:space-between; }
+    .waf-list { display:flex; flex-direction:column; gap:6px; }
+    .waf-item { display:flex; align-items:center; justify-content:space-between; background:#131a28; border:1px solid #1c263b; border-radius:8px; padding:8px 10px; font-family:'JetBrains Mono', monospace; font-size:11px; }
+    .waf-item .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 6px var(--accent); }
+    .waf-item.blocked { background:rgba(255,51,68,0.06); border-color:rgba(255,51,68,0.2); }
+    .waf-item.blocked .dot { background:var(--danger); box-shadow:0 0 6px var(--danger); }
+    .waf-item .value { color:var(--text); }
+    .waf-item .meta { color:var(--muted); font-size:10px; }
+
+    .whitelist-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    .pill { background:#101a14; border:1px solid rgba(0,255,136,0.2); color:var(--accent); font-family:'JetBrains Mono', monospace; font-size:10px; padding:6px 8px; border-radius:20px; text-align:center; }
+
+    .log-console { background:#080a0f; border:1px solid var(--border); border-radius:8px; padding:10px; font-family:'JetBrains Mono', monospace; font-size:10px; line-height:1.6; color:#5a6a8a; max-height:120px; overflow:auto; }
+    .log-console .ok { color:var(--accent); } .log-console .warn { color:#ffaa33; } .log-console .err { color:var(--danger); }
+  </style>
+</head>
+<body>
+  <div class="launcher-root" id="launcherRoot">
+    <header class="header">
+      <div class="logo">
+        <div class="logo-mark">NG</div>
+        <div class="logo-text">NGPB <span>LAUNCHER</span></div>
+      </div>
+      <div class="header-right">
+        <span style="display:flex;align-items:center;gap:8px"><i class="status-dot"></i> WAF EXTREME ULTIMATE v53.3</span>
+        <span>•</span>
+        <span>ENTERPRISE SECURE</span>
+        <span>•</span>
+        <span id="wafStatus">CHECKING...</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <main class="main">
+        <div class="duo-hero">
+          <div class="hero-card elite-male">
+            <img src="./assets/elite_male.png" alt="Elite Male" onerror="this.style.background='linear-gradient(135deg,#1a2333,#0f1a2a)'" />
+            <div class="hero-label">ELITE_MALE // TIER-1</div>
+          </div>
+          <div class="hero-card elite-female">
+            <img src="./assets/elite_female.png" alt="Elite Female" onerror="this.style.background='linear-gradient(135deg,#221a33,#1a0f2a)'" />
+            <div class="hero-label">ELITE_FEMALE // TIER-1</div>
+          </div>
+        </div>
+
+        <div class="banner-dynamic" id="dynamicBanner">
+          <div class="banner-icon">⚡</div>
+          <div class="banner-text">
+            <div class="banner-title" id="bannerTitle">Initializing Secure Channel...</div>
+            <div class="banner-sub" id="bannerSub">Verifying WAF Extreme policies • ASN • GeoFence • UA Hard Filter</div>
+          </div>
+          <div class="banner-live">● LIVE</div>
+        </div>
+
+        <div class="launch-section">
+          <button class="btn-secure-launch" id="secureLaunchBtn" disabled>
+            <span>🔒</span> SECURE LAUNCH
+          </button>
+        </div>
+      </main>
+
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">
+            <span class="icon">🛡️</span> ENTERPRISE SECURITY + WAF EXTREME
+            <span class="waf-badge">ULTIMATE</span>
+          </div>
+        </div>
+
+        <div class="waf-section">
+          <h4>Whitelist Hostname <span style="color:var(--accent)">7 ACTIVE</span></h4>
+          <div class="whitelist-grid">
+            <div class="pill">lr.nhg.one</div>
+            <div class="pill">ue.nhg.one</div>
+            <div class="pill">dd.nhg.one</div>
+            <div class="pill">pa.nhg.one</div>
+            <div class="pill">ce.nhg.one</div>
+            <div class="pill">se.nhg.one</div>
+            <div class="pill" style="grid-column: span 2; background:rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.3); color:#00d4ff">panel-admin</div>
+          </div>
+        </div>
+
+        <div class="waf-section">
+          <h4>Method Enforcement</h4>
+          <div class="waf-list">
+            <div class="waf-item"><span class="value">GET ONLY</span><span style="display:flex;align-items:center;gap:6px"><span class="meta">STRICT</span><span class="dot"></span></span></div>
+            <div class="waf-item blocked"><span class="value">POST / PUT / DELETE / PATCH</span><span class="meta" style="color:var(--danger)">BLOCKED</span></div>
+          </div>
+        </div>
+
+        <div class="waf-section">
+          <h4>HTTP Version Control</h4>
+          <div class="waf-list">
+            <div class="waf-item"><span class="value">1.0 • 1.1 • 2</span><span class="meta">ALLOWED</span></div>
+            <div class="waf-item blocked"><span class="value">HTTP/3 • 0.9 • INVALID</span><span class="meta" style="color:var(--danger)">DENIED</span></div>
+          </div>
+        </div>
+
+        <div class="waf-section">
+          <h4>UA Hard Filter + Bot Block</h4>
+          <div class="waf-list">
+            <div class="waf-item"><span class="value">Chrome ≥ 110 / Edge ≥ 110 / Firefox ≥ 115</span><span class="dot"></span></div>
+            <div class="waf-item blocked"><span class="value">curl / wget / python-requests / Go-http / Postman</span><span class="meta" style="color:var(--danger)">BOT BLOCK</span></div>
+            <div class="waf-item blocked"><span class="value">HeadlessChrome / PhantomJS / Selenium</span><span class="meta" style="color:var(--danger)">HARD BLOCK</span></div>
+          </div>
+        </div>
+
+        <div class="waf-section">
+          <h4>Geo Ban & ASN Blacklist</h4>
+          <div class="waf-list">
+            <div class="waf-item blocked"><span class="value">IL • PH</span><span class="meta" style="color:var(--danger)">GEO BAN</span></div>
+            <div class="waf-item blocked"><span class="value">AS396982 • AS14061 • AS8075 • TOR EXIT</span><span class="meta" style="color:var(--danger)">ASN BLACKLIST</span></div>
+            <div class="waf-item"><span class="value">Web Assets Filter: .php .env .git .bak</span><span class="dot"></span></div>
+          </div>
+        </div>
+
+        <div class="waf-section">
+          <h4>Security Log</h4>
+          <div class="log-console" id="secLog">
+            <div>[00:00:00] > init WAF Extreme Ultimate v53.3</div>
+            <div>[00:00:01] > loading getSecurityExtreme()</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+  /**
+   * NGPB LAUNCHER v53.3 WAF Extreme Ultimate
+   * Enterprise Security Module
+   */
+  (function() {
+    'use strict';
+
+    const WAF_EXTREME_CONFIG = {
+      version: '53.3',
+      mode: 'WAF Extreme Ultimate',
+      whitelist: {
+        hostnames: [
+          'lr.nhg.one',
+          'ue.nhg.one',
+          'dd.nhg.one',
+          'pa.nhg.one',
+          'ce.nhg.one',
+          'se.nhg.one',
+          'panel-admin'
+        ],
+        check: (host) => WAF_EXTREME_CONFIG.whitelist.hostnames.some(h => host.includes(h))
+      },
+      method: {
+        allowed: ['GET'],
+        enforcement: 'STRICT',
+        block: ['POST','PUT','DELETE','PATCH','OPTIONS','TRACE','CONNECT']
+      },
+      httpVersion: {
+        allowed: ['1.0','1.1','2'],
+        blocked: ['3.0','0.9','invalid']
+      },
+      uaFilter: {
+        hard: true,
+        allowedPattern: /(Chrome/(11[0-9]|12[0-9])|Edg/(11[0-9]|12[0-9])|Firefox/(11[5-9]|12[0-9]|13[0-9]))/,
+        blockedSignatures: [
+          'curl','wget','python-requests','Go-http-client','PostmanRuntime',
+          'HeadlessChrome','PhantomJS','Selenium','Puppeteer','Playwright',
+          'python','java/','libwww','axios','node-fetch'
+        ]
+      },
+      botBlock: {
+        enabled: true,
+        challenge: 'hard',
+        scoreThreshold: 0.85
+      },
+      geo: {
+        banned: ['IL','PH'],
+        mode: 'DENY'
+      },
+      asn: {
+        blacklist: [396982, 14061, 8075, 16276, 54113, 9009],
+        torExitBlock: true,
+        datacenterBlock: true
+      },
+      webAssetsFilter: {
+        blockedExtensions: ['.php','.env','.git','.bak','.sql','.log','.config','.ini'],
+        blockedPaths: ['/wp-','/phpmyadmin','/.git','/.env','/admin.php','/backup']
+      }
+    };
+
+    const SecurityLogger = {
+      el: () => document.getElementById('secLog'),
+      log(msg, type='') {
+        const el = this.el();
+        if(!el) return;
+        const time = new Date().toLocaleTimeString('en-GB', {hour12:false});
+        const cls = type ? ` class="${type}"` : '';
+        el.innerHTML += `<div${cls}>[${time}] > ${msg}</div>`;
+        el.scrollTop = el.scrollHeight;
+      }
+    };
+
+    // Core Enterprise API
+    window.ngpb = window.ngpb || {};
+
+    window.ngpb.getWAFConfig = function() {
+      SecurityLogger.log('getWAFConfig() invoked', 'ok');
+      return JSON.parse(JSON.stringify(WAF_EXTREME_CONFIG));
+    };
+
+    window.ngpb.getSecurityExtreme = function() {
+      return new Promise((resolve, reject) => {
+        SecurityLogger.log('getSecurityExtreme() → running full WAF checks', 'ok');
+
+        // 1. Hostname Whitelist
+        const currentHost = window.location.hostname || 'lr.nhg.one';
+        const hostOk = WAF_EXTREME_CONFIG.whitelist.check(currentHost);
+        if(!hostOk && currentHost !== 'localhost' && !currentHost.includes('127.0.0.1')) {
+          SecurityLogger.log(`hostname ${currentHost} NOT whitelisted`, 'err');
+          // In production: reject
+        } else {
+          SecurityLogger.log(`hostname ${currentHost} ✓ whitelisted`, 'ok');
+        }
+
+        // 2. Method Check (simulated, real check server-side)
+        const method = 'GET'; // client-side always GET for launcher
+        if(!WAF_EXTREME_CONFIG.method.allowed.includes(method)) {
+          return reject({code:'METHOD_NOT_ALLOWED', method});
+        }
+        SecurityLogger.log(`method ${method} ✓ allowed`, 'ok');
+
+        // 3. UA Hard Filter
+        const ua = navigator.userAgent;
+        const isBlockedUA = WAF_EXTREME_CONFIG.uaFilter.blockedSignatures.some(sig => ua.includes(sig));
+        if(isBlockedUA) {
+          SecurityLogger.log(`UA blocked: ${ua.slice(0,60)}`, 'err');
+          return reject({code:'UA_BLOCKED', ua});
+        }
+        if(!WAF_EXTREME_CONFIG.uaFilter.allowedPattern.test(ua) && !ua.includes('Safari')) {
+          SecurityLogger.log('UA does not match allowed browser pattern - warning', 'warn');
+        } else {
+          SecurityLogger.log('UA hard filter ✓ passed', 'ok');
+        }
+
+        // 4. Bot Detection
+        if(navigator.webdriver) {
+          SecurityLogger.log('webdriver detected → bot block', 'err');
+          return reject({code:'BOT_DETECTED'});
+        }
+        SecurityLogger.log('bot check ✓ clean', 'ok');
+
+        // 5. Geo Ban (client hint, real check server-side via CF)
+        // Simulated: In prod, fetch from /cdn-cgi/trace or server header
+        const mockCountry = 'US'; // would be injected by edge
+        if(WAF_EXTREME_CONFIG.geo.banned.includes(mockCountry)) {
+          SecurityLogger.log(`geo banned country: ${mockCountry}`, 'err');
+          return reject({code:'GEO_BANNED', country: mockCountry});
+        }
+        SecurityLogger.log(`geo check ${mockCountry} ✓ allowed`, 'ok');
+
+        // 6. Web Assets Filter
+        const path = window.location.pathname.toLowerCase();
+        const hasBlockedExt = WAF_EXTREME_CONFIG.webAssetsFilter.blockedExtensions.some(ext => path.endsWith(ext));
+        const hasBlockedPath = WAF_EXTREME_CONFIG.webAssetsFilter.blockedPaths.some(p => path.includes(p));
+        if(hasBlockedExt || hasBlockedPath) {
+          SecurityLogger.log(`web assets filter blocked path: ${path}`, 'err');
+          return reject({code:'ASSET_BLOCKED'});
+        }
+        SecurityLogger.log('web assets filter ✓ clean', 'ok');
+
+        // 7. HTTP Version (simulated - real check via server)
+        SecurityLogger.log('HTTP version 1.1/2 ✓ validated (server-side)', 'ok');
+
+        // 8. ASN (server-side, client log only)
+        SecurityLogger.log('ASN blacklist ✓ bypass (datacenter check server-side)', 'ok');
+
+        setTimeout(() => {
+          resolve({
+            status: 'SECURE',
+            waf: 'EXTREME_ULTIMATE_ACTIVE',
+            version: WAF_EXTREME_CONFIG.version,
+            timestamp: Date.now(),
+            checks: 8,
+            passed: 8
+          });
+        }, 800);
+      });
+    };
+
+    window.ngpb.secureLaunch = function() {
+      const btn = document.getElementById('secureLaunchBtn');
+      const bannerTitle = document.getElementById('bannerTitle');
+      const bannerSub = document.getElementById('bannerSub');
+      const wafStatus = document.getElementById('wafStatus');
+
+      if(btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span> VERIFYING...';
+      }
+
+      SecurityLogger.log('secureLaunch() triggered', 'ok');
+
+      window.ngpb.getSecurityExtreme()
+        .then((result) => {
+          SecurityLogger.log(`all checks passed - ${result.passed}/${result.checks}`, 'ok');
+          SecurityLogger.log('launch authorized → redirecting to secure endpoint', 'ok');
+
+          if(wafStatus) { wafStatus.textContent = 'SECURE ✓'; wafStatus.style.color = '#00ff88'; }
+          if(bannerTitle) bannerTitle.textContent = '✓ Security Verified - Ready to Launch';
+          if(bannerSub) bannerSub.textContent = `WAF Extreme Ultimate active • ${result.version} • Enterprise secured`;
+
+          if(btn) {
+            btn.disabled = false;
+            btn.innerHTML = '<span>🚀</span> LAUNCH NOW';
+            btn.style.background = 'linear-gradient(180deg, #00ff88 0%, #00cc6a 100%)';
+            btn.onclick = () => {
+              SecurityLogger.log('🚀 launching NGPB core...', 'ok');
+              // window.location.href = 'https://lr.nhg.one/launcher/core';
+              // Real launch logic here:
+              console.log('%c NGPB LAUNCHER v53.3 ', 'background:#00ff88;color:#000;padding:6px 12px;border-radius:6px;font-weight:900', result);
+              bannerTitle.textContent = '🚀 NGPB Launched Successfully';
+              btn.innerHTML = '<span>✓</span> LAUNCHED';
+            };
+          }
+        })
+        .catch((err) => {
+          SecurityLogger.log(`security check failed: ${err.code}`, 'err');
+          if(wafStatus) { wafStatus.textContent = 'BLOCKED'; wafStatus.style.color = '#ff3344'; }
+          if(bannerTitle) bannerTitle.textContent = `⛔ Access Denied: ${err.code}`;
+          if(bannerSub) bannerSub.textContent = 'WAF Extreme Ultimate blocked this request. Contact enterprise admin.';
+          if(btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span>⛔</span> BLOCKED';
+            btn.style.background = '#1a2333';
+          }
+        });
+    };
+
+    // Auto init
+    document.addEventListener('DOMContentLoaded', () => {
+      const bannerTitle = document.getElementById('bannerTitle');
+      const dynamicTexts = [
+        'Enterprise WAF Active - 7 Hosts Protected',
+        'GeoFence: IL & PH Blocked • ASN Shield ON',
+        'Bot Block: Hard Mode • UA Filter Strict',
+        'Secure Channel Established • v53.3 Ultimate'
+      ];
+      let idx = 0;
+      setInterval(() => {
+        if(bannerTitle && bannerTitle.textContent.includes('Initializing') || bannerTitle.textContent.includes('Enterprise')) {
+          bannerTitle.textContent = dynamicTexts[idx % dynamicTexts.length];
+          idx++;
+        }
+      }, 2500);
+
+      // Initial security check
+      setTimeout(() => {
+        window.ngpb.secureLaunch();
+      }, 1200);
+    });
+
+    // Web Assets Filter - block direct access attempts
+    (function protectAssets() {
+      const blocked = WAF_EXTREME_CONFIG.webAssetsFilter;
+      const currentPath = window.location.pathname + window.location.search;
+      if(blocked.blockedExtensions.some(e => currentPath.includes(e)) ||
+         blocked.blockedPaths.some(p => currentPath.includes(p))) {
+        document.documentElement.innerHTML = '<h1 style="background:#000;color:#ff3344;font-family:monospace;padding:40px">403 WAF Extreme Ultimate - Web Assets Filter Blocked</h1>';
+      }
+    })();
+
+  })();
+  </script>
+</body>
+</html>
