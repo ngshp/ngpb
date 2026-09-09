@@ -1,53 +1,105 @@
 {
   "name": "ngpb-launcher-enterprise",
-  "version": "1.0.45",
-  "description": "NGPB Launcher Enterprise v45 ULTIMATE - AutoUpdate + AntiRDP/VM + AntiDebug + HWID Lock + WPE PRO Killer",
+  "version": "1.0.53.3",
+  "description": "NGPB Launcher Enterprise v53.3 WAF EXTREME ULTIMATE - Secure Launcher - AutoUpdate + AntiRDP/VM/Emu/Cloud + AntiDebug + HWID Lock + WPE PRO Killer + Geo Ban IL & PH + Whitelist Hostname lr.nhg.one ue.nhg.one dd.nhg.one pa.nhg.one ce.nhg.one se.nhg.one + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block + Web Assets Filter + 45MB NSIS Premium + Fast Boot 0.8s",
   "main": "main.js",
   "author": "NGPB Team <admin@ngshp.com>",
   "homepage": "https://github.com/ngshp/ngpb",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ngshp/ngpb.git"
+  },
+  "license": "MIT",
+  "keywords": ["ngpb", "point blank", "launcher", "electron", "enterprise", "waf", "secure launcher", "anti rdp", "anti vm", "anti emulator", "anti cloud", "geo ban", "hwid"],
   "scripts": {
     "start": "electron .",
+    "dev": "electron . --dev",
     "build": "electron-builder",
+    "build:win": "electron-builder --win",
     "build:dir": "electron-builder --dir",
-    "postinstall": "electron-builder install-app-deps"
+    "build:nsis": "electron-builder --win nsis",
+    "dist": "electron-builder",
+    "pack": "electron-builder --dir",
+    "postinstall": "electron-builder install-app-deps",
+    "release": "electron-builder --win --publish always"
   },
   "build": {
     "appId": "com.ngshp.ngpb.launcher",
-    "productName": "NGPB Launcher Enterprise",
+    "productName": "NG PB Launcher",
+    "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher - 45MB - Fast Boot 0.8s",
     "directories": {
+      "buildResources": "assets",
       "output": "dist"
     },
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "launcher/**/*",
+      "security/**/*",
+      "src/**/*",
+      "assets/**/*",
+      "!**/*.map",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/",
+        "to": "assets/",
+        "filter": ["**/*"]
+      }
+    ],
     "win": {
       "icon": "assets/icon.ico",
       "target": [
         {
           "target": "nsis",
-          "arch": [
-            "x64"
-          ]
+          "arch": ["x64"]
         }
-      ]
+      ],
+      "artifactName": "NGPB_Launcher_Setup_${version}_WAF_Extreme_Ultimate.exe",
+      "publisherName": "NGPB Team",
+      "verifyUpdateCodeSignature": false
     },
     "nsis": {
       "oneClick": false,
+      "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "shortcutName": "NGPB Launcher Enterprise"
+      "createStartMenuShortcut": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "shortcutName": "NG PB Launcher",
+      "uninstallerDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate - Secure Launcher - 45MB",
+      "displayLanguageSelector": false,
+      "include": "installer.nsh",
+      "warningsAsErrors": false
     },
     "publish": [
       {
         "provider": "github",
         "owner": "ngshp",
         "repo": "ngpb",
-        "private": false
+        "private": false,
+        "releaseType": "release"
       }
-    ]
+    ],
+    "compression": "maximum",
+    "asar": true,
+    "npmRebuild": true,
+    "buildDependenciesFromSource": false
   },
   "dependencies": {
-    "electron-updater": "^6.1.7"
+    "electron-updater": "^6.6.2",
+    "electron-log": "^5.2.0"
   },
   "devDependencies": {
-    "electron": "^28.0.0",
-    "electron-builder": "^24.9.1"
+    "electron": "^30.0.9",
+    "electron-builder": "^24.13.3"
   }
 }
