@@ -76,6 +76,7 @@
       "shortcutName": "NG PB Launcher",
       "uninstallDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate",
       "displayLanguageSelector": false,
+      "include": "installer.nsh",
       "warningsAsErrors": false
     },
     "publish": [
