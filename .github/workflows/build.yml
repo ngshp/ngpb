@@ -42,8 +42,7 @@ jobs:
           Write-Host "`n=== Fix icon.ico - Unknown format - 53.3 ===" -ForegroundColor Cyan
           if (Test-Path "assets/icon.ico") {
             $bytes = [System.IO.File]::ReadAllBytes("assets/icon.ico")
-            # PNG header 89 50 4E 47, ICO header 00 00 01 00
-            if ($bytes[0] -eq 0x89 -and $bytes[1] -eq 0x50 -and $bytes[2] -eq 0x4E -and $bytes[3] -eq 0x47) {
+            if (($bytes[0] -eq 0x89) -and ($bytes[1] -eq 0x50) -and ($bytes[2] -eq 0x4E) -and ($bytes[3] -eq 0x47)) {
               Write-Host "❌ assets/icon.ico is PNG renamed! Header 89 50 4E 47 - Removing corrupt icon!" -ForegroundColor Red
               Remove-Item "assets/icon.ico" -Force
               Write-Host "✅ Removed corrupt icon.ico" -ForegroundColor Yellow
@@ -52,10 +51,10 @@ jobs:
             }
           }
           if (-not (Test-Path "assets/icon.ico")) {
-            Write-Host "⚠️ icon.ico missing after fix - Will use PNG fallback - Electron-builder auto-convert PNG to ICO" -ForegroundColor Yellow
+            Write-Host "⚠️ icon.ico missing after fix - Will use PNG fallback" -ForegroundColor Yellow
             if (Test-Path "assets/ng_logo_cyan.png") {
               Copy-Item "assets/ng_logo_cyan.png" "assets/icon.png" -Force
-              Write-Host "✅ Copied ng_logo_cyan.png to icon.png - Will use as icon" -ForegroundColor Green
+              Write-Host "✅ Copied ng_logo_cyan.png to icon.png" -ForegroundColor Green
             } elseif (Test-Path "assets/ng_logo.png") {
               Copy-Item "assets/ng_logo.png" "assets/icon.png" -Force
               Write-Host "✅ Copied ng_logo.png to icon.png" -ForegroundColor Green
@@ -67,9 +66,9 @@ jobs:
         run: |
           Write-Host "`n=== Verify Assets & Security Modules 53.3 WAF Extreme Ultimate ===" -ForegroundColor Cyan
           if (Test-Path "assets/icon.ico") { Write-Host "✅ assets/icon.ico - Valid ICO" -ForegroundColor Green }
-          elseif (Test-Path "assets/icon.png") { Write-Host "✅ assets/icon.png - PNG fallback - Will auto-convert to ICO" -ForegroundColor Green }
+          elseif (Test-Path "assets/icon.png") { Write-Host "✅ assets/icon.png - PNG fallback" -ForegroundColor Green }
           elseif (Test-Path "assets/ng_logo_cyan.png") { Write-Host "✅ assets/ng_logo_cyan.png - Fallback PNG icon" -ForegroundColor Green }
-          else { Write-Host "⚠️ No icon found - Build will use default Electron icon - Continue" -ForegroundColor Yellow }
+          else { Write-Host "⚠️ No icon found - Will use default Electron icon" -ForegroundColor Yellow }
           if (Test-Path "assets/elite_male.png") { Write-Host "✅ assets/elite_male.png" -ForegroundColor Green }
           if (Test-Path "assets/elite_female.png") { Write-Host "✅ assets/elite_female.png" -ForegroundColor Green }
           if (Test-Path "installer.nsh") { Write-Host "✅ installer.nsh - NSIS Premium" -ForegroundColor Green } else { Write-Host "⚠️ installer.nsh missing - NSIS default" -ForegroundColor Yellow }
@@ -84,8 +83,7 @@ jobs:
         shell: pwsh
         run: |
           Write-Host "`n=== Build Electron - v53.3 WAF Extreme Ultimate - 45MB NSIS ===" -ForegroundColor Cyan
-          # If icon.ico still corrupt, build with PNG icon override
-          if (Test-Path "assets/icon.png" -and -not (Test-Path "assets/icon.ico")) {
+          if ((Test-Path "assets/icon.png") -and (-not (Test-Path "assets/icon.ico"))) {
             Write-Host "Using PNG icon - Overriding win.icon via --config" -ForegroundColor Yellow
             npx electron-builder --win --x64 --publish never --config.win.icon="assets/icon.png"
           } else {
@@ -161,7 +159,7 @@ jobs:
             ## 🔵 NGPB Launcher Enterprise v1.0.53.3 - WAF EXTREME ULTIMATE - 45MB
             Built from HP, Secured like Enterprise - WAF Extreme + Anti RDP + Emu + Cloud + Geo Ban + Whitelist Hostname!
             Download: NGPB_Launcher_Setup_1.0.53.3_WAF_Extreme_Ultimate.exe (45MB) - Verify with hashes.txt
-            Fix: icon.ico unknown format - Now using valid PNG -> ICO auto-convert
+            Fix: icon.ico unknown format + pwsh -and syntax fix - Now valid PNG -> ICO auto-convert
           draft: false
           prerelease: false
           files: |
