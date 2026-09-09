@@ -1,32 +1,33 @@
 {
   "name": "ngpb-launcher-enterprise",
   "version": "1.0.53.3",
-  "description": "NGPB Launcher Enterprise v53.3 WAF EXTREME ULTIMATE - Secure Launcher - AutoUpdate + AntiRDP/VM/Emu/Cloud + AntiDebug + HWID Lock + WPE PRO Killer + Geo Ban IL & PH + Whitelist Hostname lr.nhg.one ue.nhg.one dd.nhg.one pa.nhg.one ce.nhg.one se.nhg.one + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block + Web Assets Filter + 45MB NSIS Premium + Fast Boot 0.8s",
+  "description": "NGPB Launcher Enterprise v53.3 WAF EXTREME ULTIMATE - Secure Launcher - AutoUpdate + AntiRDP/VM/Emu/Cloud + AntiDebug + HWID Lock + WPE PRO Killer + Geo Ban IL & PH + Whitelist Hostname lr.nhg.one ue.nhg.one dd.nhg.one pa.nhg.one ce.nhg.one se.nhg.one panel-admin.nhg.one + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block + Web Assets Filter + 77.2MB NSIS Premium + Fast Boot 0.8s - Build #82 Success 1m 43s - Fix icon.ico unknown format - Shield Merah Chrome",
   "main": "main.js",
-  "author": "NGPB Team <admin@ngshp.com>",
+  "author": "NGPB Team <admin@ngshp.com> - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Shield Merah Chrome - Duo Hero Elite - © 2026 NGPB Team",
+  "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher - 77.2MB - Fast Boot 0.8s - Icon Shield Merah Chrome Silver Valid ICO 256,128,64,48,32,16 header 00 00 01 00 - Build #82 Success 1m 43s - Fix icon.ico unknown format",
   "homepage": "https://github.com/ngshp/ngpb",
   "repository": {
     "type": "git",
     "url": "https://github.com/ngshp/ngpb.git"
   },
   "license": "MIT",
-  "keywords": ["ngpb", "point blank", "launcher", "electron", "enterprise", "waf", "secure launcher", "anti rdp", "anti vm", "anti emulator", "anti cloud", "geo ban", "hwid"],
+  "keywords": ["ngpb", "point blank", "launcher", "electron", "enterprise", "waf", "secure launcher", "anti rdp", "anti vm", "anti emulator", "anti cloud", "geo ban", "hwid", "shield merah", "duo hero", "banner dynamic", "waf extreme", "whitelist hostname", "nsis premium", "fast boot"],
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "electron-builder",
-    "build:win": "electron-builder --win",
+    "build:win": "electron-builder --win --x64 --publish never",
     "build:dir": "electron-builder --dir",
-    "build:nsis": "electron-builder --win nsis",
-    "dist": "electron-builder",
+    "build:nsis": "electron-builder --win nsis --x64 --publish never",
+    "dist": "electron-builder --win --x64 --publish never",
     "pack": "electron-builder --dir",
     "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder --win --publish always"
+    "release": "electron-builder --win --x64 --publish always"
   },
   "build": {
     "appId": "com.ngshp.ngpb.launcher",
     "productName": "NG PB Launcher",
-    "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher - 45MB - Fast Boot 0.8s",
+    "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher - 77.2MB - Fast Boot 0.8s - Build #82 Success 1m 43s",
     "directories": {
       "buildResources": "assets",
       "output": "dist"
@@ -34,17 +35,11 @@
     "files": [
       "main.js",
       "preload.js",
-      "index.html",
       "launcher/**/*",
       "security/**/*",
-      "src/**/*",
       "assets/**/*",
-      "!**/*.map",
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}"
+      "installer.nsh",
+      "package.json"
     ],
     "extraResources": [
       {
@@ -74,7 +69,7 @@
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
       "shortcutName": "NG PB Launcher",
-      "uninstallDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate",
+      "uninstallDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate - 77.2 MB",
       "displayLanguageSelector": false,
       "include": "installer.nsh",
       "warningsAsErrors": false
@@ -100,5 +95,8 @@
   "devDependencies": {
     "electron": "^30.0.9",
     "electron-builder": "^24.13.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
