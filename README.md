@@ -9,7 +9,7 @@
 
 > **Built from HP, Secured like Enterprise - WAF Extreme + Anti RDP + Anti Emulator + Anti Cloud + Geo Ban!**
 
-Launcher resmi Nusa Game Private Batch - RO Private Server dengan Enterprise Security v53.3 WAF Extreme Ultimate - Secure Launcher - 77.2 MB NSIS Premium - Fast Boot 0.8s - Icon Shield Merah Chrome!
+Launcher resmi Nusa Game Public Batch - RO Private Server dengan Enterprise Security v53.3 WAF Extreme Ultimate - Secure Launcher - 77.2 MB NSIS Premium - Fast Boot 0.8s - Icon Shield Merah Chrome!
 
 ## 🔗 Download v1.0.53.3 - 77.2 MB NSIS Premium - SUCCESS 1m 43s
 - **Installer:** https://github.com/ngshp/ngpb/releases/download/v1.0.53.3/NGPB_Launcher_Setup_1.0.53.3_WAF_Extreme_Ultimate.exe (77.2 MB - NSIS Premium - Desktop + Start Menu Shortcut)
