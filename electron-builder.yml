@@ -48,9 +48,7 @@ nsis:
   shortcutName: NG PB Launcher
   uninstallDisplayName: NG PB Launcher v${version} - WAF Extreme Ultimate
   displayLanguageSelector: false
-  installerHeaderIcon: assets/icon.ico
   warningsAsErrors: false
-  include: installer.nsh
 
 publish:
   provider: github
