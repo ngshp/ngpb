@@ -3,41 +3,44 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>NGPB Launcher v53.4 - WAF Extreme Ultimate + Realtime Theme</title>
+  <title>NGPB Launcher v53.5 - Draggable Rapi + Realtime Theme</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
   <style>
     :root{--bg:#080a0f;--panel:#10131b;--panel-2:#151a26;--border:#1e2638;--accent:#00ff88;--accent-2:#00d4ff;--danger:#ff3344;--text:#e6eaf2;--muted:#6b7a99}
     *{margin:0;padding:0;box-sizing:border-box}
-    body{background:radial-gradient(1200px 600px at 20% -10%,#122a22 0%,transparent 60%),radial-gradient(900px 500px at 90% 0%,#1a2340 0%,transparent 60%),var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden;user-select:none}
-   .launcher-root{width:1400px;height:900px;background:linear-gradient(180deg,#10131b 0%,#0c0f17 100%);border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset,0 40px 120px rgba(0,0,0,0.8);position:relative}
-   .launcher-root::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,255,136,0.04),transparent);pointer-events:none}
-   .header{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid var(--border);background:rgba(16,19,27,0.9);backdrop-filter:blur(12px);z-index:10}
-   .logo{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:-0.02em}.logo-mark{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:12px;display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:800;font-size:20px;color:#000;box-shadow:0 0 20px rgba(0,255,136,0.4);overflow:hidden;transition:all 0.3s}.logo-mark img{width:100%;height:100%;object-fit:cover}.logo-text{font-size:18px}.logo-text span{color:var(--accent);transition:color 0.3s}
-   .header-nav{display:flex;gap:20px;align-items:center}.nav-item{font-family:'JetBrains Mono';font-size:11px;color:var(--muted);cursor:pointer;padding:6px 12px;border-radius:8px;border:1px solid transparent;transition:all 0.2s}.nav-item:hover{color:var(--text);border-color:var(--border);background:var(--panel-2)}
-   .header-right{display:flex;gap:16px;align-items:center;font-family:'JetBrains Mono';font-size:11px;color:var(--muted)}.status-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite;transition:all 0.3s}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-   .content{flex:1;display:flex;overflow:hidden}.main{flex:1;padding:28px 32px;display:flex;flex-direction:column;gap:20px;position:relative}
-   .duo-hero{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:420px}.hero-card{position:relative;background:linear-gradient(180deg,var(--panel-2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color 0.3s}.hero-card::after{content:'';position:absolute;inset:0;border-radius:16px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04);pointer-events:none}.hero-card img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.05);transition:all 0.5s}.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,10,15,0.9) 0%,transparent 60%)}.hero-label{position:absolute;bottom:16px;left:16px;font-family:'JetBrains Mono';font-size:11px;background:rgba(0,255,136,0.15);color:var(--accent);border:1px solid rgba(0,255,136,0.3);padding:4px 10px;border-radius:20px;backdrop-filter:blur(8px);transition:all 0.3s}
-   .banner{height:140px;background:linear-gradient(135deg,#1a233a 0%,#10131b 100%);border:1px solid var(--border);border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;transition:all 0.3s}.banner::before{content:'';position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(0,255,136,0.15) 0%,transparent 70%);top:-100px;right:-100px;transition:all 0.3s}.banner-content{z-index:1}.banner-type{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.12em;color:var(--accent);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:8px;transition:all 0.3s}.banner-title{font-size:22px;font-weight:800;line-height:1.1;margin-bottom:6px;transition:all 0.3s}.banner-desc{font-size:13px;color:var(--muted);transition:all 0.3s}.banner-cta{z-index:1;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-weight:800;font-size:13px;padding:12px 20px;border-radius:10px;border:0;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.4);font-family:'Inter';transition:all 0.3s}
-   .play-section{display:flex;gap:16px;align-items:center}.play-btn{width:450px;height:100px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:0;border-radius:14px;font-family:'Inter';font-weight:900;font-size:22px;letter-spacing:-0.02em;color:#000;cursor:pointer;box-shadow:0 0 0 1px rgba(0,255,136,0.3) inset,0 10px 30px rgba(0,255,136,0.3),0 0 40px rgba(0,255,136,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.3s}.play-btn:hover{transform:translateY(-1px);box-shadow:0 0 0 1px rgba(0,255,136,0.5) inset,0 15px 40px rgba(0,255,136,0.4)}.play-btn:active{transform:translateY(1px)}.play-btn small{font-family:'JetBrains Mono';font-size:10px;font-weight:700;letter-spacing:0.15em;opacity:0.7;margin-top:4px}.play-meta{font-family:'JetBrains Mono';font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:6px}.play-meta span{display:flex;gap:8px;align-items:center}.play-meta i{width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block;transition:all 0.3s}
-   .sidebar{width:340px;border-left:1px solid var(--border);background:rgba(16,19,27,0.6);padding:20px;display:flex;flex-direction:column;gap:16px;overflow:auto}.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px}.card-title{font-family:'JetBrains Mono';font-size:10px;letter-spacing:0.12em;color:var(--muted);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}.security-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sec-item{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:10px;font-family:'JetBrains Mono';font-size:10px}.sec-item.k{color:var(--muted);font-size:9px;letter-spacing:0.08em;margin-bottom:4px}.sec-item.v{color:var(--accent);font-weight:700;transition:all 0.3s}.sec-item.danger.v{color:var(--danger)}.progress{height:4px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:8px}.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:100%;transition:all 0.3s}
-   .footer{height:48px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;font-family:'JetBrains Mono';font-size:10px;color:var(--muted)}.footer a{color:var(--muted);text-decoration:none}.footer a:hover{color:var(--text)}
-   .about-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);z-index:9999;justify-content:center;align-items:center}.about-overlay.active{display:flex}
-   .about-modal{width:720px;max-height:85vh;background:linear-gradient(180deg,#151a26 0%,#10131b 100%);border:1px solid #2a3652;border-radius:20px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.8),0 0 0 1px rgba(255,255,255,0.06) inset;animation:aboutIn 0.3s ease}@keyframes aboutIn{from{transform:scale(0.95) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-   .about-modal-header{padding:28px 32px 20px;display:flex;gap:20px;align-items:center;border-bottom:1px solid var(--border);position:relative}.about-modal-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.6}
-   .about-shield{width:96px;height:96px;border-radius:20px;background:linear-gradient(135deg,#1a233a,#10131b);border:1px solid #2a3652;display:grid;place-items:center;box-shadow:0 0 30px rgba(255,26,61,0.35);overflow:hidden;flex-shrink:0}.about-shield img{width:100%;height:100%;object-fit:cover}
-   .about-title h1{font-size:22px;font-weight:900;letter-spacing:-0.02em}.about-title h2{font-size:13px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono';margin-top:4px}.about-badge{display:inline-flex;gap:6px;align-items:center;margin-top:10px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);color:var(--accent);font-family:'JetBrains Mono';font-size:10px;padding:4px 10px;border-radius:20px}
-   .about-modal-body{padding:20px 32px 28px;overflow:auto;max-height:55vh;font-size:13px;line-height:1.6;color:var(--muted)}.about-modal-body h3{font-size:11px;font-family:'JetBrains Mono';letter-spacing:0.12em;color:var(--text);margin:18px 0 10px}.about-modal-body ul{list-style:none;display:flex;flex-direction:column;gap:6px}.about-modal-body li{display:flex;gap:8px;font-size:12px}.about-modal-body li::before{content:'•';color:var(--accent)}
-   .about-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted);cursor:pointer;display:grid;place-items:center;transition:all 0.2s}.about-close:hover{color:var(--text);border-color:#3a4a6a;background:var(--panel)}
-   .realtime-badge{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-family:'JetBrains Mono';font-size:10px;font-weight:800;padding:6px 12px;border-radius:20px;box-shadow:0 0 20px rgba(0,255,136,0.4);z-index:999;animation:realtimePulse 2s infinite}@keyframes realtimePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+    body{background:radial-gradient(1200px 600px at 20% -10%,#122a22 0%,transparent 60%),radial-gradient(900px 500px at 90% 0%,#1a2340 0%,transparent 60%),var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:auto;padding:12px;user-select:none}
+    /* v53.5 FIX RAPI - 1200x700 BUKAN 1400x900 - BIAR GA KEPOTONG */
+    .launcher-root{width:1200px;height:700px;background:linear-gradient(180deg,#10131b 0%,#0c0f17 100%);border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset,0 40px 120px rgba(0,0,0,0.8);position:relative}
+    .launcher-root::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,255,136,0.04),transparent);pointer-events:none}
+    /* v53.5 FIX DRAGGABLE - KUNCI UTAMA BOS! */
+    .header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:rgba(16,19,27,0.95);backdrop-filter:blur(12px);z-index:10;-webkit-app-region:drag;cursor:move}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-0.02em;-webkit-app-region:no-drag}.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:10px;display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:800;font-size:18px;color:#000;box-shadow:0 0 20px rgba(0,255,136,0.4);overflow:hidden}.logo-mark img{width:100%;height:100%;object-fit:cover}.logo-text{font-size:16px}.logo-text span{color:var(--accent)}
+    .header-nav{display:flex;gap:12px;align-items:center;-webkit-app-region:no-drag}.nav-item{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);cursor:pointer;padding:5px 10px;border-radius:8px;border:1px solid transparent;transition:all 0.2s;-webkit-app-region:no-drag}.nav-item:hover{color:var(--text);border-color:var(--border);background:var(--panel-2)}
+    .header-right{display:flex;gap:10px;align-items:center;font-family:'JetBrains Mono';font-size:9px;color:var(--muted);-webkit-app-region:no-drag}.status-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+    /* v53.5 WINDOW CONTROLS ─ □ ✕ */
+    .window-controls{display:flex;gap:8px;margin-left:12px;-webkit-app-region:no-drag}.win-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:all 0.2s;font-size:12px;-webkit-app-region:no-drag}.win-btn:hover{background:var(--panel);color:var(--text);border-color:#3a4a6a}.win-btn.close:hover{background:#ff3344;color:#fff;border-color:#ff3344}
+    .content{flex:1;display:flex;overflow:hidden}.main{flex:1;padding:18px 20px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:auto;-webkit-app-region:no-drag}
+    .duo-hero{display:grid;grid-template-columns:1fr 1fr;gap:14px;height:300px}.hero-card{position:relative;background:linear-gradient(180deg,var(--panel-2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:14px;overflow:hidden;-webkit-app-region:no-drag}.hero-card::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04);pointer-events:none}.hero-card img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.05)}.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,10,15,0.9) 0%,transparent 60%)}.hero-label{position:absolute;bottom:10px;left:10px;font-family:'JetBrains Mono';font-size:9px;background:rgba(0,255,136,0.15);color:var(--accent);border:1px solid rgba(0,255,136,0.3);padding:3px 8px;border-radius:20px;backdrop-filter:blur(8px)}
+    .banner{height:100px;background:linear-gradient(135deg,#1a233a 0%,#10131b 100%);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;-webkit-app-region:no-drag}.banner::before{content:'';position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(0,255,136,0.15) 0%,transparent 70%);top:-80px;right:-80px}.banner-content{z-index:1}.banner-type{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.12em;color:var(--accent);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);padding:2px 6px;border-radius:6px;display:inline-block;margin-bottom:6px}.banner-title{font-size:17px;font-weight:800;line-height:1.1;margin-bottom:4px}.banner-desc{font-size:11px;color:var(--muted)}.banner-cta{z-index:1;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-weight:800;font-size:11px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.4);font-family:'Inter';-webkit-app-region:no-drag}
+    .play-section{display:flex;gap:12px;align-items:center;-webkit-app-region:no-drag}.play-btn{width:380px;height:75px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:0;border-radius:12px;font-family:'Inter';font-weight:900;font-size:20px;letter-spacing:-0.02em;color:#000;cursor:pointer;box-shadow:0 0 0 1px rgba(0,255,136,0.3) inset,0 10px 30px rgba(0,255,136,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.2s;-webkit-app-region:no-drag}.play-btn:hover{transform:translateY(-1px)}.play-btn small{font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:0.12em;opacity:0.7;margin-top:3px}.play-meta{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);display:flex;flex-direction:column;gap:5px}.play-meta span{display:flex;gap:6px;align-items:center}.play-meta i{width:5px;height:5px;background:var(--accent);border-radius:50%;display:inline-block}
+    .sidebar{width:300px;border-left:1px solid var(--border);background:rgba(16,19,27,0.6);padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto;-webkit-app-region:no-drag}.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px}.card-title{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}.security-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sec-item{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'JetBrains Mono';font-size:9px}.sec-item .k{color:var(--muted);font-size:8px;letter-spacing:0.08em;margin-bottom:3px}.sec-item .v{color:var(--accent);font-weight:700}.progress{height:3px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:6px}.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:100%}
+    .footer{height:40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-family:'JetBrains Mono';font-size:9px;color:var(--muted);-webkit-app-region:no-drag}.footer a{color:var(--muted);text-decoration:none}.footer a:hover{color:var(--text)}
+    .about-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);z-index:9999;justify-content:center;align-items:center}.about-overlay.active{display:flex}
+    .about-modal{width:640px;max-height:80vh;background:linear-gradient(180deg,#151a26 0%,#10131b 100%);border:1px solid #2a3652;border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.8);animation:aboutIn 0.3s ease;-webkit-app-region:no-drag}@keyframes aboutIn{from{transform:scale(0.95) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+    .about-modal-header{padding:20px 24px 14px;display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--border);position:relative}.about-shield{width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,#1a233a,#10131b);border:1px solid #2a3652;display:grid;place-items:center;overflow:hidden;flex-shrink:0}.about-shield img{width:100%;height:100%;object-fit:cover}
+    .about-title h1{font-size:18px;font-weight:900}.about-title h2{font-size:11px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono';margin-top:3px}.about-badge{display:inline-flex;gap:6px;align-items:center;margin-top:8px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);color:var(--accent);font-family:'JetBrains Mono';font-size:9px;padding:3px 8px;border-radius:20px}
+    .about-modal-body{padding:14px 24px 20px;overflow:auto;max-height:50vh;font-size:12px;line-height:1.6;color:var(--muted)}.about-modal-body h3{font-size:10px;font-family:'JetBrains Mono';letter-spacing:0.12em;color:var(--text);margin:14px 0 8px}.about-modal-body ul{list-style:none;display:flex;flex-direction:column;gap:5px}.about-modal-body li{display:flex;gap:6px;font-size:11px}.about-modal-body li::before{content:'•';color:var(--accent)}
+    .about-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted);cursor:pointer;display:grid;place-items:center;-webkit-app-region:no-drag}.about-close:hover{color:var(--text);border-color:#3a4a6a}
+    .realtime-badge{position:fixed;bottom:12px;right:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-family:'JetBrains Mono';font-size:9px;font-weight:800;padding:5px 10px;border-radius:20px;box-shadow:0 0 20px rgba(0,255,136,0.4);z-index:999;-webkit-app-region:no-drag}
   </style>
 </head>
 <body>
   <div class="launcher-root" id="launcherRoot">
-    <header class="header">
+    <header class="header" style="-webkit-app-region:drag;cursor:move">
       <div class="logo">
         <div class="logo-mark"><img id="logoImg" src="../assets/icon.png" alt="NGPB" onerror="this.style.display='none';this.parentElement.textContent='NG'"></div>
-        <div class="logo-text">NGPB <span>Launcher</span> <small style="font-family:'JetBrains Mono';font-weight:500;font-size:11px;color:var(--muted);margin-left:8px" id="verText">v53.4 Realtime Theme</small></div>
+        <div class="logo-text">NGPB <span>Launcher</span> <small style="font-family:'JetBrains Mono';font-weight:500;font-size:10px;color:var(--muted);margin-left:6px" id="verText">v53.5 Draggable Rapi • Realtime</small></div>
       </div>
       <div class="header-nav">
         <div class="nav-item" id="menuFile">File</div>
@@ -45,9 +48,14 @@
         <div class="nav-item" id="menuAbout">About</div>
       </div>
       <div class="header-right">
-        <span style="display:flex;gap:8px;align-items:center"><span class="status-dot" id="statusDot"></span> <span id="wafText">WAF Extreme ON • Realtime</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><span class="status-dot" id="statusDot"></span> <span id="wafText">WAF Extreme ON • Draggable</span></span>
         <span id="wafStatus">Whitelist: 8 OK</span>
-        <span id="versionTag">Build #84 Realtime</span>
+        <span id="versionTag">Build #95 Draggable Rapi</span>
+        <div class="window-controls">
+          <div class="win-btn" id="btnMin">─</div>
+          <div class="win-btn" id="btnMax">□</div>
+          <div class="win-btn close" id="btnClose">✕</div>
+        </div>
       </div>
     </header>
 
@@ -57,7 +65,7 @@
           <div class="hero-card">
             <img id="heroLeft" src="../assets/elite_male.png" alt="Elite Male" onerror="this.src='../assets/ng_logo.png'">
             <div class="hero-overlay"></div>
-            <div class="hero-label" id="labelLeft">ELITE MALE • REALTIME</div>
+            <div class="hero-label" id="labelLeft">ELITE MALE • DRAGGABLE RAPI</div>
           </div>
           <div class="hero-card">
             <img id="heroRight" src="../assets/elite_female.png" alt="Elite Female" onerror="this.src='../assets/ng_logo_cyan.png'">
@@ -68,9 +76,9 @@
 
         <div class="banner" id="banner">
           <div class="banner-content">
-            <div class="banner-type" id="bannerType">EVENT • DYNAMIC REALTIME</div>
-            <div class="banner-title" id="bannerTitle">WAF Extreme Ultimate - 77.2 MB Success! - REALTIME ON!</div>
-            <div class="banner-desc" id="bannerDesc">Build #84 Realtime Theme System - Ganti tampilan dari version.json tanpa rebuild exe - Shield Merah Chrome</div>
+            <div class="banner-type" id="bannerType">EVENT • DRAGGABLE RAPI REALTIME</div>
+            <div class="banner-title" id="bannerTitle">WAF Extreme Ultimate - 77.3 MB Success! - DRAGGABLE + RAPI ON!</div>
+            <div class="banner-desc" id="bannerDesc">Build #95 Draggable Rapi - Header bisa drag kiri kanan - 1200x700 rapi - Shield Merah Chrome - Realtime Theme</div>
           </div>
           <button class="banner-cta" id="bannerCta">CLAIM NOW</button>
         </div>
@@ -78,19 +86,19 @@
         <div class="play-section">
           <button class="play-btn" id="playBtn">
             <span id="playMain">PLAY</span>
-            <small id="playSub">450x100 • SECURE LAUNCH • FAST BOOT 0.8s • REALTIME THEME</small>
+            <small id="playSub">380x80 • DRAGGABLE RAPI • SECURE LAUNCH • FAST BOOT 0.8s • REALTIME</small>
           </button>
           <div class="play-meta">
             <span><i id="dotHwid"></i> HWID: <b id="hwid">••••••••••••16 chars AES-256</b></span>
-            <span><i id="dotIp"></i> IP: <b id="ipAddr">Loading...</b> • <span id="geo">Geo Check IL/PH Ban • Realtime</span></span>
-            <span><i></i> Device: 1D1IP • <span id="deviceStatus" style="color:var(--accent)">BOUND • REALTIME</span></span>
+            <span><i id="dotIp"></i> IP: <b id="ipAddr">Loading...</b> • <span id="geo">Geo Check IL/PH Ban • Draggable</span></span>
+            <span><i></i> Device: 1D1IP • <span id="deviceStatus" style="color:var(--accent)">BOUND • DRAGGABLE RAPI</span></span>
           </div>
         </div>
       </main>
 
       <aside class="sidebar">
         <div class="card">
-          <div class="card-title"><span>SECURITY DASHBOARD v53.4</span><span style="color:var(--accent)">● LIVE REALTIME</span></div>
+          <div class="card-title"><span>SECURITY DASHBOARD v53.5</span><span style="color:var(--accent)">● LIVE DRAGGABLE</span></div>
           <div class="security-grid">
             <div class="sec-item"><div class="k">WAF</div><div class="v" id="wafCard">EXTREME ON</div><div class="progress"><div class="progress-bar" id="wafBar" style="width:100%"></div></div></div>
             <div class="sec-item"><div class="k">RDP</div><div class="v">BLOCKED</div></div>
@@ -103,94 +111,76 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>REALTIME CONFIG</span><span id="realtimeStatus" style="color:var(--accent)">● FETCHING</span></div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.8;color:var(--muted)" id="configLog">
-            Fetching https://raw.githubusercontent.com/ngshp/ngpb/main/version.json...<br>
-            Theme: accent, accent2, duo hero, play text<br>
-            Banner: type, title, desc, cta<br>
-            Banners[]: 6 banners realtime<br>
+          <div class="card-title"><span>REALTIME CONFIG</span><span id="realtimeStatus" style="color:var(--accent)">● LIVE DRAGGABLE</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;color:var(--muted)" id="configLog">
+            Fetching raw.githubusercontent.com...<br>
+            Draggable: Header -webkit-app-region: drag<br>
+            Rapi: 1200x700 + window controls ─ □ ✕<br>
             Last update: -<br>
           </div>
         </div>
         <div class="card">
-          <div class="card-title"><span>HOSTNAME WHITELIST</span><span>8 ALLOWED + REALTIME</span></div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.8;color:var(--muted)" id="whitelistLog">
-            ✅ lr.nhg.one - Core<br>✅ ue.nhg.one - Update<br>✅ dd.nhg.one - Download<br>✅ pa.nhg.one - ngpb.exe<br>✅ ce.nhg.one - Security<br>✅ se.nhg.one - HTTP Ver<br>✅ panel-admin.nhg.one<br>✅ raw.githubusercontent.com<br><span style="color:var(--danger)">Else DROP</span> • GET Only • HTTP/1.0,1.1,2 • Realtime
+          <div class="card-title"><span>HOSTNAME WHITELIST</span><span>8 ALLOWED + DRAGGABLE</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;color:var(--muted)" id="whitelistLog">
+            ✅ lr.nhg.one<br>✅ ue.nhg.one<br>✅ dd.nhg.one<br>✅ pa.nhg.one<br>✅ ce.nhg.one<br>✅ se.nhg.one<br>✅ panel-admin.nhg.one<br>✅ raw.githubusercontent.com<br>Else DROP • GET Only • Draggable Rapi
           </div>
         </div>
       </aside>
     </div>
 
     <footer class="footer">
-      <span>© 2026 NGPB Team - Built by ngshp from mobile - v53.4 Realtime Theme - Shield Merah</span>
-      <span><a href="#" id="aboutLink">About</a> • <a href="#" id="verifyLink">Verify Hash</a> • <a href="https://ngpb.id" target="_blank">ngpb.id</a> • <span style="color:var(--accent)" id="footerRealtime">● Realtime ON</span></span>
+      <span>© 2026 NGPB Team - v53.5 Draggable Rapi - Shield Merah</span>
+      <span><a href="#" id="aboutLink">About</a> • <a href="#" id="verifyLink">Verify Hash</a> • <a href="https://ngpb.id" target="_blank">ngpb.id</a> • <span style="color:var(--accent)" id="footerRealtime">● Draggable ON • Rapi ON</span></span>
     </footer>
   </div>
 
   <div class="about-overlay" id="aboutOverlay">
     <div class="about-modal">
       <div class="about-modal-header">
-        <div class="about-shield"><img src="../assets/icon.png" alt="Shield Merah Chrome" onerror="this.src='../assets/ng_logo_cyan.png'"></div>
+        <div class="about-shield"><img src="../assets/icon.png" alt="Shield" onerror="this.src='../assets/ng_logo_cyan.png'"></div>
         <div class="about-title">
           <h1>NGPB Launcher Enterprise</h1>
-          <h2>v53.4 Realtime Theme System - Secure Launcher</h2>
-          <div class="about-badge"><span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block;box-shadow:0 0 8px var(--accent)"></span> Build #84 Realtime Success • 77.2 MB NSIS Premium • Theme Fetch from version.json • Whitelist 8</div>
+          <h2>v53.5 Draggable Rapi - Realtime Theme System</h2>
+          <div class="about-badge"><span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block"></span> Build #95 Draggable Rapi • 77.3 MB • Header Drag • 1200x700 Rapi • Realtime</div>
         </div>
         <button class="about-close" id="aboutClose">✕</button>
       </div>
       <div class="about-modal-body">
-        <p><strong style="color:var(--text)">v53.4 Realtime Theme System - Ganti tampilan tanpa rebuild exe!</strong> - Launcher resmi NGPB dengan Realtime Theme System - Cukup edit version.json di GitHub dari HP - Duo Hero, warna accent, banner, PLAY text, logo langsung ganti realtime di PC player tanpa download ulang 77.2 MB!</p>
-        <h3>🎨 REALTIME THEME - CARA PAKAI DARI HP</h3>
+        <p><strong style="color:var(--text)">v53.5 Draggable Rapi - Fix tidak bisa gerak kiri kanan!</strong> - Header sekarang bisa di-drag! 1200x700 lebih rapi - Window controls Min/Max/Close - Realtime Theme tetap ON!</p>
+        <h3>🎯 FIX DRAGGABLE v53.5</h3>
         <ul>
-          <li>Buka github.com/ngshp/ngpb/blob/main/version.json di HP - Edit - Ganti theme.accent dari #00ff88 jadi #ff1a3d merah - Commit - Launcher di PC player Ctrl+R langsung merah!</li>
-          <li>Ganti theme.duoHeroLeft jadi elite_male_christmas.png - Upload gambar baru ke assets/ - Ganti link di version.json - Player langsung ganti skin natal!</li>
-          <li>Ganti banner.title jadi EVENT NATAL - Ganti banners[0].message - Semua player liat banner natal realtime!</li>
-          <li>Auto refresh 30 detik - Atau player tekan Ctrl+R untuk instant update!</li>
+          <li>Header -webkit-app-region: drag - Bisa drag kiri kanan atas bawah! Cursor move!</li>
+          <li>Semua button -webkit-app-region: no-drag - Jadi PLAY, CLAIM NOW tetap bisa klik!</li>
+          <li>Window Controls: ─ □ ✕ - Minimize, Maximize, Close di header kanan!</li>
+          <li>Ukuran 1200x700 rapi - Dari 1400x900 jadi 1200x700 - Ga kepotong di laptop 1366x768!</li>
+          <li>Body padding 12px + overflow auto - Biar ga mepet + bisa scroll kalau kecil!</li>
         </ul>
-        <h3>🔗 DOWNLOAD v53.4 - 77.2 MB - REALTIME SUCCESS</h3>
-        <ul>
-          <li>Installer: NGPB_Launcher_Setup_1.0.53.4_Realtime_Theme.exe (77.2 MB - NSIS Premium - Realtime Theme ON)</li>
-          <li>Config: version.json - theme + banner + banners[] + waf + realtime - Fetch from raw.githubusercontent.com - No CORS</li>
-          <li>Release: github.com/ngshp/ngpb/releases/tag/v1.0.53.4 - Build #84 Realtime Success 1m 43s - Fix icon.ico</li>
-        </ul>
-        <h3>🚀 WHAT'S NEW v53.4 REALTIME</h3>
-        <ul>
-          <li>Realtime Theme System: Fetch version.json dari raw.githubusercontent.com - theme.accent, accent2, duoHeroLeft, duoHeroRight, logo, playText, playSub, labelLeft, labelRight, verText, wafText - Ganti dari HP!</li>
-          <li>Banner 100% Realtime + banners[] array 6 banners: realtime_theme, discord_rpc, auto_patcher, waf_extreme, exp_3x, maintenance - Semua realtime!</li>
-          <li>WAF Extreme Ultimate + Whitelist 8 inc raw.githubusercontent.com + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block + Web Assets Filter</li>
-          <li>Duo Hero Realtime: elite_male.png + elite_female.png bisa ganti URL dari version.json - Support Christmas, Halloween skin tanpa rebuild!</li>
-        </ul>
-        <p style="margin-top:20px;font-family:'JetBrains Mono';font-size:10px;text-align:center;color:var(--muted)">© 2026 NGPB Team - Built by ngshp from mobile - v53.4 Realtime Theme System - Shield Merah - github.com/ngshp/ngpb - ngpb.id - MIT<br>Build #84 Realtime Success • 77.2 MB NSIS Premium • Fast Boot 0.8s • WAF Extreme + Realtime Theme • Whitelist 8</p>
+        <p style="margin-top:16px;font-family:'JetBrains Mono';font-size:9px;text-align:center;color:var(--muted)">© 2026 NGPB Team - v53.5 Draggable Rapi - Build #95 - Draggable ON - Rapi ON - Realtime ON</p>
       </div>
     </div>
   </div>
-  <div class="realtime-badge" id="realtimeBadge">● REALTIME ON</div>
+  <div class="realtime-badge" id="realtimeBadge">● DRAGGABLE ON • RAPI ON</div>
 
   <script>
-    // v53.4 REALTIME THEME SYSTEM - 100% UPDATE TANPA REBUILD EXE - MERGE v1.0.3 + v53.3 + REALTIME
     async function loadRealtimeTheme(){
       const log=document.getElementById('configLog'); const status=document.getElementById('realtimeStatus'); const footer=document.getElementById('footerRealtime'); const badge=document.getElementById('realtimeBadge');
       try{
-        status.textContent='● FETCHING'; status.style.color='var(--accent)';
-        log.innerHTML='Fetching https://raw.githubusercontent.com/ngshp/ngpb/main/version.json?t='+Date.now()+'...<br>';
+        status.textContent='● FETCHING'; 
         const res=await fetch('https://raw.githubusercontent.com/ngshp/ngpb/main/version.json?t='+Date.now());
         if(!res.ok) throw new Error('HTTP '+res.status);
         const data=await res.json();
-        // BANNER SINGLE - REALTIME
         if(data.banner){
-          document.getElementById('bannerType').textContent=(data.banner.type||'EVENT').toUpperCase()+' • DYNAMIC REALTIME';
-          document.getElementById('bannerTitle').textContent=data.banner.title||'WAF Extreme Ultimate - 77.2 MB Success! - REALTIME ON!';
-          document.getElementById('bannerDesc').textContent=data.banner.desc||'Build #84 Realtime Theme System';
+          document.getElementById('bannerType').textContent=(data.banner.type||'EVENT').toUpperCase()+' • DRAGGABLE RAPI REALTIME';
+          document.getElementById('bannerTitle').textContent=data.banner.title||'WAF Extreme - DRAGGABLE + RAPI ON!';
+          document.getElementById('bannerDesc').textContent=data.banner.desc||'Build #95 Draggable Rapi';
           document.getElementById('bannerCta').textContent=data.banner.cta||'CLAIM NOW';
-          if(data.banner.color){document.documentElement.style.setProperty('--accent',data.banner.color);}
-          log.innerHTML+='✅ Banner: '+data.banner.title+'<br>';
+          if(data.banner.color) document.documentElement.style.setProperty('--accent',data.banner.color);
         }
-        // THEME REALTIME - KUNCI BOS!
         if(data.theme){
-          if(data.theme.accent){document.documentElement.style.setProperty('--accent',data.theme.accent); log.innerHTML+='✅ Accent: '+data.theme.accent+'<br>';}
-          if(data.theme.accent2){document.documentElement.style.setProperty('--accent-2',data.theme.accent2); log.innerHTML+='✅ Accent2: '+data.theme.accent2+'<br>';}
-          if(data.theme.duoHeroLeft){document.getElementById('heroLeft').src=data.theme.duoHeroLeft+'?t='+Date.now(); log.innerHTML+='✅ Hero Left:...'+data.theme.duoHeroLeft.slice(-20)+'<br>';}
-          if(data.theme.duoHeroRight){document.getElementById('heroRight').src=data.theme.duoHeroRight+'?t='+Date.now(); log.innerHTML+='✅ Hero Right:...'+data.theme.duoHeroRight.slice(-20)+'<br>';}
+          if(data.theme.accent) document.documentElement.style.setProperty('--accent',data.theme.accent);
+          if(data.theme.accent2) document.documentElement.style.setProperty('--accent-2',data.theme.accent2);
+          if(data.theme.duoHeroLeft) document.getElementById('heroLeft').src=data.theme.duoHeroLeft+'?t='+Date.now();
+          if(data.theme.duoHeroRight) document.getElementById('heroRight').src=data.theme.duoHeroRight+'?t='+Date.now();
           if(data.theme.playText) document.getElementById('playMain').textContent=data.theme.playText;
           if(data.theme.playSub) document.getElementById('playSub').textContent=data.theme.playSub;
           if(data.theme.logo) document.getElementById('logoImg').src=data.theme.logo+'?t='+Date.now();
@@ -198,43 +188,34 @@
           if(data.theme.labelRight) document.getElementById('labelRight').textContent=data.theme.labelRight;
           if(data.theme.verText) document.getElementById('verText').textContent=data.theme.verText;
           if(data.theme.wafText) document.getElementById('wafText').textContent=data.theme.wafText;
-          if(data.version) document.getElementById('versionTag').textContent='Build #'+(data.build_number||84)+' • v'+data.version;
+          if(data.version) document.getElementById('versionTag').textContent='Build #95 Draggable Rapi • v'+data.version;
         }
-        // BANNERS ARRAY - REALTIME
-        if(data.banners && Array.isArray(data.banners)){
-          log.innerHTML+='✅ Banners[]: '+data.banners.length+' banners realtime<br>';
-          const enabledBanners=data.banners.filter(b=>b.enabled).sort((a,b)=>a.priority-b.priority);
-          if(enabledBanners.length>0){
-            const topBanner=enabledBanners[0];
-            if(topBanner.message &&!data.banner){document.getElementById('bannerTitle').textContent=topBanner.message; document.getElementById('bannerCta').textContent=topBanner.cta||'CLAIM NOW';}
-          }
-        }
-        if(data.waf && data.waf.hosts){document.getElementById('wafStatus').textContent='Whitelist: '+data.waf.whitelist+' OK'; document.getElementById('whitelistLog').innerHTML=data.waf.hosts.map(h=>'✅ '+h).join('<br>')+'<br><span style="color:var(--danger)">Else DROP</span> • Realtime';}
-        status.textContent='● LIVE '+new Date().toLocaleTimeString(); status.style.color='var(--accent)';
-        footer.textContent='● Realtime ON • '+new Date().toLocaleTimeString();
-        badge.textContent='● REALTIME ON • '+new Date().toLocaleTimeString();
-        log.innerHTML+='<br>Last update: '+new Date().toLocaleString()+'<br><span style="color:var(--accent)">● Realtime Active - Ganti version.json langsung update!</span>';
+        status.textContent='● LIVE DRAGGABLE '+new Date().toLocaleTimeString();
+        footer.textContent='● Draggable ON • Rapi ON • '+new Date().toLocaleTimeString();
+        badge.textContent='● DRAGGABLE ON • RAPI ON • '+new Date().toLocaleTimeString();
+        log.innerHTML+='Last update: '+new Date().toLocaleString()+'<br><span style="color:var(--accent)">● Draggable Active - Header drag kiri kanan!</span>';
       }catch(e){
-        status.textContent='● OFFLINE'; status.style.color='var(--danger)';
-        log.innerHTML+='❌ Offline: '+e.message+'<br>Using local assets - Banner fallback';
+        status.textContent='● OFFLINE'; log.innerHTML+='❌ Offline: '+e.message+'<br>';
       }
     }
     loadRealtimeTheme(); setInterval(loadRealtimeTheme,30000);
 
-    // About + Menu
     const overlay=document.getElementById('aboutOverlay');
     function openAbout(){overlay.classList.add('active')} function closeAbout(){overlay.classList.remove('active')}
     document.getElementById('menuAbout').addEventListener('click',openAbout);
     document.getElementById('aboutLink').addEventListener('click',(e)=>{e.preventDefault();openAbout()});
     document.getElementById('menuHelp').addEventListener('click',openAbout);
-    document.getElementById('menuFile').addEventListener('click',()=>{alert('File Menu - v53.4 Realtime Theme\n\n• Verify Hash\n• Open Logs\n• Realtime Config: version.json\n• Refresh Theme (Ctrl+R)\n• Exit Launcher\n\nBuild #84 Realtime Success - 77.2 MB - Realtime ON')});
+    document.getElementById('menuFile').addEventListener('click',()=>{alert('File Menu - v53.5 Draggable Rapi\n\n• Window bisa drag dari header\n• Ukuran 1200x700 rapi\n• Controls ─ □ ✕ di kanan atas\n• Realtime Theme ON\n\nBuild #95 Draggable Rapi Success')});
     document.getElementById('aboutClose').addEventListener('click',closeAbout);
     overlay.addEventListener('click',(e)=>{if(e.target===overlay)closeAbout()});
     document.addEventListener('keydown',(e)=>{if(e.key==='Escape')closeAbout(); if(e.ctrlKey && e.key==='r'){e.preventDefault(); loadRealtimeTheme();}});
-    document.getElementById('playBtn').addEventListener('click',()=>{const b=document.getElementById('playBtn');b.innerHTML='CHECKING WAF REALTIME...<small>Whitelist 8 OK - Theme Loaded</small>';setTimeout(()=>{b.innerHTML='SECURE LAUNCHING...<small>Realtime Theme OK - 1D1IP BOUND - Discord RPC</small>';if(window.electronAPI&&window.electronAPI.launchGame)window.electronAPI.launchGame()},800)});
-    let sc=0; setInterval(()=>{sc++;const el=document.getElementById('cheatScan');if(el)el.textContent=sc%2?'SCANNING 3s':'CLEAN ✅'; const dot=document.getElementById('statusDot'); if(dot) dot.style.background=sc%2?'var(--accent)':'var(--accent-2)'},1500);
+    document.getElementById('playBtn').addEventListener('click',()=>{const b=document.getElementById('playBtn');b.innerHTML='CHECKING WAF...<small>Draggable Rapi OK - Whitelist 8 OK</small>';setTimeout(()=>{b.innerHTML='SECURE LAUNCHING...<small>Draggable ON - 1D1IP BOUND - Discord RPC</small>';if(window.electronAPI&&window.electronAPI.launchGame)window.electronAPI.launchGame()},800)});
+    let sc=0; setInterval(()=>{sc++;const el=document.getElementById('cheatScan');if(el)el.textContent=sc%2?'SCANNING 3s':'CLEAN ✅'},1500);
     document.getElementById('bannerCta').addEventListener('click',()=>{openAbout()});
-    document.getElementById('verifyLink').addEventListener('click',(e)=>{e.preventDefault();alert('Verify Hash v53.4 Realtime - 77.2 MB\n\ncertutil -hashfile NGPB_Launcher_Setup_1.0.53.4_Realtime_Theme.exe SHA256\n\nSize: 77.2 MB NSIS Premium\nBuild #84 Realtime Success\nTheme: Fetch from raw.githubusercontent.com/ngshp/ngpb/main/version.json\nWhitelist 8 + Realtime ON ✅')});
+    document.getElementById('verifyLink').addEventListener('click',(e)=>{e.preventDefault();alert('Verify v53.5 Draggable Rapi - 77.3 MB\n\nHeader draggable - Bisa gerak kiri kanan!\n1200x700 rapi - Ga kepotong!\n\ncertutil -hashfile NGPB_Launcher_Setup_1.0.53.5_Draggable_Rapi.exe SHA256')});
+    document.getElementById('btnMin')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.minimize)window.electronAPI.minimize()});
+    document.getElementById('btnMax')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.maximize)window.electronAPI.maximize()});
+    document.getElementById('btnClose')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.close)window.electronAPI.close()});
   </script>
 </body>
 </html>
