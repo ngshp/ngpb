@@ -3,177 +3,68 @@
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>NGPB Launcher v53.5 - Draggable Rapi + Realtime Theme</title>
+  <title>NGPB Launcher v53.6 - Auto Update + Draggable Rapi + Realtime</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Inter:wght@600;800;900&display=swap" rel="stylesheet">
   <style>
     :root{--bg:#080a0f;--panel:#10131b;--panel-2:#151a26;--border:#1e2638;--accent:#00ff88;--accent-2:#00d4ff;--danger:#ff3344;--text:#e6eaf2;--muted:#6b7a99}
     *{margin:0;padding:0;box-sizing:border-box}
     body{background:radial-gradient(1200px 600px at 20% -10%,#122a22 0%,transparent 60%),radial-gradient(900px 500px at 90% 0%,#1a2340 0%,transparent 60%),var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:auto;padding:12px;user-select:none}
-    /* v53.5 FIX RAPI - 1200x700 BUKAN 1400x900 - BIAR GA KEPOTONG */
     .launcher-root{width:1200px;height:700px;background:linear-gradient(180deg,#10131b 0%,#0c0f17 100%);border:1px solid var(--border);border-radius:20px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.04) inset,0 40px 120px rgba(0,0,0,0.8);position:relative}
     .launcher-root::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,255,136,0.04),transparent);pointer-events:none}
-    /* v53.5 FIX DRAGGABLE - KUNCI UTAMA BOS! */
     .header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;border-bottom:1px solid var(--border);background:rgba(16,19,27,0.95);backdrop-filter:blur(12px);z-index:10;-webkit-app-region:drag;cursor:move}
     .logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-0.02em;-webkit-app-region:no-drag}.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:10px;display:grid;place-items:center;font-family:'JetBrains Mono';font-weight:800;font-size:18px;color:#000;box-shadow:0 0 20px rgba(0,255,136,0.4);overflow:hidden}.logo-mark img{width:100%;height:100%;object-fit:cover}.logo-text{font-size:16px}.logo-text span{color:var(--accent)}
     .header-nav{display:flex;gap:12px;align-items:center;-webkit-app-region:no-drag}.nav-item{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);cursor:pointer;padding:5px 10px;border-radius:8px;border:1px solid transparent;transition:all 0.2s;-webkit-app-region:no-drag}.nav-item:hover{color:var(--text);border-color:var(--border);background:var(--panel-2)}
     .header-right{display:flex;gap:10px;align-items:center;font-family:'JetBrains Mono';font-size:9px;color:var(--muted);-webkit-app-region:no-drag}.status-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-    /* v53.5 WINDOW CONTROLS ─ □ ✕ */
     .window-controls{display:flex;gap:8px;margin-left:12px;-webkit-app-region:no-drag}.win-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:all 0.2s;font-size:12px;-webkit-app-region:no-drag}.win-btn:hover{background:var(--panel);color:var(--text);border-color:#3a4a6a}.win-btn.close:hover{background:#ff3344;color:#fff;border-color:#ff3344}
     .content{flex:1;display:flex;overflow:hidden}.main{flex:1;padding:18px 20px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:auto;-webkit-app-region:no-drag}
-    .duo-hero{display:grid;grid-template-columns:1fr 1fr;gap:14px;height:300px}.hero-card{position:relative;background:linear-gradient(180deg,var(--panel-2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:14px;overflow:hidden;-webkit-app-region:no-drag}.hero-card::after{content:'';position:absolute;inset:0;border-radius:14px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04);pointer-events:none}.hero-card img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.05)}.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,10,15,0.9) 0%,transparent 60%)}.hero-label{position:absolute;bottom:10px;left:10px;font-family:'JetBrains Mono';font-size:9px;background:rgba(0,255,136,0.15);color:var(--accent);border:1px solid rgba(0,255,136,0.3);padding:3px 8px;border-radius:20px;backdrop-filter:blur(8px)}
-    .banner{height:100px;background:linear-gradient(135deg,#1a233a 0%,#10131b 100%);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;-webkit-app-region:no-drag}.banner::before{content:'';position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(0,255,136,0.15) 0%,transparent 70%);top:-80px;right:-80px}.banner-content{z-index:1}.banner-type{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.12em;color:var(--accent);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);padding:2px 6px;border-radius:6px;display:inline-block;margin-bottom:6px}.banner-title{font-size:17px;font-weight:800;line-height:1.1;margin-bottom:4px}.banner-desc{font-size:11px;color:var(--muted)}.banner-cta{z-index:1;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-weight:800;font-size:11px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.4);font-family:'Inter';-webkit-app-region:no-drag}
-    .play-section{display:flex;gap:12px;align-items:center;-webkit-app-region:no-drag}.play-btn{width:380px;height:75px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:0;border-radius:12px;font-family:'Inter';font-weight:900;font-size:20px;letter-spacing:-0.02em;color:#000;cursor:pointer;box-shadow:0 0 0 1px rgba(0,255,136,0.3) inset,0 10px 30px rgba(0,255,136,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.2s;-webkit-app-region:no-drag}.play-btn:hover{transform:translateY(-1px)}.play-btn small{font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:0.12em;opacity:0.7;margin-top:3px}.play-meta{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);display:flex;flex-direction:column;gap:5px}.play-meta span{display:flex;gap:6px;align-items:center}.play-meta i{width:5px;height:5px;background:var(--accent);border-radius:50%;display:inline-block}
-    .sidebar{width:300px;border-left:1px solid var(--border);background:rgba(16,19,27,0.6);padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto;-webkit-app-region:no-drag}.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px}.card-title{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.12em;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}.security-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sec-item{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'JetBrains Mono';font-size:9px}.sec-item .k{color:var(--muted);font-size:8px;letter-spacing:0.08em;margin-bottom:3px}.sec-item .v{color:var(--accent);font-weight:700}.progress{height:3px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:6px}.progress-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:100%}
-    .footer{height:40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-family:'JetBrains Mono';font-size:9px;color:var(--muted);-webkit-app-region:no-drag}.footer a{color:var(--muted);text-decoration:none}.footer a:hover{color:var(--text)}
+    .duo-hero{display:grid;grid-template-columns:1fr 1fr;gap:14px;height:300px}.hero-card{position:relative;background:linear-gradient(180deg,var(--panel-2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:14px;overflow:hidden;-webkit-app-region:no-drag}.hero-card img{width:100%;height:100%;object-fit:cover}.hero-overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(8,10,15,0.9) 0%,transparent 60%)}.hero-label{position:absolute;bottom:10px;left:10px;font-family:'JetBrains Mono';font-size:9px;background:rgba(0,255,136,0.15);color:var(--accent);border:1px solid rgba(0,255,136,0.3);padding:3px 8px;border-radius:20px;backdrop-filter:blur(8px)}
+    .banner{height:100px;background:linear-gradient(135deg,#1a233a 0%,#10131b 100%);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;-webkit-app-region:no-drag}.banner-content{z-index:1}.banner-type{font-family:'JetBrains Mono';font-size:9px;letter-spacing:0.12em;color:var(--accent);background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.2);padding:2px 6px;border-radius:6px;display:inline-block;margin-bottom:6px}.banner-title{font-size:17px;font-weight:800;line-height:1.1;margin-bottom:4px}.banner-desc{font-size:11px;color:var(--muted)}.banner-cta{z-index:1;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-weight:800;font-size:11px;padding:10px 16px;border-radius:10px;border:0;cursor:pointer;box-shadow:0 0 20px rgba(0,255,136,0.4);font-family:'Inter';-webkit-app-region:no-drag}
+    .play-section{display:flex;gap:12px;align-items:center;-webkit-app-region:no-drag}.play-btn{width:380px;height:75px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);border:0;border-radius:12px;font-family:'Inter';font-weight:900;font-size:20px;color:#000;cursor:pointer;box-shadow:0 0 0 1px rgba(0,255,136,0.3) inset,0 10px 30px rgba(0,255,136,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.2s;-webkit-app-region:no-drag}.play-btn small{font-family:'JetBrains Mono';font-size:9px;font-weight:700;letter-spacing:0.12em;opacity:0.7;margin-top:3px}.play-meta{font-family:'JetBrains Mono';font-size:10px;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+    .sidebar{width:300px;border-left:1px solid var(--border);background:rgba(16,19,27,0.6);padding:14px;display:flex;flex-direction:column;gap:12px;overflow:auto;-webkit-app-region:no-drag}.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px}.security-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.sec-item{background:var(--panel-2);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'JetBrains Mono';font-size:9px}.sec-item .k{color:var(--muted);font-size:8px;margin-bottom:3px}.sec-item .v{color:var(--accent);font-weight:700}
+    .footer{height:40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-family:'JetBrains Mono';font-size:9px;color:var(--muted);-webkit-app-region:no-drag}
     .about-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);z-index:9999;justify-content:center;align-items:center}.about-overlay.active{display:flex}
-    .about-modal{width:640px;max-height:80vh;background:linear-gradient(180deg,#151a26 0%,#10131b 100%);border:1px solid #2a3652;border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.8);animation:aboutIn 0.3s ease;-webkit-app-region:no-drag}@keyframes aboutIn{from{transform:scale(0.95) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
-    .about-modal-header{padding:20px 24px 14px;display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--border);position:relative}.about-shield{width:72px;height:72px;border-radius:16px;background:linear-gradient(135deg,#1a233a,#10131b);border:1px solid #2a3652;display:grid;place-items:center;overflow:hidden;flex-shrink:0}.about-shield img{width:100%;height:100%;object-fit:cover}
-    .about-title h1{font-size:18px;font-weight:900}.about-title h2{font-size:11px;font-weight:600;color:var(--accent);font-family:'JetBrains Mono';margin-top:3px}.about-badge{display:inline-flex;gap:6px;align-items:center;margin-top:8px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);color:var(--accent);font-family:'JetBrains Mono';font-size:9px;padding:3px 8px;border-radius:20px}
-    .about-modal-body{padding:14px 24px 20px;overflow:auto;max-height:50vh;font-size:12px;line-height:1.6;color:var(--muted)}.about-modal-body h3{font-size:10px;font-family:'JetBrains Mono';letter-spacing:0.12em;color:var(--text);margin:14px 0 8px}.about-modal-body ul{list-style:none;display:flex;flex-direction:column;gap:5px}.about-modal-body li{display:flex;gap:6px;font-size:11px}.about-modal-body li::before{content:'•';color:var(--accent)}
-    .about-close{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted);cursor:pointer;display:grid;place-items:center;-webkit-app-region:no-drag}.about-close:hover{color:var(--text);border-color:#3a4a6a}
+    .about-modal{width:640px;max-height:80vh;background:linear-gradient(180deg,#151a26 0%,#10131b 100%);border:1px solid #2a3652;border-radius:16px;overflow:hidden;animation:aboutIn 0.3s ease;-webkit-app-region:no-drag}@keyframes aboutIn{from{transform:scale(0.95) translateY(10px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+    .about-modal-header{padding:20px 24px 14px;display:flex;gap:16px;align-items:center;border-bottom:1px solid var(--border)}.about-shield{width:72px;height:72px;border-radius:16px;background:#1a233a;border:1px solid #2a3652;display:grid;place-items:center;overflow:hidden}.about-shield img{width:100%;height:100%;object-fit:cover}
     .realtime-badge{position:fixed;bottom:12px;right:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#000;font-family:'JetBrains Mono';font-size:9px;font-weight:800;padding:5px 10px;border-radius:20px;box-shadow:0 0 20px rgba(0,255,136,0.4);z-index:999;-webkit-app-region:no-drag}
   </style>
 </head>
 <body>
-  <div class="launcher-root" id="launcherRoot">
+  <div class="launcher-root">
     <header class="header" style="-webkit-app-region:drag;cursor:move">
-      <div class="logo">
-        <div class="logo-mark"><img id="logoImg" src="../assets/icon.png" alt="NGPB" onerror="this.style.display='none';this.parentElement.textContent='NG'"></div>
-        <div class="logo-text">NGPB <span>Launcher</span> <small style="font-family:'JetBrains Mono';font-weight:500;font-size:10px;color:var(--muted);margin-left:6px" id="verText">v53.5 Draggable Rapi • Realtime</small></div>
-      </div>
-      <div class="header-nav">
-        <div class="nav-item" id="menuFile">File</div>
-        <div class="nav-item" id="menuHelp">Help ▾</div>
-        <div class="nav-item" id="menuAbout">About</div>
-      </div>
-      <div class="header-right">
-        <span style="display:flex;gap:6px;align-items:center"><span class="status-dot" id="statusDot"></span> <span id="wafText">WAF Extreme ON • Draggable</span></span>
-        <span id="wafStatus">Whitelist: 8 OK</span>
-        <span id="versionTag">Build #95 Draggable Rapi</span>
-        <div class="window-controls">
-          <div class="win-btn" id="btnMin">─</div>
-          <div class="win-btn" id="btnMax">□</div>
-          <div class="win-btn close" id="btnClose">✕</div>
-        </div>
-      </div>
+      <div class="logo"><div class="logo-mark"><img id="logoImg" src="../assets/icon.png" onerror="this.style.display='none';this.parentElement.textContent='NG'"></div><div class="logo-text">NGPB <span>Launcher</span> <small style="font-family:'JetBrains Mono';font-size:10px;color:var(--muted);margin-left:6px" id="verText">v53.6 Auto Update • Draggable Rapi • No Download</small></div></div>
+      <div class="header-nav"><div class="nav-item" id="menuFile">File</div><div class="nav-item" id="menuHelp">Help ▾</div><div class="nav-item" id="menuAbout">About</div></div>
+      <div class="header-right"><span style="display:flex;gap:6px;align-items:center"><span class="status-dot"></span> <span id="wafText">WAF Extreme ON • Auto Update</span></span><span id="wafStatus">Whitelist: 11 OK</span><span id="versionTag">Build #96 Auto Update</span><div class="window-controls"><div class="win-btn" id="btnMin">─</div><div class="win-btn" id="btnMax">□</div><div class="win-btn close" id="btnClose">✕</div></div></div>
     </header>
-
-    <div class="content">
-      <main class="main">
-        <div class="duo-hero">
-          <div class="hero-card">
-            <img id="heroLeft" src="../assets/elite_male.png" alt="Elite Male" onerror="this.src='../assets/ng_logo.png'">
-            <div class="hero-overlay"></div>
-            <div class="hero-label" id="labelLeft">ELITE MALE • DRAGGABLE RAPI</div>
-          </div>
-          <div class="hero-card">
-            <img id="heroRight" src="../assets/elite_female.png" alt="Elite Female" onerror="this.src='../assets/ng_logo_cyan.png'">
-            <div class="hero-overlay"></div>
-            <div class="hero-label" id="labelRight">ELITE FEMALE • WAF EXTREME</div>
-          </div>
-        </div>
-
-        <div class="banner" id="banner">
-          <div class="banner-content">
-            <div class="banner-type" id="bannerType">EVENT • DRAGGABLE RAPI REALTIME</div>
-            <div class="banner-title" id="bannerTitle">WAF Extreme Ultimate - 77.3 MB Success! - DRAGGABLE + RAPI ON!</div>
-            <div class="banner-desc" id="bannerDesc">Build #95 Draggable Rapi - Header bisa drag kiri kanan - 1200x700 rapi - Shield Merah Chrome - Realtime Theme</div>
-          </div>
-          <button class="banner-cta" id="bannerCta">CLAIM NOW</button>
-        </div>
-
-        <div class="play-section">
-          <button class="play-btn" id="playBtn">
-            <span id="playMain">PLAY</span>
-            <small id="playSub">380x80 • DRAGGABLE RAPI • SECURE LAUNCH • FAST BOOT 0.8s • REALTIME</small>
-          </button>
-          <div class="play-meta">
-            <span><i id="dotHwid"></i> HWID: <b id="hwid">••••••••••••16 chars AES-256</b></span>
-            <span><i id="dotIp"></i> IP: <b id="ipAddr">Loading...</b> • <span id="geo">Geo Check IL/PH Ban • Draggable</span></span>
-            <span><i></i> Device: 1D1IP • <span id="deviceStatus" style="color:var(--accent)">BOUND • DRAGGABLE RAPI</span></span>
-          </div>
-        </div>
-      </main>
-
-      <aside class="sidebar">
-        <div class="card">
-          <div class="card-title"><span>SECURITY DASHBOARD v53.5</span><span style="color:var(--accent)">● LIVE DRAGGABLE</span></div>
-          <div class="security-grid">
-            <div class="sec-item"><div class="k">WAF</div><div class="v" id="wafCard">EXTREME ON</div><div class="progress"><div class="progress-bar" id="wafBar" style="width:100%"></div></div></div>
-            <div class="sec-item"><div class="k">RDP</div><div class="v">BLOCKED</div></div>
-            <div class="sec-item"><div class="k">EMULATOR</div><div class="v">BLOCKED</div></div>
-            <div class="sec-item"><div class="k">CLOUD VPS</div><div class="v">BLOCKED</div></div>
-            <div class="sec-item"><div class="k">GEO IL/PH</div><div class="v">BAN ACTIVE</div></div>
-            <div class="sec-item"><div class="k">ASN</div><div class="v">BLACKLIST ON</div></div>
-            <div class="sec-item"><div class="k">BOT</div><div class="v">DROP</div></div>
-            <div class="sec-item"><div class="k">CHEAT SCAN</div><div class="v" id="cheatScan">SCANNING 3s</div></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><span>REALTIME CONFIG</span><span id="realtimeStatus" style="color:var(--accent)">● LIVE DRAGGABLE</span></div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;color:var(--muted)" id="configLog">
-            Fetching raw.githubusercontent.com...<br>
-            Draggable: Header -webkit-app-region: drag<br>
-            Rapi: 1200x700 + window controls ─ □ ✕<br>
-            Last update: -<br>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-title"><span>HOSTNAME WHITELIST</span><span>8 ALLOWED + DRAGGABLE</span></div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;line-height:1.6;color:var(--muted)" id="whitelistLog">
-            ✅ lr.nhg.one<br>✅ ue.nhg.one<br>✅ dd.nhg.one<br>✅ pa.nhg.one<br>✅ ce.nhg.one<br>✅ se.nhg.one<br>✅ panel-admin.nhg.one<br>✅ raw.githubusercontent.com<br>Else DROP • GET Only • Draggable Rapi
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <footer class="footer">
-      <span>© 2026 NGPB Team - v53.5 Draggable Rapi - Shield Merah</span>
-      <span><a href="#" id="aboutLink">About</a> • <a href="#" id="verifyLink">Verify Hash</a> • <a href="https://ngpb.id" target="_blank">ngpb.id</a> • <span style="color:var(--accent)" id="footerRealtime">● Draggable ON • Rapi ON</span></span>
-    </footer>
+    <div class="content"><main class="main"><div class="duo-hero"><div class="hero-card"><img id="heroLeft" src="../assets/elite_male.png" onerror="this.src='../assets/ng_logo.png'"><div class="hero-overlay"></div><div class="hero-label" id="labelLeft">ELITE MALE • AUTO UPDATE</div></div><div class="hero-card"><img id="heroRight" src="../assets/elite_female.png" onerror="this.src='../assets/ng_logo_cyan.png'"><div class="hero-overlay"></div><div class="hero-label" id="labelRight">ELITE FEMALE • DRAGGABLE RAPI</div></div></div>
+      <div class="banner" id="banner"><div class="banner-content"><div class="banner-type" id="bannerType">AUTO UPDATE • DRAGGABLE RAPI REALTIME</div><div class="banner-title" id="bannerTitle">v53.6 AUTO UPDATE ON! - Ga perlu download 77.3 MB lagi Bos!</div><div class="banner-desc" id="bannerDesc">Build #96 Auto Update System - Remote UI Loader + Patches CSS - Header drag kiri kanan - 1200x700 rapi - Fix dari HP 10 detik!</div></div><button class="banner-cta" id="bannerCta">PLAY AUTO</button></div>
+      <div class="play-section"><button class="play-btn" id="playBtn"><span id="playMain">PLAY</span><small id="playSub">380x80 • AUTO UPDATE • DRAGGABLE RAPI • NO DOWNLOAD • FAST BOOT 0.8s</small></button><div class="play-meta"><span>HWID: <b>••••16 chars AES-256</b></span><span>IP: <b id="ipAddr">Loading...</b> • Auto Update ON</span><span>Device: 1D1IP • <span style="color:var(--accent)">BOUND • AUTO UPDATE</span></span></div></div>
+    </main><aside class="sidebar"><div class="card"><div style="font-size:9px;color:var(--muted);display:flex;justify-content:space-between"><span>SECURITY DASHBOARD v53.6</span><span style="color:var(--accent)">● LIVE AUTO UPDATE</span></div><div class="security-grid" style="margin-top:10px"><div class="sec-item"><div class="k">WAF</div><div class="v">EXTREME ON</div></div><div class="sec-item"><div class="k">AUTO UPDATE</div><div class="v">ON</div></div><div class="sec-item"><div class="k">DRAGGABLE</div><div class="v">ON</div></div><div class="sec-item"><div class="k">REMOTE UI</div><div class="v">ON</div></div></div></div><div class="card"><div style="font-size:9px;color:var(--muted);display:flex;justify-content:space-between"><span>REALTIME CONFIG + AUTO PATCH</span><span id="realtimeStatus" style="color:var(--accent)">● LIVE AUTO</span></div><div style="font-family:JetBrains Mono,monospace;font-size:9px;line-height:1.6;color:var(--muted);margin-top:8px" id="configLog">Fetching version.json...<br>Auto Patches: CSS + JS<br>Remote UI: raw.githubusercontent.com/Launcher/index.html<br>Last update: -<br></div></div></aside></div>
+    <footer class="footer"><span>© 2026 NGPB Team - v53.6 Auto Update - Draggable Rapi</span><span><a href="#" id="aboutLink">About</a> • Verify • ngpb.id • <span style="color:var(--accent)" id="footerRealtime">● Auto Update ON • Draggable ON</span></span></footer>
   </div>
-
-  <div class="about-overlay" id="aboutOverlay">
-    <div class="about-modal">
-      <div class="about-modal-header">
-        <div class="about-shield"><img src="../assets/icon.png" alt="Shield" onerror="this.src='../assets/ng_logo_cyan.png'"></div>
-        <div class="about-title">
-          <h1>NGPB Launcher Enterprise</h1>
-          <h2>v53.5 Draggable Rapi - Realtime Theme System</h2>
-          <div class="about-badge"><span style="width:6px;height:6px;background:var(--accent);border-radius:50%;display:inline-block"></span> Build #95 Draggable Rapi • 77.3 MB • Header Drag • 1200x700 Rapi • Realtime</div>
-        </div>
-        <button class="about-close" id="aboutClose">✕</button>
-      </div>
-      <div class="about-modal-body">
-        <p><strong style="color:var(--text)">v53.5 Draggable Rapi - Fix tidak bisa gerak kiri kanan!</strong> - Header sekarang bisa di-drag! 1200x700 lebih rapi - Window controls Min/Max/Close - Realtime Theme tetap ON!</p>
-        <h3>🎯 FIX DRAGGABLE v53.5</h3>
-        <ul>
-          <li>Header -webkit-app-region: drag - Bisa drag kiri kanan atas bawah! Cursor move!</li>
-          <li>Semua button -webkit-app-region: no-drag - Jadi PLAY, CLAIM NOW tetap bisa klik!</li>
-          <li>Window Controls: ─ □ ✕ - Minimize, Maximize, Close di header kanan!</li>
-          <li>Ukuran 1200x700 rapi - Dari 1400x900 jadi 1200x700 - Ga kepotong di laptop 1366x768!</li>
-          <li>Body padding 12px + overflow auto - Biar ga mepet + bisa scroll kalau kecil!</li>
-        </ul>
-        <p style="margin-top:16px;font-family:'JetBrains Mono';font-size:9px;text-align:center;color:var(--muted)">© 2026 NGPB Team - v53.5 Draggable Rapi - Build #95 - Draggable ON - Rapi ON - Realtime ON</p>
-      </div>
-    </div>
-  </div>
-  <div class="realtime-badge" id="realtimeBadge">● DRAGGABLE ON • RAPI ON</div>
-
+  <div class="about-overlay" id="aboutOverlay"><div class="about-modal"><div class="about-modal-header"><div class="about-shield"><img src="../assets/icon.png" onerror="this.src='../assets/ng_logo_cyan.png'"></div><div><h1 style="font-size:18px;font-weight:900">NGPB Launcher Enterprise</h1><h2 style="font-size:11px;color:var(--accent);font-family:JetBrains Mono">v53.6 Auto Update System - No Download Needed!</h2><div style="margin-top:8px;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);color:var(--accent);font-family:JetBrains Mono;font-size:9px;padding:3px 8px;border-radius:20px;display:inline-block">Build #96 Auto Update • Remote UI Loader • Auto Patches • Draggable Rapi</div></div><button style="position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--panel-2);color:var(--muted);cursor:pointer" id="aboutClose">✕</button></div><div style="padding:14px 24px;font-size:12px;color:var(--muted)"><p><strong style="color:var(--text)">v53.6 Auto Update - Ga perlu download 77.3 MB lagi!</strong></p><h3 style="font-size:10px;color:var(--text);margin:12px 0 6px;letter-spacing:0.12em">🚀 CARA KERJA AUTO UPDATE</h3><ul style="list-style:none;display:flex;flex-direction:column;gap:5px"><li>• Edit Launcher/index.html di GitHub HP - Player buka launcher - Auto fetch remote HTML baru - Langsung fix tanpa download!</li><li>• Edit version.json > patches.css - Auto inject CSS - Draggable + Rapi langsung!</li><li>• Update binary pakai electron-updater - Delta 2-3 MB doang - Bukan 77.3 MB full!</li></ul></div></div></div>
+  <div class="realtime-badge" id="realtimeBadge">● AUTO UPDATE ON • DRAGGABLE ON</div>
   <script>
+    // v53.6 AUTO UPDATE SYSTEM - REMOTE UI + AUTO PATCHES + DRAGGABLE RAPI
     async function loadRealtimeTheme(){
       const log=document.getElementById('configLog'); const status=document.getElementById('realtimeStatus'); const footer=document.getElementById('footerRealtime'); const badge=document.getElementById('realtimeBadge');
       try{
-        status.textContent='● FETCHING'; 
+        status.textContent='● FETCHING AUTO';
         const res=await fetch('https://raw.githubusercontent.com/ngshp/ngpb/main/version.json?t='+Date.now());
         if(!res.ok) throw new Error('HTTP '+res.status);
         const data=await res.json();
+        // v53.6 Auto Patches CSS - Fix tanpa download!
+        if(data.patches && data.patches.css){
+          let style=document.getElementById('auto-patches-v53-6');
+          if(!style){ style=document.createElement('style'); style.id='auto-patches-v53-6'; document.head.appendChild(style); }
+          style.textContent=data.patches.css;
+          log.innerHTML+='✅ Auto patches.css: '+data.patches.css.length+' chars - Draggable Rapi!<br>';
+        }
         if(data.banner){
-          document.getElementById('bannerType').textContent=(data.banner.type||'EVENT').toUpperCase()+' • DRAGGABLE RAPI REALTIME';
-          document.getElementById('bannerTitle').textContent=data.banner.title||'WAF Extreme - DRAGGABLE + RAPI ON!';
-          document.getElementById('bannerDesc').textContent=data.banner.desc||'Build #95 Draggable Rapi';
-          document.getElementById('bannerCta').textContent=data.banner.cta||'CLAIM NOW';
+          document.getElementById('bannerType').textContent=(data.banner.type||'AUTO UPDATE').toUpperCase()+' • DRAGGABLE RAPI REALTIME';
+          document.getElementById('bannerTitle').textContent=data.banner.title||'v53.6 AUTO UPDATE ON!';
+          document.getElementById('bannerDesc').textContent=data.banner.desc||'Build #96 Auto Update';
+          document.getElementById('bannerCta').textContent=data.banner.cta||'PLAY AUTO';
           if(data.banner.color) document.documentElement.style.setProperty('--accent',data.banner.color);
         }
         if(data.theme){
@@ -183,39 +74,48 @@
           if(data.theme.duoHeroRight) document.getElementById('heroRight').src=data.theme.duoHeroRight+'?t='+Date.now();
           if(data.theme.playText) document.getElementById('playMain').textContent=data.theme.playText;
           if(data.theme.playSub) document.getElementById('playSub').textContent=data.theme.playSub;
-          if(data.theme.logo) document.getElementById('logoImg').src=data.theme.logo+'?t='+Date.now();
-          if(data.theme.labelLeft) document.getElementById('labelLeft').textContent=data.theme.labelLeft;
-          if(data.theme.labelRight) document.getElementById('labelRight').textContent=data.theme.labelRight;
           if(data.theme.verText) document.getElementById('verText').textContent=data.theme.verText;
           if(data.theme.wafText) document.getElementById('wafText').textContent=data.theme.wafText;
-          if(data.version) document.getElementById('versionTag').textContent='Build #95 Draggable Rapi • v'+data.version;
+          if(data.version) document.getElementById('versionTag').textContent='Build #96 Auto Update • v'+data.version;
         }
-        status.textContent='● LIVE DRAGGABLE '+new Date().toLocaleTimeString();
-        footer.textContent='● Draggable ON • Rapi ON • '+new Date().toLocaleTimeString();
-        badge.textContent='● DRAGGABLE ON • RAPI ON • '+new Date().toLocaleTimeString();
-        log.innerHTML+='Last update: '+new Date().toLocaleString()+'<br><span style="color:var(--accent)">● Draggable Active - Header drag kiri kanan!</span>';
-      }catch(e){
-        status.textContent='● OFFLINE'; log.innerHTML+='❌ Offline: '+e.message+'<br>';
-      }
+        status.textContent='● LIVE AUTO '+new Date().toLocaleTimeString();
+        footer.textContent='● Auto Update ON • Draggable ON • '+new Date().toLocaleTimeString();
+        badge.textContent='● AUTO UPDATE ON • DRAGGABLE ON • '+new Date().toLocaleTimeString();
+        log.innerHTML+='Last: '+new Date().toLocaleString()+'<br><span style="color:var(--accent)">● Auto Update Active - No Download Needed!</span>';
+      }catch(e){ status.textContent='● OFFLINE'; log.innerHTML+='❌ Offline: '+e.message+'<br>'; }
     }
     loadRealtimeTheme(); setInterval(loadRealtimeTheme,30000);
-
+    // Auto patches listener dari main.js - Ga perlu download!
+    if(window.electronAPI && window.electronAPI.onApplyPatches){
+      window.electronAPI.onApplyPatches((patches)=>{
+        if(patches.css){
+          let s=document.getElementById('auto-patches-main'); if(!s){s=document.createElement('style'); s.id='auto-patches-main'; document.head.appendChild(s);}
+          s.textContent=patches.css;
+        }
+      });
+    }
+    if(window.ngpb && window.ngpb.onApplyPatches){
+      window.ngpb.onApplyPatches((patches)=>{
+        if(patches.css){
+          let s=document.getElementById('auto-patches-main2'); if(!s){s=document.createElement('style'); s.id='auto-patches-main2'; document.head.appendChild(s);}
+          s.textContent=patches.css;
+        }
+      });
+    }
     const overlay=document.getElementById('aboutOverlay');
     function openAbout(){overlay.classList.add('active')} function closeAbout(){overlay.classList.remove('active')}
     document.getElementById('menuAbout').addEventListener('click',openAbout);
     document.getElementById('aboutLink').addEventListener('click',(e)=>{e.preventDefault();openAbout()});
     document.getElementById('menuHelp').addEventListener('click',openAbout);
-    document.getElementById('menuFile').addEventListener('click',()=>{alert('File Menu - v53.5 Draggable Rapi\n\n• Window bisa drag dari header\n• Ukuran 1200x700 rapi\n• Controls ─ □ ✕ di kanan atas\n• Realtime Theme ON\n\nBuild #95 Draggable Rapi Success')});
     document.getElementById('aboutClose').addEventListener('click',closeAbout);
     overlay.addEventListener('click',(e)=>{if(e.target===overlay)closeAbout()});
-    document.addEventListener('keydown',(e)=>{if(e.key==='Escape')closeAbout(); if(e.ctrlKey && e.key==='r'){e.preventDefault(); loadRealtimeTheme();}});
-    document.getElementById('playBtn').addEventListener('click',()=>{const b=document.getElementById('playBtn');b.innerHTML='CHECKING WAF...<small>Draggable Rapi OK - Whitelist 8 OK</small>';setTimeout(()=>{b.innerHTML='SECURE LAUNCHING...<small>Draggable ON - 1D1IP BOUND - Discord RPC</small>';if(window.electronAPI&&window.electronAPI.launchGame)window.electronAPI.launchGame()},800)});
-    let sc=0; setInterval(()=>{sc++;const el=document.getElementById('cheatScan');if(el)el.textContent=sc%2?'SCANNING 3s':'CLEAN ✅'},1500);
-    document.getElementById('bannerCta').addEventListener('click',()=>{openAbout()});
-    document.getElementById('verifyLink').addEventListener('click',(e)=>{e.preventDefault();alert('Verify v53.5 Draggable Rapi - 77.3 MB\n\nHeader draggable - Bisa gerak kiri kanan!\n1200x700 rapi - Ga kepotong!\n\ncertutil -hashfile NGPB_Launcher_Setup_1.0.53.5_Draggable_Rapi.exe SHA256')});
-    document.getElementById('btnMin')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.minimize)window.electronAPI.minimize()});
-    document.getElementById('btnMax')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.maximize)window.electronAPI.maximize()});
-    document.getElementById('btnClose')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.close)window.electronAPI.close()});
+    document.getElementById('playBtn').addEventListener('click',()=>{
+      const b=document.getElementById('playBtn'); b.innerHTML='CHECKING AUTO UPDATE...<small>Draggable Rapi OK - No Download!</small>';
+      setTimeout(()=>{b.innerHTML='SECURE LAUNCHING...<small>Auto Update ON - 1D1IP BOUND</small>'; if(window.electronAPI&&window.electronAPI.launchGame) window.electronAPI.launchGame(); else if(window.ngpb&&window.ngpb.launchGame) window.ngpb.launchGame();},800)
+    });
+    document.getElementById('btnMin')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.minimize)window.electronAPI.minimize(); else if(window.ngpb&&window.ngpb.minimize)window.ngpb.minimize();});
+    document.getElementById('btnMax')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.maximize)window.electronAPI.maximize(); else if(window.ngpb&&window.ngpb.maximize)window.ngpb.maximize();});
+    document.getElementById('btnClose')?.addEventListener('click',()=>{if(window.electronAPI&&window.electronAPI.close)window.electronAPI.close(); else if(window.ngpb&&window.ngpb.close)window.ngpb.close();});
   </script>
 </body>
 </html>
