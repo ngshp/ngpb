@@ -1,6 +1,6 @@
 appId: com.ngshp.ngpb.launcher
 productName: NG PB Launcher
-copyright: Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher
+copyright: Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.6 Auto Update System - Draggable Rapi - No Download Needed! - Secure Launcher
 
 directories:
   buildResources: assets
@@ -10,10 +10,12 @@ files:
     - main.js
     - preload.js
     - index.html
+    - Launcher/**/*
     - launcher/**/*
     - security/**/*
     - src/**/*
     - assets/**/*
+    - version.json
     - "!**/*.map"
     - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
     - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
@@ -26,6 +28,12 @@ extraResources:
     to: assets/
     filter:
             - "**/*"
+    - from: Launcher/
+    to: Launcher/
+    filter:
+            - "**/*"
+    - from: version.json
+    to: version.json
 
 win:
   icon: assets/icon.ico
@@ -33,7 +41,7 @@ win:
         - target: nsis
       arch:
                 - x64
-  artifactName: NGPB_Launcher_Setup_${version}_WAF_Extreme_Ultimate.exe
+  artifactName: NGPB_Launcher_Setup_${version}_Auto_Update_Draggable_Rapi.exe
   publisherName: NGPB Team
   verifyUpdateCodeSignature: false
 
@@ -46,7 +54,7 @@ nsis:
   installerIcon: assets/icon.ico
   uninstallerIcon: assets/icon.ico
   shortcutName: NG PB Launcher
-  uninstallDisplayName: NG PB Launcher v${version} - WAF Extreme Ultimate
+  uninstallDisplayName: NG PB Launcher v${version} - v53.6 Auto Update - Draggable Rapi - No Download Needed!
   displayLanguageSelector: false
   include: installer.nsh
   warningsAsErrors: false
@@ -57,8 +65,16 @@ publish:
   repo: ngpb
   private: false
   releaseType: release
+  # v53.6 Auto Update - Delta 2-3 MB - Bukan 77.3 MB full!
+  # electron-updater akan pakai ini buat auto download delta
 
 compression: maximum
 asar: true
 npmRebuild: true
 buildDependenciesFromSource: false
+# v53.6 Auto Update - Asar unpack buat remote UI loader bisa baca
+asarUnpack:
+    - "**/node_modules/electron-updater/**/*"
+    - "**/node_modules/electron-log/**/*"
+    - "Launcher/**/*"
+    - "version.json"
