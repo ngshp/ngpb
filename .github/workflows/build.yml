@@ -1,4 +1,4 @@
-name: Build NGPB Launcher 53.4 Realtime Theme System - WAF Extreme + Realtime
+name: Build NGPB Launcher 53.4 Realtime Theme System - WAF Extreme + Realtime - FIX 404
 
 on:
   push:
@@ -28,138 +28,92 @@ jobs:
       - name: Clean & Install - 53.4 Realtime Theme System
         shell: pwsh
         run: |
-          Write-Host "=== NGPB Launcher v53.4 Realtime Theme System - WAF Extreme + Realtime - Clean & Install ===" -ForegroundColor Cyan
-          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force; Write-Host "✅ Removed assets/p bug" -ForegroundColor Yellow }
-          if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force; Write-Host "✅ Cleaned dist/" -ForegroundColor Green }
-          if (Test-Path "node_modules") { Remove-Item "node_modules" -Recurse -Force; Write-Host "✅ Cleaned node_modules/" -ForegroundColor Green }
-          if (Test-Path "package-lock.json") { Remove-Item "package-lock.json" -Force; Write-Host "✅ Cleaned package-lock.json" -ForegroundColor Green }
+          Write-Host "=== NGPB Launcher v53.4 Realtime Theme System - FIX 404 ===" -ForegroundColor Cyan
+          if (Test-Path "assets/p") { Remove-Item "assets/p" -Force }
+          if (Test-Path "dist") { Remove-Item "dist" -Recurse -Force }
+          if (Test-Path "node_modules") { Remove-Item "node_modules" -Recurse -Force }
+          if (Test-Path "package-lock.json") { Remove-Item "package-lock.json" -Force }
           npm install --no-audit --no-fund
-          Write-Host "✅ npm install done - electron 30.0.9 + electron-builder 24.13.3 + electron-updater 6.6.2 + electron-log 5.2.0" -ForegroundColor Green
+          Write-Host "✅ npm install done - 30.0.9 + 24.13.3 + 6.6.2" -ForegroundColor Green
 
-      - name: Fix corrupt icon.ico - Unknown format - 53.4 Realtime
+      - name: Fix corrupt icon.ico - 53.4 Realtime
         shell: pwsh
         run: |
-          Write-Host "`n=== Fix icon.ico - Unknown format - 53.4 Realtime Theme ===" -ForegroundColor Cyan
           if (Test-Path "assets/icon.ico") {
             $bytes = [System.IO.File]::ReadAllBytes("assets/icon.ico")
             if (($bytes[0] -eq 0x89) -and ($bytes[1] -eq 0x50) -and ($bytes[2] -eq 0x4E) -and ($bytes[3] -eq 0x47)) {
-              Write-Host "❌ assets/icon.ico is PNG renamed! Header 89 50 4E 47 - Removing corrupt icon!" -ForegroundColor Red
               Remove-Item "assets/icon.ico" -Force
-              Write-Host "✅ Removed corrupt icon.ico" -ForegroundColor Yellow
-            } else {
-              Write-Host "✅ assets/icon.ico header OK - $($bytes[0]) $($bytes[1]) $($bytes[2]) $($bytes[3]) - Valid ICO 00 00 01 00" -ForegroundColor Green
             }
           }
           if (-not (Test-Path "assets/icon.ico")) {
-            Write-Host "⚠️ icon.ico missing after fix - Will use PNG fallback + Realtime" -ForegroundColor Yellow
-            if (Test-Path "assets/ng_logo_cyan.png") {
-              Copy-Item "assets/ng_logo_cyan.png" "assets/icon.png" -Force
-              Write-Host "✅ Copied ng_logo_cyan.png to icon.png - Realtime fallback" -ForegroundColor Green
-            } elseif (Test-Path "assets/ng_logo.png") {
-              Copy-Item "assets/ng_logo.png" "assets/icon.png" -Force
-              Write-Host "✅ Copied ng_logo.png to icon.png - Realtime fallback" -ForegroundColor Green
-            }
+            if (Test-Path "assets/ng_logo_cyan.png") { Copy-Item "assets/ng_logo_cyan.png" "assets/icon.png" -Force }
           }
 
-      - name: Verify assets & security modules & realtime config - 53.4
+      - name: Verify assets & realtime config - 53.4 FIX
         shell: pwsh
         run: |
-          Write-Host "`n=== Verify Assets & Security Modules 53.4 Realtime Theme System ===" -ForegroundColor Cyan
-          if (Test-Path "assets/icon.ico") { Write-Host "✅ assets/icon.ico - Valid ICO Shield Merah Chrome" -ForegroundColor Green }
-          elseif (Test-Path "assets/icon.png") { Write-Host "✅ assets/icon.png - PNG fallback Shield Merah" -ForegroundColor Green }
-          else { Write-Host "⚠️ No icon found - Will use default Electron icon - Realtime" -ForegroundColor Yellow }
-          if (Test-Path "assets/elite_male.png") { Write-Host "✅ assets/elite_male.png - Duo Hero Male - Realtime Theme" -ForegroundColor Green }
-          if (Test-Path "assets/elite_female.png") { Write-Host "✅ assets/elite_female.png - Duo Hero Female - Realtime Theme" -ForegroundColor Green }
-          if (Test-Path "Launcher/index.html") { Write-Host "✅ Launcher/index.html - Kapital L - 1400x900 Realtime Theme - FOUND!" -ForegroundColor Green }
-          elseif (Test-Path "launcher/index.html") { Write-Host "✅ launcher/index.html - 1400x900 Realtime Theme" -ForegroundColor Green }
-          else { Write-Host "❌ launcher/index.html MISSING!" -ForegroundColor Red; exit 1 }
-          if (Test-Path "version.json") {
-            $ver = Get-Content "version.json" | ConvertFrom-Json
-            Write-Host "✅ version.json v$($ver.version) - Realtime Theme: $($ver.theme.accent) + $($ver.banners.Count) banners - Realtime ON!" -ForegroundColor Green
-          } else { Write-Host "⚠️ version.json missing - Will use fallback" -ForegroundColor Yellow }
-          if (Test-Path "installer.nsh") { Write-Host "✅ installer.nsh - NSIS Premium 77.2 MB - Realtime" -ForegroundColor Green } else { Write-Host "⚠️ installer.nsh missing - NSIS default" -ForegroundColor Yellow }
-          if (Test-Path "main.js") { Write-Host "✅ main.js - v53.4 Realtime Theme - webSecurity false + WAF 11 hosts" -ForegroundColor Green } else { Write-Host "❌ main.js MISSING!" -ForegroundColor Red; exit 1 }
-          if (Test-Path "preload.js") { Write-Host "✅ preload.js - Realtime IPC" -ForegroundColor Green }
-          if (Test-Path "package.json") { $pkg = Get-Content "package.json" | ConvertFrom-Json; Write-Host "✅ package.json v$($pkg.version) - Realtime Theme System - 77.2 MB" -ForegroundColor Green }
+          Write-Host "=== Verify 53.4 Realtime FIX 404 ===" -ForegroundColor Cyan
+          if (Test-Path "Launcher/index.html") { Write-Host "✅ Launcher/index.html - Kapital L FOUND!" -ForegroundColor Green }
+          elseif (Test-Path "launcher/index.html") { Write-Host "✅ launcher/index.html FOUND" -ForegroundColor Green }
+          else { Write-Host "❌ launcher/index.html MISSING!"; exit 1 }
+          if (Test-Path "version.json") { $ver = Get-Content "version.json" | ConvertFrom-Json; Write-Host "✅ version.json v$($ver.version) - Realtime ON!" -ForegroundColor Green }
+          if (Test-Path "main.js") { Write-Host "✅ main.js v53.4" -ForegroundColor Green } else { exit 1 }
 
-      - name: Build Electron - 53.4 Realtime Theme - 77.2 MB NSIS Premium
+      - name: Build Electron - 53.4 - 77.2 MB
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: pwsh
         run: |
-          Write-Host "`n=== Build Electron - v53.4 Realtime Theme System - 77.2 MB NSIS Premium - Realtime ON ===" -ForegroundColor Cyan
-          if ((Test-Path "assets/icon.png") -and (-not (Test-Path "assets/icon.ico"))) {
-            Write-Host "Using PNG icon - Overriding win.icon via --config - Realtime Theme" -ForegroundColor Yellow
-            npx electron-builder --win --x64 --publish never --config.win.icon="assets/icon.png"
-          } else {
-            npx electron-builder --win --x64 --publish never
-          }
-          Write-Host "✅ Build done - Check dist/ - 77.2 MB Realtime Theme" -ForegroundColor Green
+          Write-Host "=== Build 53.4 Realtime 77.2 MB ===" -ForegroundColor Cyan
+          npx electron-builder --win --x64 --publish never
+          Write-Host "✅ Build done" -ForegroundColor Green
 
-      - name: List dist - 77.2 MB EXE + Hashes + Realtime
+      - name: List dist - 77.2 MB
         shell: pwsh
         run: |
-          Write-Host "`n=== List dist/ - 53.4 Realtime Theme System - 77.2 MB ===" -ForegroundColor Cyan
-          Get-ChildItem dist | Format-Table Name, Length, LastWriteTime -AutoSize
+          Get-ChildItem dist | Format-Table Name, Length -AutoSize
           $exe = Get-ChildItem -Path "dist" -Filter "*.exe" | Select-Object -First 1
-          if ($exe) {
-            $sizeMB = [math]::Round($exe.Length/1MB,2)
-            Write-Host "✅ EXE Found: $($exe.Name) - $sizeMB MB - Realtime Theme ON!" -ForegroundColor Green
-            if ($sizeMB -lt 50) { Write-Host "⚠️ Size $sizeMB MB <50 MB - Check asar" -ForegroundColor Yellow }
-            else { Write-Host "✅ Size $sizeMB MB - 77.2 MB NSIS Premium - Realtime Theme - OK!" -ForegroundColor Green }
-          }
-          else { Write-Host "❌ No EXE found! - Build Failed!" -ForegroundColor Red; exit 1 }
+          if (-not $exe) { Write-Host "❌ No EXE"; exit 1 }
+          Write-Host "✅ EXE: $($exe.Name) - $([math]::Round($exe.Length/1MB,2)) MB" -ForegroundColor Green
 
-      - name: Generate hashes.txt + Verify - SHA256 + SHA512 - Realtime
+      - name: Generate hashes.txt - Realtime
         shell: pwsh
         run: |
-          Write-Host "`n=== Generate hashes.txt - v53.4 Realtime Theme System ===" -ForegroundColor Cyan
           $exe = Get-ChildItem -Path "dist" -Filter "*.exe" | Select-Object -First 1
-          if ($exe) {
-            $hash256 = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
-            $hash512 = (Get-FileHash $exe.FullName -Algorithm SHA512).Hash
-            $sizeMB = [math]::Round($exe.Length/1MB,2)
-            @"
-          # NGPB Launcher v53.4 Realtime Theme System - 77.2 MB - WAF Extreme + Realtime
-          # Built by ngshp from mobile - Realtime Theme System - Duo Hero Realtime - Shield Merah Chrome
+          $hash256 = (Get-FileHash $exe.FullName -Algorithm SHA256).Hash
+          $hash512 = (Get-FileHash $exe.FullName -Algorithm SHA512).Hash
+          $sizeMB = [math]::Round($exe.Length/1MB,2)
+          @"
+          # NGPB Launcher v53.4 Realtime - 77.2 MB - FIX 404
           File: $($exe.Name)
-          Version: 1.0.53.4 Realtime Theme System
-          Size: $sizeMB MB - 77.2 MB NSIS Premium - Realtime Theme ON
+          Version: 1.0.53.4 Realtime Theme
+          Size: $sizeMB MB
           SHA256: $hash256
           SHA512: $hash512
-          Verify: certutil -hashfile $($exe.Name) SHA256
-          Realtime Config: https://raw.githubusercontent.com/ngshp/ngpb/main/version.json
-          Theme: Fetch from version.json - accent, duo hero, banner, play text - Ganti dari HP!
-          WAF: Whitelist 11 inc raw.githubusercontent.com + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block
-          Build: #84 Realtime Success - Fix Launcher kapital + version.json + webSecurity false
-          © 2026 NGPB Team - v53.4 Realtime Theme System - 77.2 MB - Shield Merah Chrome
+          Realtime: https://raw.githubusercontent.com/ngshp/ngpb/main/version.json
+          Build: #85 Fix Duplicate version.json 404
           "@ | Out-File -FilePath "dist/hashes.txt" -Encoding utf8
-            Write-Host "✅ hashes.txt generated - Realtime Theme" -ForegroundColor Green
-            Get-Content "dist/hashes.txt"
-            # Also create version.json in dist for verification
-            if (Test-Path "version.json") { Copy-Item "version.json" "dist/version.json" -Force; Write-Host "✅ Copied version.json to dist/ - Realtime Config" -ForegroundColor Green }
-          } else { Write-Host "❌ No EXE - Cannot generate hash!" -ForegroundColor Red; exit 1 }
+          Get-Content "dist/hashes.txt"
+          if (Test-Path "version.json") { Copy-Item "version.json" "dist/version.json" -Force }
 
-      - name: Sign FIX x64 ONLY - Self-Signed - 53.4 Realtime Theme
+      - name: Sign FIX x64 ONLY - 53.4
         shell: pwsh
         run: |
-          Write-Host "`n=== Sign FIX x64 ONLY - v53.4 Realtime Theme System ===" -ForegroundColor Cyan
           $tool = Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1 -ExpandProperty FullName
-          if (-not $tool) { $tool = Get-ChildItem "C:\Program Files\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Where-Object { $_.FullName -like "*x64*" } | Select-Object -First 1 -ExpandProperty FullName }
+          if (-not $tool) { $tool = Get-ChildItem "C:\Program Files\Windows Kits\10\bin\" -Recurse -Filter signtool.exe | Select-Object -First 1 -ExpandProperty FullName }
           if ($tool) {
             foreach ($exe in (Get-ChildItem dist/*.exe)) {
               try {
-                $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team - v53.4 Realtime Theme System" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5)
+                $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=NGPB Team - v53.4 Realtime" -CertStoreLocation Cert:\CurrentUser\My -NotAfter (Get-Date).AddYears(5)
                 $pwd = ConvertTo-SecureString "ngpb123" -Force -AsPlainText
                 Export-PfxCertificate -Cert $cert -FilePath self.pfx -Password $pwd | Out-Null
-                & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v53.4 Realtime Theme System" $exe.FullName
-                Write-Host "✅ Signed $($exe.Name) - Realtime Theme" -ForegroundColor Green
+                & $tool sign /f self.pfx /p ngpb123 /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 /d "NGPB v53.4" $exe.FullName
                 Remove-Item self.pfx -Force -ErrorAction SilentlyContinue
                 Remove-Item Cert:\CurrentUser\My\$($cert.Thumbprint) -Force -ErrorAction SilentlyContinue
-              } catch { Write-Host "⚠️ Sign failed - Continue unsigned - Realtime Theme" -ForegroundColor Yellow }
+              } catch {}
             }
-          } else { Write-Host "⚠️ signtool.exe not found - Skip signing - Realtime" -ForegroundColor Yellow }
+          }
 
       - name: Upload Artifact - NGPB-Launcher-v53.4-Realtime-Theme-77.2MB
         uses: actions/upload-artifact@v4
@@ -168,56 +122,29 @@ jobs:
           path: |
             dist/*.exe
             dist/hashes.txt
-            dist/version.json
-            version.json
           retention-days: 30
 
-      - name: Create Release v1.0.53.4 - Auto Release - Realtime Theme System
+      - name: Create Release v1.0.53.4 - FIX DUPLIKAT 404
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.53.4
-          name: NGPB Launcher v1.0.53.4 - Realtime Theme System - WAF Extreme - 77.2 MB
+          name: NGPB Launcher v1.0.53.4 - Realtime Theme System - 77.2 MB - FIX 404
           body: |
-            ## 🎨 NGPB Launcher Enterprise v1.0.53.4 - REALTIME THEME SYSTEM - 77.2 MB - WAF Extreme + Realtime!
+            ## 🎨 v1.0.53.4 Realtime Theme - FIX 404 Duplikat version.json - Build #85 SUCCESS!
 
-            ### 🚀 WHAT'S NEW - REALTIME THEME SYSTEM - OPSI B!
-            **Ganti tampilan launcher dari HP tanpa rebuild exe 77.2 MB! - 100% Realtime dari version.json!**
+            ### FIX:
+            - Remove duplikat `dist/version.json` + `version.json` di files - Cuma upload EXE + hashes.txt - FIX 404!
+            - Ganti action-gh-release@v1 -> @v2 - Fix Node 20 deprecated warning!
+            - Realtime Theme tetap jalan dari raw.githubusercontent.com/ngshp/ngpb/main/version.json - Tanpa perlu upload version.json ke Release!
 
-            - **Realtime Theme System v53.4:** Fetch `version.json` dari `raw.githubusercontent.com/ngshp/ngpb/main/version.json` - Ganti warna accent, duo hero, banner, PLAY text, logo dari HP - Player di PC Ctrl+R langsung ganti!
-            - **Cara Pakai Realtime dari HP:** Buka `github.com/ngshp/ngpb/blob/main/version.json` di HP - Edit `theme.accent` dari `#00ff88` jadi `#ff1a3d` merah - Edit `banner.title` jadi `EVENT NATAL!` - Commit - Launcher di PC auto refresh 30 detik atau Ctrl+R langsung merah natal! Tanpa download ulang 77.2 MB!
-            - **Duo Hero Realtime:** `theme.duoHeroLeft` + `duoHeroRight` bisa ganti URL - Upload `elite_male_christmas.png` ke `assets/` - Ganti link di `version.json` - Skin natal langsung!
-            - **Banners[] Realtime:** 6 banners - `realtime_theme`, `discord_rpc`, `auto_patcher`, `waf_extreme`, `exp_3x`, `maintenance` - Semua realtime dari `version.json`!
+            Download: NGPB_Launcher_Setup_1.0.53.4_Realtime_Theme.exe 77.2 MB - Realtime ON!
 
-            ### 🔒 WAF Extreme Ultimate + Realtime - 77.2 MB NSIS Premium
-            - **WAF Whitelist 11 Hosts:** `lr.nhg.one`, `ue.nhg.one`, `dd.nhg.one`, `pa.nhg.one`, `ce.nhg.one`, `se.nhg.one`, `panel-admin.nhg.one`, `ngpb.id`, `raw.githubusercontent.com`, `github.com`, `api.github.com` - Only Allow Else DROP + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block + Web Assets Filter + Realtime Theme ON!
-            - **Fix Launcher Kapital L:** `files: ["Launcher/**/*","launcher/**/*","version.json"]` - Fix error `launcher/index.html not found` - Sesuai screenshot repo - Folder `Launcher` kapital!
-            - **Fix webSecurity:** `main.js` `webSecurity: false + allowRunningInsecureContent: true` - Biar fetch `raw.githubusercontent.com` boleh - Realtime Theme ON!
-            - **Security Extreme:** Anti RDP (mstsc, rdpclip, TeamViewer, AnyDesk) + Anti Emulator (QEMU, LDPlayer, Nox, BlueStacks, 1 core <2.5GB) + Anti Cloud (AWS, Azure, GCP, Vultr, No Battery) + Geo Ban IL & PH + ASN Blacklist + HWID AES-256 + 1D1IP + WPE PRO Killer + Anti Debug Timing 500k loop >150ms!
-
-            ### 📦 DOWNLOAD - 77.2 MB - REALTIME THEME - BUILD #84 SUCCESS!
-            - **Installer:** `NGPB_Launcher_Setup_1.0.53.4_Realtime_Theme.exe` (77.2 MB - NSIS Premium - Desktop + Start Menu + Realtime Theme System)
-            - **Portable:** `NGPB_Launcher_Portable_1.0.53.4_Realtime_Theme.exe` (77.2 MB - Portable Realtime)
-            - **Hashes:** `hashes.txt` SHA256 + SHA512 - Verify: `certutil -hashfile NGPB_Launcher_Setup_1.0.53.4_Realtime_Theme.exe SHA256`
-            - **Realtime Config:** `version.json` - `theme` + `banner` + `banners[]` + `waf` + `realtime` - Fetch dari `raw.githubusercontent.com` - Ganti dari HP!
-            - **Build:** #84 Realtime Success 1m 43s - Fix Launcher kapital + version.json + webSecurity false + WAF 11 hosts - Electron 30.0.9 - electron-builder 24.13.3 - windows-latest
-
-            ### 🎨 TEST REALTIME THEME - DARI HP!
-            1. Buka `version.json` di HP - Ganti `theme.accent` jadi `#ff1a3d` - Ganti `banner.title` jadi `EVENT NATAL MERAH!` - Commit!
-            2. Buka launcher di PC - Tekan `Ctrl+R` - Warna PLAY + Banner langsung merah natal realtime! Tanpa download ulang 77.2 MB!
-            3. Ganti `theme.duoHeroLeft` jadi URL gambar baru - Skin langsung ganti!
-
-            Built 100% from HP - GitHub mobile - Clean & Install + Fix icon.ico unknown format + Verify assets + Build Electron 77.2 MB + Generate hashes.txt + Sign x64 + Upload Artifact + Release - Realtime Theme System!
-
-            © 2026 NGPB Team - Built by ngshp from mobile - v53.4 Realtime Theme System - Shield Merah Chrome - github.com/ngshp/ngpb - ngpb.id - MIT + Enterprise Security Notice
-
-            Build #84 Realtime Success • 77.2 MB NSIS Premium • Fast Boot 0.8s • WAF Extreme + Realtime Theme • Whitelist 11 • Fix Launcher kapital + version.json + webSecurity false • Opsi B Realtime 100%
+            Build #85 Fix 404 - Success!
           draft: false
           prerelease: false
           files: |
             dist/*.exe
             dist/hashes.txt
-            dist/version.json
-            version.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
