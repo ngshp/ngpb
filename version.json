@@ -1,14 +1,14 @@
 {
-  "version": "1.0.53.6",
-  "name": "NGPB Launcher Enterprise Pro - Auto Update + Draggable Rapi + Realtime Theme",
-  "latest": "1.0.53.6",
-  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.53.6/NGPB_Launcher_Setup_1.0.53.6_Auto_Update_Draggable_Rapi.exe",
-  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.53.6/NGPB_Launcher_Portable_1.0.53.6_Auto_Update.exe",
+  "version": "1.53.6",
+  "name": "NGPB Launcher Enterprise Pro - v53.7 FIX - Valid Semver",
+  "latest": "1.53.6",
+  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.53.6/NGPB_Launcher_Setup_1.53.6_FIX_Draggable_Rapi.exe",
+  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.53.6/NGPB_Launcher_Portable_1.53.6_FIX.exe",
   "size": "77.3 MB",
   "size_bytes": 81050000,
   "release_date": "2026-05-14T00:00:00Z",
-  "build_number": 96,
-  "release_notes": "🚀 v53.6 AUTO UPDATE SYSTEM - Ga perlu download 77.3 MB lagi Bos! - Remote UI Loader + Auto Patches + Draggable Rapi 1200x700 + Window Controls ─ □ ✕ + WAF Extreme + Realtime Theme - Fix dari HP 10 detik - Build #96 Success",
+  "build_number": 97,
+  "release_notes": "🚀 v53.7 FIX - Valid semver 1.53.6 - Fix AutoUpdater invalid version + Cache Access Denied FIX + show:true - Draggable Rapi 1200x700 - Build #97 Success",
   "force_update": false,
   "min_version": "1.0.0",
   "features": {
@@ -38,100 +38,41 @@
   },
   "patches": {
     "css": ".header{-webkit-app-region:drag!important;cursor:move!important}.logo,.header-nav,.header-right,.nav-item,button,.play-btn,.banner-cta,.card,.hero-card,.window-controls,.win-btn,.footer,.sidebar,.content,.main,.duo-hero,.banner,.play-section{-webkit-app-region:no-drag!important}.launcher-root{width:1200px!important;height:700px!important;max-width:95vw!important;max-height:90vh!important}body{overflow:auto!important;padding:12px!important;display:flex!important;justify-content:center!important;align-items:center!important;min-height:100vh!important}.window-controls{display:flex!important;gap:8px!important;margin-left:12px!important}.win-btn{width:28px!important;height:28px!important;border-radius:8px!important;border:1px solid #1e2638!important;background:#151a26!important;color:#6b7a99!important;display:grid!important;place-items:center!important;cursor:pointer!important}.win-btn.close:hover{background:#ff3344!important;color:#fff!important}",
-    "js": "console.log('✅ v53.6 Auto Patches applied - Draggable Rapi - No download!');",
+    "js": "console.log('✅ v53.7 FIX - Valid semver 1.53.6 - Draggable Rapi - No download!');",
     "draggable": true,
     "rapi": true,
-    "version": "53.6"
+    "version": "53.7"
   },
   "banner": {
     "type": "event",
-    "title": "v53.6 AUTO UPDATE ON! - Ga perlu download 77.3 MB lagi Bos! - Draggable Rapi!",
-    "desc": "Build #96 Auto Update System - Remote UI Loader + Patches CSS - Header bisa drag kiri kanan - 1200x700 rapi - Fix dari HP 10 detik!",
-    "cta": "PLAY AUTO",
+    "title": "v53.7 FIX - Valid semver 1.53.6 - Cache FIX - AutoUpdater FIX!",
+    "desc": "Build #97 FIX - Valid semver 1.53.6 - Fix Access Denied + invalid version - 1200x700 rapi - Draggable ON!",
+    "cta": "PLAY FIX",
     "color": "#00ff88"
   },
   "theme": {
     "accent": "#00ff88",
     "accent2": "#00d4ff",
-    "verText": "v53.6 Auto Update • Draggable Rapi • No Download",
-    "wafText": "WAF Extreme ON • Auto Update ON • Draggable Rapi",
+    "verText": "v53.7 FIX • Valid 1.53.6 • Draggable Rapi • Cache FIX",
+    "wafText": "WAF Extreme ON • v53.7 FIX • Valid Semver",
     "duoHeroLeft": "https://raw.githubusercontent.com/ngshp/ngpb/main/assets/elite_male.png",
     "duoHeroRight": "https://raw.githubusercontent.com/ngshp/ngpb/main/assets/elite_female.png",
     "logo": "https://raw.githubusercontent.com/ngshp/ngpb/main/assets/icon.png",
     "playText": "PLAY",
-    "playSub": "380x80 • DRAGGABLE RAPI • AUTO UPDATE • FAST BOOT 0.8s • NO DOWNLOAD",
-    "labelLeft": "ELITE MALE • AUTO UPDATE",
-    "labelRight": "ELITE FEMALE • DRAGGABLE RAPI"
+    "playSub": "380x80 • v53.7 FIX • VALID SEMVER 1.53.6 • DRAGGABLE RAPI",
+    "labelLeft": "ELITE MALE • v53.7 FIX",
+    "labelRight": "ELITE FEMALE • VALID SEMVER"
   },
   "banners": [
     {
-      "id": "auto_update_v536",
+      "id": "fix_valid_semver_v537",
       "type": "event",
-      "message": "🚀 NEW! v53.6 AUTO UPDATE SYSTEM - Ga perlu download 77.3 MB lagi! Edit index.html di GitHub - Player auto update 10 detik!",
-      "cta": "Auto ON!",
-      "link": "https://github.com/ngshp/ngpb/blob/main/Launcher/index.html",
+      "message": "🚀 FIXED v53.7 - Valid semver 1.53.6 - Fix AutoUpdater invalid version + Cache Access Denied FIX!",
+      "cta": "FIXED!",
+      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.53.6",
       "enabled": true,
       "priority": 1,
       "expires": "2026-07-14"
-    },
-    {
-      "id": "draggable_rapi_v536",
-      "type": "event",
-      "message": "🎯 FIXED! Draggable Rapi - Header bisa drag kiri kanan + 1200x700 rapi + Window controls ─ □ ✕ - Auto Update!",
-      "cta": "Draggable ON!",
-      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.53.6",
-      "enabled": true,
-      "priority": 2,
-      "expires": "2026-07-14"
-    },
-    {
-      "id": "realtime_theme_v536",
-      "type": "event",
-      "message": "🎨 Realtime Theme + Auto Patches - Ganti warna, banner, CSS dari HP - Tanpa build exe!",
-      "cta": "Coba Ganti!",
-      "link": "https://github.com/ngshp/ngpb/blob/main/version.json",
-      "enabled": true,
-      "priority": 3,
-      "expires": "2026-07-14"
-    },
-    {
-      "id": "discord_rich_presence_v536",
-      "type": "event",
-      "message": "💬 Discord Rich Presence Active - Status RO keliatan di Discord! - v53.6 Auto Update",
-      "cta": "Update v53.6!",
-      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.53.6",
-      "enabled": true,
-      "priority": 4,
-      "expires": "2026-07-14"
-    },
-    {
-      "id": "auto_patcher_v536",
-      "type": "event",
-      "message": "⚡ Auto-Patcher + Delta Update - Patch 2-3 MB doang, bukan 77.3 MB full! - Auto Update ON",
-      "cta": "Delta ON",
-      "link": "https://ngpb.id/patches/manifest.json",
-      "enabled": true,
-      "priority": 5,
-      "expires": "2026-07-14"
-    },
-    {
-      "id": "waf_extreme_v536",
-      "type": "info",
-      "message": "🛡 WAF Extreme Ultimate v53.6 - 77.3 MB NSIS Premium - Whitelist 11 + Auto Update + Draggable Rapi + Shield Merah",
-      "cta": "Verified 77.3 MB",
-      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.53.6",
-      "enabled": true,
-      "priority": 6
-    },
-    {
-      "id": "event_exp_3x",
-      "type": "event",
-      "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP + 2x Drop! - Auto Update Banner!",
-      "cta": "Login sekarang!",
-      "link": "https://ngpb.id/event/exp",
-      "enabled": true,
-      "priority": 7,
-      "expires": "2026-05-18"
     }
   ],
   "waf": {
