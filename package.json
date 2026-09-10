@@ -1,17 +1,17 @@
 {
   "name": "ngpb-launcher-enterprise",
-  "version": "1.0.53.3",
-  "description": "NGPB Launcher Enterprise v53.3 WAF EXTREME ULTIMATE - Secure Launcher - AutoUpdate + AntiRDP/VM/Emu/Cloud + AntiDebug + HWID Lock + WPE PRO Killer + Geo Ban IL & PH + Whitelist Hostname lr.nhg.one ue.nhg.one dd.nhg.one pa.nhg.one ce.nhg.one se.nhg.one panel-admin.nhg.one + GET Only + HTTP/1.0,1.1,2 + UA Hard Filter + Bot Block + Web Assets Filter + 77.2MB NSIS Premium + Fast Boot 0.8s - Build #82 Success 1m 43s - Fix icon.ico unknown format - Shield Merah Chrome",
+  "version": "1.0.53.4",
+  "description": "NGPB Launcher Enterprise v53.4 REALTIME THEME SYSTEM - Ganti Duo Hero, warna, banner dari version.json tanpa rebuild exe - 77.2 MB NSIS Premium - Discord RPC + AutoPatcher + WAF Extreme Ultimate + Shield Merah Chrome + Fast Boot 0.8s - Build #84 Realtime Success - Fix icon.ico unknown format",
   "main": "main.js",
-  "author": "NGPB Team <admin@ngshp.com> - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Shield Merah Chrome - Duo Hero Elite - © 2026 NGPB Team",
-  "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher - 77.2MB - Fast Boot 0.8s - Icon Shield Merah Chrome Silver Valid ICO 256,128,64,48,32,16 header 00 00 01 00 - Build #82 Success 1m 43s - Fix icon.ico unknown format",
+  "author": "NGPB Team <admin@ngshp.com> - Built by ngshp from mobile - v53.4 Realtime Theme System - Shield Merah Chrome - Duo Hero Elite - © 2026 NGPB Team",
+  "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.4 Realtime Theme System - 77.2MB - Fast Boot 0.8s - Icon Shield Merah Chrome Silver Valid ICO 256,128,64,48,32,16 header 00 00 01 00 - Build #84 Realtime Success",
   "homepage": "https://github.com/ngshp/ngpb",
   "repository": {
     "type": "git",
     "url": "https://github.com/ngshp/ngpb.git"
   },
   "license": "MIT",
-  "keywords": ["ngpb", "point blank", "launcher", "electron", "enterprise", "waf", "secure launcher", "anti rdp", "anti vm", "anti emulator", "anti cloud", "geo ban", "hwid", "shield merah", "duo hero", "banner dynamic", "waf extreme", "whitelist hostname", "nsis premium", "fast boot"],
+  "keywords": ["ngpb","point blank","launcher","electron","enterprise","waf","realtime","theme-system","remote-config","discord-rpc","auto-patcher","secure launcher","anti rdp","anti vm","anti emulator","anti cloud","geo ban","hwid","shield merah","duo hero","banner dynamic","waf extreme","whitelist hostname","nsis premium","fast boot"],
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
@@ -27,7 +27,7 @@
   "build": {
     "appId": "com.ngshp.ngpb.launcher",
     "productName": "NG PB Launcher",
-    "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.3 WAF Extreme Ultimate - Secure Launcher - 77.2MB - Fast Boot 0.8s - Build #82 Success 1m 43s",
+    "copyright": "Copyright © 2026 NGPB Team - v53.4 Realtime Theme System - 77.2MB - Fast Boot 0.8s - Build #84 Realtime Success",
     "directories": {
       "buildResources": "assets",
       "output": "dist"
@@ -35,11 +35,13 @@
     "files": [
       "main.js",
       "preload.js",
+      "Launcher/**/*",
       "launcher/**/*",
       "security/**/*",
       "assets/**/*",
       "installer.nsh",
-      "package.json"
+      "package.json",
+      "version.json"
     ],
     "extraResources": [
       {
@@ -56,7 +58,7 @@
           "arch": ["x64"]
         }
       ],
-      "artifactName": "NGPB_Launcher_Setup_${version}_WAF_Extreme_Ultimate.exe",
+      "artifactName": "NGPB_Launcher_Setup_${version}_Realtime_Theme.exe",
       "publisherName": "NGPB Team",
       "verifyUpdateCodeSignature": false
     },
@@ -69,7 +71,7 @@
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
       "shortcutName": "NG PB Launcher",
-      "uninstallDisplayName": "NG PB Launcher v${version} - WAF Extreme Ultimate - 77.2 MB",
+      "uninstallDisplayName": "NG PB Launcher v${version} - Realtime Theme System - 77.2 MB",
       "displayLanguageSelector": false,
       "include": "installer.nsh",
       "warningsAsErrors": false
