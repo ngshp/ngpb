@@ -1,33 +1,29 @@
 {
   "name": "ngpb-launcher-enterprise",
-  "version": "1.0.53.6",
-  "description": "NGPB Launcher Enterprise v53.6 AUTO UPDATE SYSTEM - Ga perlu download 77.3 MB lagi Bos! - Remote UI Loader + Auto Patches CSS/JS + Draggable Rapi 1200x700 + Window Controls ─ □ ✕ + Delta Update 2-3 MB - Fix dari HP 10 detik - Otomatis! - 77.3 MB NSIS Premium - Discord RPC + AutoPatcher + WAF Extreme Ultimate + Shield Merah Chrome + Fast Boot 0.8s - Build #96 Auto Update Success",
+  "version": "1.53.6",
+  "description": "NGPB Launcher Enterprise v53.7 FIX - Valid Semver + Cache Fix + Draggable Rapi 1200x700 - Auto Update - Final",
   "main": "main.js",
-  "author": "NGPB Team <admin@ngshp.com> - Built by ngshp from mobile - v53.6 Auto Update System - Draggable Rapi - No Download Needed! - © 2026 NGPB Team",
-  "copyright": "Copyright © 2026 NGPB Team - Built by ngshp from mobile - v53.6 Auto Update System - 77.3MB - Fast Boot 0.8s - Draggable Rapi 1200x700 + Window Controls ─ □ ✕ + Remote UI Loader + Auto Patches + Delta Update - Icon Shield Merah Chrome - Build #96 Auto Update Success",
+  "author": "NGPB Team <admin@ngshp.com> - v53.7 FIX",
+  "copyright": "Copyright © 2026 NGPB Team - v53.7 FIX - 77.3MB - Valid Semver 1.53.6",
   "homepage": "https://github.com/ngshp/ngpb",
   "repository": {
     "type": "git",
     "url": "https://github.com/ngshp/ngpb.git"
   },
   "license": "MIT",
-  "keywords": ["ngpb","point blank","launcher","electron","enterprise","waf","realtime","auto-update","remote-ui","no-download","draggable","rapi","window-controls","theme-system","remote-config","discord-rpc","auto-patcher","secure launcher","delta-update","anti rdp","anti vm","anti emulator","anti cloud","geo ban","hwid","shield merah","duo hero","banner dynamic","waf extreme","whitelist hostname","nsis premium","fast boot"],
+  "keywords": ["ngpb","point blank","launcher","electron","enterprise","auto-update","draggable","rapi","fix"],
   "scripts": {
     "start": "electron .",
     "dev": "electron . --dev",
     "build": "electron-builder",
     "build:win": "electron-builder --win --x64 --publish never",
     "build:dir": "electron-builder --dir",
-    "build:nsis": "electron-builder --win nsis --x64 --publish never",
-    "dist": "electron-builder --win --x64 --publish never",
-    "pack": "electron-builder --dir",
-    "postinstall": "electron-builder install-app-deps",
-    "release": "electron-builder --win --x64 --publish always"
+    "dist": "electron-builder --win --x64 --publish never"
   },
   "build": {
     "appId": "com.ngshp.ngpb.launcher",
     "productName": "NG PB Launcher",
-    "copyright": "Copyright © 2026 NGPB Team - v53.6 Auto Update System - 77.3MB - Fast Boot 0.8s - Draggable Rapi + No Download - Build #96 Auto Update Success",
+    "copyright": "Copyright © 2026 NGPB Team - v53.7 FIX - Valid Semver 1.53.6",
     "directories": {
       "buildResources": "assets",
       "output": "dist"
@@ -38,8 +34,6 @@
       "index.html",
       "Launcher/**/*",
       "launcher/**/*",
-      "security/**/*",
-      "src/**/*",
       "assets/**/*",
       "installer.nsh",
       "package.json",
@@ -69,7 +63,7 @@
           "arch": ["x64"]
         }
       ],
-      "artifactName": "NGPB_Launcher_Setup_${version}_Auto_Update_Draggable_Rapi.exe",
+      "artifactName": "NGPB_Launcher_Setup_${version}_FIX_Draggable_Rapi.exe",
       "publisherName": "NGPB Team",
       "verifyUpdateCodeSignature": false
     },
@@ -82,7 +76,7 @@
       "installerIcon": "assets/icon.ico",
       "uninstallerIcon": "assets/icon.ico",
       "shortcutName": "NG PB Launcher",
-      "uninstallDisplayName": "NG PB Launcher v${version} - v53.6 Auto Update - Draggable Rapi - No Download Needed! - 77.3 MB",
+      "uninstallDisplayName": "NG PB Launcher v${version} - v53.7 FIX - Valid Semver - 77.3 MB",
       "displayLanguageSelector": false,
       "include": "installer.nsh",
       "warningsAsErrors": false
@@ -99,7 +93,6 @@
     "compression": "maximum",
     "asar": true,
     "npmRebuild": true,
-    "buildDependenciesFromSource": false,
     "asarUnpack": [
       "**/node_modules/electron-updater/**/*",
       "**/node_modules/electron-log/**/*",
