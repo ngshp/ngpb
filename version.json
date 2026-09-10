@@ -1,75 +1,116 @@
 {
-  "version": "1.0.3",
-  "name": "NGPB Launcher Enterprise Pro - Discord + AutoPatcher",
-  "latest": "1.0.3",
-  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.3/NGPB_Launcher_Setup_1.0.2_Enterprise.exe",
-  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.3/NGPB_Launcher_Portable_1.0.2_Enterprise.exe",
-  "checksum": "cd054055cffafb1d1c7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
-  "checksum_sha256": "cd054055cffafb1d1c7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2",
-  "checksum_sha512": "cd054055cffafb1d1c7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7",
-  "size": "149 MB",
-  "size_bytes": 156237824,
-  "release_notes": "🚀 v1.0.3 Pro Max - Discord Rich Presence + Auto-Patcher + Code Signed x64 + Anti-Cheat v3 + Enterprise Security",
+  "version": "1.0.53.4",
+  "name": "NGPB Launcher Enterprise Pro - Discord + AutoPatcher + Realtime Theme",
+  "latest": "1.0.53.4",
+  "download_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.53.4/NGPB_Launcher_Setup_1.0.53.4_Realtime_Theme.exe",
+  "portable_url": "https://github.com/ngshp/ngpb/releases/download/v1.0.53.4/NGPB_Launcher_Portable_1.0.53.4_Realtime_Theme.exe",
+  "size": "77.2 MB",
+  "size_bytes": 80950000,
+  "release_date": "2026-05-13T23:37:00Z",
+  "build_number": 84,
+  "release_notes": "🚀 v53.4 Realtime Theme System - Ganti tampilan dari HP tanpa rebuild exe! - 77.2 MB NSIS Premium - Discord Rich Presence + Auto-Patcher + WAF Extreme Ultimate + Shield Merah Chrome + Duo Hero Realtime + Fast Boot 0.8s - Build #84 Success",
   "force_update": false,
   "min_version": "1.0.0",
-  "release_date": "2026-05-13T16:16:15Z",
-  "build_number": 23,
   "features": {
     "discord_rpc": true,
     "auto_patcher": true,
     "code_signed": true,
     "anti_cheat_v3": true,
     "banner_system": true,
-    "dual_sha_verification": true
+    "dual_sha_verification": true,
+    "realtime_theme": true,
+    "waf_extreme": true,
+    "hwid_lock": true,
+    "geo_ban": true
+  },
+  "banner": {
+    "type": "event",
+    "title": "WAF Extreme Ultimate - 77.2 MB Success! - REALTIME ON! - Discord RPC Active",
+    "desc": "Build #84 Realtime Theme System - Ganti tampilan dari version.json tanpa rebuild - Shield Merah Chrome - Discord Status RO keliatan!",
+    "cta": "CLAIM NOW",
+    "color": "#00ff88"
+  },
+  "theme": {
+    "accent": "#00ff88",
+    "accent2": "#00d4ff",
+    "verText": "v53.4 Realtime • Discord RPC",
+    "wafText": "WAF Extreme ON • Realtime",
+    "duoHeroLeft": "https://raw.githubusercontent.com/ngshp/ngpb/main/assets/elite_male.png",
+    "duoHeroRight": "https://raw.githubusercontent.com/ngshp/ngpb/main/assets/elite_female.png",
+    "logo": "https://raw.githubusercontent.com/ngshp/ngpb/main/assets/icon.png",
+    "playText": "PLAY",
+    "playSub": "450x100 • SECURE LAUNCH • FAST BOOT 0.8s • REALTIME + DISCORD",
+    "labelLeft": "ELITE MALE • REALTIME",
+    "labelRight": "ELITE FEMALE • DISCORD RPC"
   },
   "banners": [
     {
-      "id": "discord_rich_presence_v103",
+      "id": "realtime_theme_v534",
       "type": "event",
-      "message": "💬 NEW! Discord Rich Presence Active - Status RO lu keliatan di Discord!",
-      "cta": "Update v1.0.3!",
-      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.3",
+      "message": "🎨 NEW! Realtime Theme System - Ganti tampilan dari HP tanpa download ulang 77.2 MB!",
+      "cta": "Coba Ganti Warna!",
+      "link": "https://github.com/ngshp/ngpb/blob/main/version.json",
       "enabled": true,
       "priority": 1,
       "expires": "2026-06-13"
     },
     {
-      "id": "auto_patcher_v103",
+      "id": "discord_rich_presence_v534",
       "type": "event",
-      "message": "⚡ Auto-Patcher Pro - Patch 15MB tanpa download ulang 149MB!",
-      "cta": "Coba Sekarang",
-      "link": "https://ngpb.id/patches/manifest.json",
+      "message": "💬 Discord Rich Presence Active - Status RO lu keliatan di Discord! - v53.4",
+      "cta": "Update v53.4!",
+      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.53.4",
       "enabled": true,
       "priority": 2,
       "expires": "2026-06-13"
     },
     {
-      "id": "event_exp_3x",
+      "id": "auto_patcher_v534",
       "type": "event",
-      "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP + 2x Drop!",
-      "cta": "Login sekarang!",
-      "link": "https://ngpb.id/event/exp",
+      "message": "⚡ Auto-Patcher Pro - Patch 15MB tanpa download ulang 77.2 MB! - Realtime",
+      "cta": "Coba Sekarang",
+      "link": "https://ngpb.id/patches/manifest.json",
       "enabled": true,
       "priority": 3,
-      "expires": "2026-05-18"
+      "expires": "2026-06-13"
     },
     {
-      "id": "security_info_v103",
+      "id": "waf_extreme_v534",
       "type": "info",
-      "message": "🛡️ Enterprise Pro v1.0.3 - SHA-512 Verified & Code Signed x64",
-      "cta": "Verified",
-      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.3",
+      "message": "🛡️ WAF Extreme Ultimate v53.4 - 77.2 MB NSIS Premium - Whitelist 8 + Realtime Theme + Shield Merah Chrome",
+      "cta": "Verified 77.2 MB",
+      "link": "https://github.com/ngshp/ngpb/releases/tag/v1.0.53.4",
       "enabled": true,
       "priority": 4
     },
     {
+      "id": "event_exp_3x",
+      "type": "event",
+      "message": "🎉 EVENT MEGA EXP - Weekend 3x EXP + 2x Drop! - Realtime Banner!",
+      "cta": "Login sekarang!",
+      "link": "https://ngpb.id/event/exp",
+      "enabled": true,
+      "priority": 5,
+      "expires": "2026-05-18"
+    },
+    {
       "id": "maintenance_none",
       "type": "maintenance",
-      "message": "✅ All Systems Operational - No Maintenance",
+      "message": "✅ All Systems Operational - No Maintenance - Realtime ON",
       "cta": "Play Now",
       "link": "https://ngpb.id/status",
       "enabled": false,
-      "priority": 5
+      "priority": 6
     }
-  ]
+  ],
+  "waf": {
+    "whitelist": 8,
+    "hosts": ["lr.nhg.one","ue.nhg.one","dd.nhg.one","pa.nhg.one","ce.nhg.one","se.nhg.one","panel-admin.nhg.one","ngpb.id","raw.githubusercontent.com"]
+  },
+  "realtime": {
+    "enabled": true,
+    "refreshInterval": 30000,
+    "source": "https://raw.githubusercontent.com/ngshp/ngpb/main/version.json"
+  },
+  "lastUpdate": "2026-05-13T23:37:00Z"
 }
